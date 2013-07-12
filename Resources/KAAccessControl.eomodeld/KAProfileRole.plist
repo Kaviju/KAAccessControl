@@ -1,0 +1,36 @@
+{
+    attributes = (
+        {
+            allowsNull = N; 
+            columnName = "profile_id"; 
+            name = profileID; 
+            prototypeName = id; 
+        }, 
+        {allowsNull = N; columnName = "role_id"; name = roleID; prototypeName = id; }
+    ); 
+    attributesUsedForLocking = (profileID, roleID); 
+    className = EOGenericRecord; 
+    classProperties = (profile, role); 
+    externalName = KAProfileRole; 
+    fetchSpecificationDictionary = {}; 
+    name = KAProfileRole; 
+    primaryKeyAttributes = (profileID, roleID); 
+    relationships = (
+        {
+            destination = KAProfile; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = profileID; }); 
+            name = profile; 
+        }, 
+        {
+            destination = KARole; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = roleID; }); 
+            name = role; 
+        }
+    ); 
+}

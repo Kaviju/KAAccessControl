@@ -1,0 +1,45 @@
+{
+    EOModelVersion = "2.1"; 
+    adaptorName = JDBC; 
+    connectionDictionary = {URL = "jdbc:FrontBase://127.0.0.1/DatabaseName"; username = dummy; }; 
+    entities = (
+        {
+            className = "com.kaviju.accesscontrol.model.KAAccessList"; 
+            name = KAAccessList; 
+        }, 
+        {
+            className = "com.kaviju.accesscontrol.model.KAAccessListItem"; 
+            name = KAAccessListItem; 
+        }, 
+        {className = "com.kaviju.accesscontrol.model.KAProfile"; name = KAProfile; }, 
+        {className = EOGenericRecord; name = KAProfileRole; }, 
+        {className = "com.kaviju.accesscontrol.model.KARole"; name = KARole; }, 
+        {
+            className = "com.kaviju.accesscontrol.model.KARoleGroup"; 
+            name = KARoleGroup; 
+        }, 
+        {className = "com.kaviju.accesscontrol.model.KAUser"; name = KAUser; }, 
+        {
+            className = "com.kaviju.accesscontrol.model.KAUserProfile"; 
+            name = KAUserProfile; 
+        }, 
+        {
+            className = "com.kaviju.accesscontrol.model.KAUserProfileRole"; 
+            name = KAUserProfileRole; 
+        }, 
+        {className = EOGenericRecord; name = KAUserProfileRoleItem; }
+    ); 
+    userInfo = {
+        "_EntityModeler" = {
+            activeDatabaseConfigName = NewDatabaseConfig; 
+            databaseConfigs = {
+                NewDatabaseConfig = {
+                    adaptorName = JDBC; 
+                    connectionDictionary = {URL = "jdbc:FrontBase://127.0.0.1/DatabaseName"; username = dummy; }; 
+                    prototypeEntityName = EOJDBCFrontBasePrototypes; 
+                }; 
+            }; 
+            reverseEngineered = Y; 
+        }; 
+    }; 
+}

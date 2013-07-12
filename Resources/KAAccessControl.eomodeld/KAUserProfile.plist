@@ -1,0 +1,49 @@
+{
+    attributes = (
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {
+            columnName = isDefaultProfile; 
+            name = isDefaultProfile; 
+            prototypeName = intBoolean; 
+        }, 
+        {
+            allowsNull = N; 
+            columnName = "profile_id"; 
+            name = profileID; 
+            prototypeName = id; 
+        }, 
+        {allowsNull = N; columnName = "user_id"; name = userID; prototypeName = id; }
+    ); 
+    attributesUsedForLocking = (id, isDefaultProfile, profileID, userID); 
+    className = "com.kaviju.accesscontrol.model.KAUserProfile"; 
+    classProperties = (isDefaultProfile, profile, roles, user); 
+    externalName = KAUserProfile; 
+    fetchSpecificationDictionary = {}; 
+    name = KAUserProfile; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = KAProfile; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = profileID; }); 
+            name = profile; 
+        }, 
+        {
+            destination = KAUserProfileRole; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = userProfileID; sourceAttribute = id; }); 
+            name = roles; 
+        }, 
+        {
+            destination = KAUser; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = userID; }); 
+            name = user; 
+        }
+    ); 
+}

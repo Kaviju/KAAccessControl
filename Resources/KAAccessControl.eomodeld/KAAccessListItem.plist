@@ -1,0 +1,46 @@
+{
+    attributes = (
+        {
+            allowsNull = N; 
+            columnName = "accessList_id"; 
+            name = accessListID; 
+            prototypeName = id; 
+        }, 
+        {columnName = code; name = code; prototypeName = varchar50; }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {columnName = name; name = name; prototypeName = varchar50; }
+    ); 
+    attributesUsedForLocking = (accessListID, code, id, name); 
+    className = "com.kaviju.accesscontrol.model.KAAccessListItem"; 
+    classProperties = (code, list, name); 
+    entityIndexes = (
+        {
+            attributes = (); 
+            constraint = none; 
+            indexType = clustered; 
+            name = code; 
+            order = asc; 
+        }, 
+        {
+            attributes = (accessListID, code); 
+            constraint = distinct; 
+            indexType = clustered; 
+            name = codeIndex; 
+            order = asc; 
+        }
+    ); 
+    externalName = KAAccessListItem; 
+    fetchSpecificationDictionary = {}; 
+    name = KAAccessListItem; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = KAAccessList; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = accessListID; }); 
+            name = list; 
+        }
+    ); 
+}

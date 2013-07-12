@@ -1,0 +1,23 @@
+{
+    attributes = (
+        {columnName = code; name = code; prototypeName = varchar50; }, 
+        {columnName = displayOrder; name = displayOrder; prototypeName = intNumber; }, 
+        {allowsNull = N; name = id; prototypeName = id; }
+    ); 
+    attributesUsedForLocking = (code, displayOrder, id); 
+    className = "com.kaviju.accesscontrol.model.KARoleGroup"; 
+    classProperties = (code, displayOrder, roles); 
+    externalName = KARoleGroup; 
+    fetchSpecificationDictionary = {}; 
+    name = KARoleGroup; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = KARole; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = roleGroupID; sourceAttribute = id; }); 
+            name = roles; 
+        }
+    ); 
+}

@@ -1,0 +1,78 @@
+{
+    attributes = (
+        {
+            allowsNull = Y; 
+            columnName = "accessList_id"; 
+            name = accessListID; 
+            prototypeName = id; 
+        }, 
+        {
+            columnName = allowsMultipleItems; 
+            name = allowsMultipleItems; 
+            prototypeName = intBoolean; 
+        }, 
+        {columnName = code; name = code; prototypeName = varchar50; }, 
+        {columnName = displayOrder; name = displayOrder; prototypeName = intNumber; }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {
+            columnName = inProfileOnly; 
+            name = inProfileOnly; 
+            prototypeName = intBoolean; 
+        }, 
+        {
+            allowsNull = N; 
+            columnName = "roleGroup_id"; 
+            name = roleGroupID; 
+            prototypeName = id; 
+        }
+    ); 
+    attributesUsedForLocking = (
+        accessListID, 
+        allowsMultipleItems, 
+        code, 
+        displayOrder, 
+        id, 
+        inProfileOnly, 
+        roleGroupID
+    ); 
+    className = "com.kaviju.accesscontrol.model.KARole"; 
+    classProperties = (allowsMultipleItems, code, displayOrder, group, inProfileOnly, list); 
+    entityIndexes = (
+        {
+            attributes = (code); 
+            constraint = distinct; 
+            indexType = clustered; 
+            name = codeIndex; 
+            order = asc; 
+        }
+    ); 
+    externalName = KARole; 
+    fetchSpecificationDictionary = {}; 
+    name = KARole; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = KARoleGroup; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = roleGroupID; }); 
+            name = group; 
+        }, 
+        {
+            destination = KAAccessList; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = accessListID; }); 
+            name = list; 
+        }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = KAProfileRole; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = roleID; sourceAttribute = id; }); 
+            name = profileRoles; 
+        }
+    ); 
+}

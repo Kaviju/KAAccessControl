@@ -1,0 +1,6 @@
+#Path to the plist file read at startup to updates the frameworks data tables AccessList, RoleGroiup, Role and Profile.
+ka.accesscontrol.rolesFile=Roles
+
+ka.accesscontrol.logedOutPageName=LoggedOut
+
+KAAccessControl.MigrationClassPrefix=com.kaviju.accesscontrol.migration.KAAccessControl

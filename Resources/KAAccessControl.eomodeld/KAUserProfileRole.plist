@@ -1,0 +1,46 @@
+{
+    attributes = (
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {allowsNull = N; columnName = "role_id"; name = roleID; prototypeName = id; }, 
+        {
+            allowsNull = N; 
+            columnName = "userProfile_id"; 
+            name = userProfileID; 
+            prototypeName = id; 
+        }
+    ); 
+    attributesUsedForLocking = (roleID, userProfileID); 
+    className = "com.kaviju.accesscontrol.model.KAUserProfileRole"; 
+    classProperties = (listItems, role, userProfile); 
+    externalName = KAUserProfileRole; 
+    fetchSpecificationDictionary = {}; 
+    name = KAUserProfileRole; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {definition = "userProfileRoleListItems.listItem"; name = listItems; }, 
+        {
+            destination = KARole; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = roleID; }); 
+            name = role; 
+        }, 
+        {
+            destination = KAUserProfile; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = userProfileID; }); 
+            name = userProfile; 
+        }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = KAUserProfileRoleItem; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = userProfileRoleID; sourceAttribute = id; }); 
+            name = userProfileRoleListItems; 
+        }
+    ); 
+}

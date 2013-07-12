@@ -1,0 +1,41 @@
+{
+    attributes = (
+        {
+            allowsNull = N; 
+            columnName = "permissionListItem_id"; 
+            name = permissionListItemID; 
+            prototypeName = id; 
+        }, 
+        {
+            allowsNull = N; 
+            columnName = "userProfileRole_id"; 
+            name = userProfileRoleID; 
+            prototypeName = id; 
+        }
+    ); 
+    attributesUsedForLocking = (permissionListItemID, userProfileRoleID); 
+    className = EOGenericRecord; 
+    classProperties = (userProfileRole); 
+    externalName = KAUserProfileRoleItem; 
+    fetchSpecificationDictionary = {}; 
+    name = KAUserProfileRoleItem; 
+    primaryKeyAttributes = (permissionListItemID, userProfileRoleID); 
+    relationships = (
+        {
+            destination = KAAccessListItem; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = permissionListItemID; }); 
+            name = listItem; 
+        }, 
+        {
+            destination = KAUserProfileRole; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = userProfileRoleID; }); 
+            name = userProfileRole; 
+        }
+    ); 
+}

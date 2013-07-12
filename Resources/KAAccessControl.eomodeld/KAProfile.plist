@@ -1,0 +1,41 @@
+{
+    attributes = (
+        {columnName = code; name = code; prototypeName = varchar50; }, 
+        {allowsNull = N; name = id; prototypeName = id; }
+    ); 
+    attributesUsedForLocking = (code, id); 
+    className = "com.kaviju.accesscontrol.model.KAProfile"; 
+    classProperties = (code, roles, users); 
+    entityIndexes = (
+        {
+            attributes = (code); 
+            constraint = distinct; 
+            indexType = clustered; 
+            name = codeIndex; 
+            order = asc; 
+        }
+    ); 
+    externalName = KAProfile; 
+    fetchSpecificationDictionary = {}; 
+    name = KAProfile; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = KAProfileRole; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = profileID; sourceAttribute = id; }); 
+            name = profileRoles; 
+        }, 
+        {definition = "profileRoles.role"; name = roles; }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = KAUserProfile; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = profileID; sourceAttribute = id; }); 
+            name = userProfiles; 
+        }, 
+        {definition = "userProfiles.user"; name = users; }
+    ); 
+}

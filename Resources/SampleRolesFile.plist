@@ -1,0 +1,65 @@
+{
+lists = (
+	"Territory",
+	"Wharehouse"
+);
+roleGroups = (
+	{
+		code = "Admin";
+		roles = (
+			{
+				code = "AdminUsers";
+				inProfileOnly = YES;
+			},
+			{
+				"code" = "AdminParameters";
+				"inProfileOnly" = YES;
+			}
+		);
+	},
+	{
+		code = "Sales";
+		roles = (
+			{
+				code = "CustomerSalesReport";
+				listCode = "Territory";
+				allowsMultipleItems = YES;
+			},
+			{
+				"code" = "SeeGrossProfits";
+			},
+		);
+	},
+	{
+		code = "Wharehouse";
+		roles = (
+			{
+				code = "WharehouseSalesReport";
+				listCode = "Wharehouse";
+				allowsMultipleItems = NO;
+			}
+		);
+	}
+);
+profiles = (
+	{
+		code = "Admin";
+		roles = (
+			"AdminUsers",
+			"AdminParameters"
+		);
+	},
+	{
+		code = "Salesman";
+		roles = (
+			"CustomerSalesReport"
+		);
+	},
+	{
+		code = "WharehouseManager";
+		roles = (
+			"WharehouseSalesReport"
+		);
+	}
+);
+}
