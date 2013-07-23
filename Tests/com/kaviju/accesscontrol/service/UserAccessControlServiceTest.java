@@ -87,12 +87,14 @@ public class UserAccessControlServiceTest {
 
 	@Test
 	public void logoutWhenNotPersonifyingTerminateSessionAndReturnsLogedOutPage() {
-		when(serviceUnderTest.createLogedOutPage(null)).thenReturn(null);
+		when(serviceUnderTest.createLoggedOutPage(null)).thenReturn(null);
 		
 		serviceUnderTest.logonAsUserInContext(testUser, null);
 		serviceUnderTest.logoutInContext(null);
 		
-		verify(serviceUnderTest).createLogedOutPage(null);
+		assertThat(serviceUnderTest.isUserLoggedIn(), is(false));
+		assertThat(serviceUnderTest.realUser(), nullValue());
+		verify(serviceUnderTest).createLoggedOutPage(null);
 	}
 
 	@Test

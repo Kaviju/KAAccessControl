@@ -52,15 +52,17 @@ public class UserAccessControlService {
 
 	public WOComponent logoutInContext(WOContext context) {
 		if (userStack.count() == 0) {
-			WOComponent newPage = createLogedOutPage(context);
+			currentUser = null;
+			realUser = null;
+			WOComponent newPage = createLoggedOutPage(context);
 			return newPage;			
 		}
 		currentUser = userStack.removeLastObject();
 		return currentUser.createHomePage(context);
 	}
 
-	public WOComponent createLogedOutPage(WOContext context) {
-		String logedOutPageName = ERXProperties.stringForKeyWithDefault("ka.accesscontrol.logedOutPageName", "LoggedOut");
+	public WOComponent createLoggedOutPage(WOContext context) {
+		String logedOutPageName = ERXProperties.stringForKeyWithDefault("ka.accesscontrol.loggedOutPageName", "LoggedOut");
 		return WOApplication.application().pageWithName(logedOutPageName, context);
 	}
 }

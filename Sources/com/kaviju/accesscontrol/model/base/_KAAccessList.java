@@ -239,12 +239,6 @@ public abstract class _KAAccessList extends  ERXGenericRecord {
 
 public static com.kaviju.accesscontrol.model.KAAccessList createKAAccessList(EOEditingContext editingContext, String code
 ) {
-//	EOModel model = EOModelGroup.defaultGroup().modelNamed("KAAccessControl");
-//	
-//	if(model.modelGroup() == null){
-//		System.out.println(model.modelGroup());	
-//	}
-	
   com.kaviju.accesscontrol.model.KAAccessList eo = (com.kaviju.accesscontrol.model.KAAccessList) EOUtilities.createAndInsertInstance(editingContext, _KAAccessList.ENTITY_NAME);  
 		eo.setCode(code);
   return eo;
