@@ -33,4 +33,9 @@ public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUs
 		KARole myRole = role();
 		return userProfile().profile().roles().contains(myRole);
 	}
+	
+	@Override
+	public String toString() {
+		return "<KAUserProfileRole roleCode="+role().code()+">";
+	}
 }

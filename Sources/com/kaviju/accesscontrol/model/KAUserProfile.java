@@ -1,5 +1,9 @@
 package com.kaviju.accesscontrol.model;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 
 import com.webobjects.eocontrol.EOEnterpriseObject;
@@ -9,16 +13,25 @@ import com.webobjects.foundation.NSArray;
 public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserProfile {
 	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(KAUserProfile.class);
+	private Set<String> allEffectiveRoles;
 
-	public boolean hasRole(String roleCode) {
-		for (KAUserProfileRole profileRole : roles()) {
-			if (profileRole.role().code().equals(roleCode)) {
-				return true;
-			}
-		}
-		return false;
+	public String profileCode() {
+		return profile().code();
 	}
 	
+	public boolean hasRole(String roleCode) {
+		return allEffectiveRoles().contains(roleCode);
+	}
+	
+	private Set<String> allEffectiveRoles() {
+		if (allEffectiveRoles == null) {
+			allEffectiveRoles = new HashSet<>();
+			allEffectiveRoles.addAll(KARole.CODE.arrayValueInObject(profile().roles()));
+			allEffectiveRoles.addAll(KAUserProfileRole.ROLE.dot(KARole.CODE).arrayValueInObject(roles()));
+		}
+		return Collections.unmodifiableSet(allEffectiveRoles);
+	}
+
 	@Override
 	public void setProfile(KAProfile value) {
 		deleteAllRolesRelationships();

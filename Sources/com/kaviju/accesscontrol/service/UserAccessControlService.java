@@ -1,34 +1,39 @@
 package com.kaviju.accesscontrol.service;
 
 import com.kaviju.accesscontrol.model.KAUser;
+import com.kaviju.accesscontrol.model.KAUserProfile;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSMutableArray;
 
 import er.extensions.foundation.ERXProperties;
 
-public class UserAccessControlService {
+public class UserAccessControlService<U extends KAUser> {
 
-	private KAUser realUser;
-	private KAUser currentUser;
-	private NSMutableArray<KAUser> userStack = new NSMutableArray<KAUser>();
+	private U realUser;
+	private U currentUser;
+	private NSMutableArray<U> userStack = new NSMutableArray<U>();
 
 	public UserAccessControlService() {
 		super();
 	}
 
-	public KAUser realUser() {
+	public U realUser() {
 		return realUser;
 	}
 
-	public KAUser currentUser() {
+	public U currentUser() {
 		return currentUser;
+	}
+
+	public KAUserProfile currentUserProfile() {
+		return currentUser.currentUserProfile();
 	}
 
 	public boolean isUserLoggedIn() {
 		return currentUser != null;
 	}
 
-	public WOComponent logonAsUserInContext(KAUser user, WOContext context) {
+	public WOComponent logonAsUserInContext(U user, WOContext context) {
 		if (user == null) {
 			throw new IllegalArgumentException("logonAsUser does not accept null user.");
 		}
@@ -44,7 +49,7 @@ public class UserAccessControlService {
 		return currentUser().createHomePage(context);
 	}
 
-	public WOComponent personifyUserInContext(KAUser user, WOContext context) {
+	public WOComponent personifyUserInContext(U user, WOContext context) {
 		userStack.add(currentUser);
 		currentUser = user;
 		return user.createHomePage(context);
