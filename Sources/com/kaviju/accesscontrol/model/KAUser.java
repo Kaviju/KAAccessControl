@@ -63,6 +63,7 @@ public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser
 		}
 		if (currentUserProfile == null) {
 			currentUserProfile = createProfilesRelationship();
+			currentUserProfile.setIsDefaultProfile(true);
 		}
 		return currentUserProfile;
 	}
