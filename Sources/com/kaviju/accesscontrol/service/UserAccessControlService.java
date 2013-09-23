@@ -57,6 +57,7 @@ public class UserAccessControlService<U extends KAUser> {
 
 	public WOComponent logoutInContext(WOContext context) {
 		if (userStack.count() == 0) {
+			context.session().terminate();
 			currentUser = null;
 			realUser = null;
 			WOComponent newPage = createLoggedOutPage(context);
