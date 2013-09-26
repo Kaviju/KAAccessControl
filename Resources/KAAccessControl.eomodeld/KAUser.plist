@@ -1,24 +1,16 @@
 {
     attributes = (
-        {columnName = firstName; name = firstName; prototypeName = varchar50; }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
-        {
-            allowsNull = Y; 
-            columnName = lastName; 
-            name = lastName; 
-            prototypeName = varchar50; 
-        }, 
         {
             columnName = passwordHash; 
             name = passwordHash; 
             prototypeName = varchar100; 
             width = 200; 
-        }, 
-        {columnName = userName; name = userName; prototypeName = varchar100; }
+        }
     ); 
-    attributesUsedForLocking = (firstName, lastName, passwordHash, userName); 
+    attributesUsedForLocking = (passwordHash); 
     className = "com.kaviju.accesscontrol.model.KAUser"; 
-    classProperties = (firstName, lastName, passwordHash, profiles, userName); 
+    classProperties = (passwordHash, profiles); 
     fetchSpecificationDictionary = {}; 
     isAbstractEntity = Y; 
     name = KAUser; 

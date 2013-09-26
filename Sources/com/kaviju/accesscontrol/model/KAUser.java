@@ -79,7 +79,7 @@ public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser
 		
 	@Override
 	public String toString() {
-		return "KAUser with id:"+primaryKey()+" username: "+userName();
+		return "KAUser with id:"+primaryKey();
 	}
 
 	public boolean hasRole(String roleCode) {

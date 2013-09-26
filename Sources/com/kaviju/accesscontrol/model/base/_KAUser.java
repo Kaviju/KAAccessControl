@@ -16,18 +16,12 @@ public abstract class _KAUser extends  ERXGenericRecord {
   public static final String ENTITY_NAME = "KAUser";
 
   // Attribute Keys
-  public static final ERXKey<String> FIRST_NAME = new ERXKey<String>("firstName");
-  public static final ERXKey<String> LAST_NAME = new ERXKey<String>("lastName");
   public static final ERXKey<String> PASSWORD_HASH = new ERXKey<String>("passwordHash");
-  public static final ERXKey<String> USER_NAME = new ERXKey<String>("userName");
   // Relationship Keys
   public static final ERXKey<com.kaviju.accesscontrol.model.KAUserProfile> PROFILES = new ERXKey<com.kaviju.accesscontrol.model.KAUserProfile>("profiles");
 
   // Attributes
-  public static final String FIRST_NAME_KEY = FIRST_NAME.key();
-  public static final String LAST_NAME_KEY = LAST_NAME.key();
   public static final String PASSWORD_HASH_KEY = PASSWORD_HASH.key();
-  public static final String USER_NAME_KEY = USER_NAME.key();
   // Relationships
   public static final String PROFILES_KEY = PROFILES.key();
 
@@ -41,28 +35,6 @@ public abstract class _KAUser extends  ERXGenericRecord {
     return localInstance;
   }
 
-  public String firstName() {
-    return (String) storedValueForKey(_KAUser.FIRST_NAME_KEY);
-  }
-
-  public void setFirstName(String value) {
-    if (_KAUser.LOG.isDebugEnabled()) {
-    	_KAUser.LOG.debug( "updating firstName from " + firstName() + " to " + value);
-    }
-    takeStoredValueForKey(value, _KAUser.FIRST_NAME_KEY);
-  }
-
-  public String lastName() {
-    return (String) storedValueForKey(_KAUser.LAST_NAME_KEY);
-  }
-
-  public void setLastName(String value) {
-    if (_KAUser.LOG.isDebugEnabled()) {
-    	_KAUser.LOG.debug( "updating lastName from " + lastName() + " to " + value);
-    }
-    takeStoredValueForKey(value, _KAUser.LAST_NAME_KEY);
-  }
-
   public String passwordHash() {
     return (String) storedValueForKey(_KAUser.PASSWORD_HASH_KEY);
   }
@@ -72,17 +44,6 @@ public abstract class _KAUser extends  ERXGenericRecord {
     	_KAUser.LOG.debug( "updating passwordHash from " + passwordHash() + " to " + value);
     }
     takeStoredValueForKey(value, _KAUser.PASSWORD_HASH_KEY);
-  }
-
-  public String userName() {
-    return (String) storedValueForKey(_KAUser.USER_NAME_KEY);
-  }
-
-  public void setUserName(String value) {
-    if (_KAUser.LOG.isDebugEnabled()) {
-    	_KAUser.LOG.debug( "updating userName from " + userName() + " to " + value);
-    }
-    takeStoredValueForKey(value, _KAUser.USER_NAME_KEY);
   }
 
   public NSArray<com.kaviju.accesscontrol.model.KAUserProfile> profiles() {
@@ -180,14 +141,10 @@ public abstract class _KAUser extends  ERXGenericRecord {
   }
 
 
-public static com.kaviju.accesscontrol.model.KAUser createKAUser(EOEditingContext editingContext, String firstName
-, String passwordHash
-, String userName
+public static com.kaviju.accesscontrol.model.KAUser createKAUser(EOEditingContext editingContext, String passwordHash
 ) {
   com.kaviju.accesscontrol.model.KAUser eo = (com.kaviju.accesscontrol.model.KAUser) EOUtilities.createAndInsertInstance(editingContext, _KAUser.ENTITY_NAME);  
-		eo.setFirstName(firstName);
 		eo.setPasswordHash(passwordHash);
-		eo.setUserName(userName);
   return eo;
 }
 

@@ -77,7 +77,4 @@ public class KAUserProfileRoleTest {
 		
 		assertFalse(userProfileRoleUnderTest.isFromProfile());
 	}
-	
-	
-	
 }

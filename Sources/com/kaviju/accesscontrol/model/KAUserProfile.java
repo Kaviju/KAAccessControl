@@ -26,7 +26,9 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	private Set<String> allEffectiveRoles() {
 		if (allEffectiveRoles == null) {
 			allEffectiveRoles = new HashSet<>();
-			allEffectiveRoles.addAll(KARole.CODE.arrayValueInObject(profile().roles()));
+			if (profile() != null) {
+				allEffectiveRoles.addAll(KARole.CODE.arrayValueInObject(profile().roles()));
+			}
 			allEffectiveRoles.addAll(KAUserProfileRole.ROLE.dot(KARole.CODE).arrayValueInObject(roles()));
 		}
 		return Collections.unmodifiableSet(allEffectiveRoles);

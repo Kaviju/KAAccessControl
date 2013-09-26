@@ -1,6 +1,7 @@
 package com.kaviju.accesscontrol.model;
 
 import static org.junit.Assert.*;
+import com.wounit.annotations.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -42,6 +43,7 @@ public class KAUserTest {
 		KAUser.setCurrentPasswordHasher(testHasher);
 	}
 
+	@Dummy KAProfile profile;
 	@Spy @UnderTest private KAUserForTest testUser;
 
 	@SuppressWarnings("serial")
@@ -142,6 +144,7 @@ public class KAUserTest {
 	@Test
 	public void hasRoleAskCurrentUserProfile() {
 		KAUserProfile userProfile = spy(KAUserProfile.createKAUserProfile(ec));
+		userProfile.setProfile(profile);
 		testUser.addToProfiles(userProfile);
 		
 		testUser.hasRole(roleCode1);
