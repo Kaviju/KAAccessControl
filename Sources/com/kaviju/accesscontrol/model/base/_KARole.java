@@ -25,13 +25,13 @@ public abstract class _KARole extends  ERXGenericRecord {
   public static final ERXKey<com.kaviju.accesscontrol.model.KAAccessList> LIST = new ERXKey<com.kaviju.accesscontrol.model.KAAccessList>("list");
 
   // Attributes
-  public static final String ALLOWS_MULTIPLE_ITEMS_KEY = ALLOWS_MULTIPLE_ITEMS.key();
-  public static final String CODE_KEY = CODE.key();
-  public static final String DISPLAY_ORDER_KEY = DISPLAY_ORDER.key();
-  public static final String IN_PROFILE_ONLY_KEY = IN_PROFILE_ONLY.key();
+  public static final String ALLOWS_MULTIPLE_ITEMS_KEY = "allowsMultipleItems";
+  public static final String CODE_KEY = "code";
+  public static final String DISPLAY_ORDER_KEY = "displayOrder";
+  public static final String IN_PROFILE_ONLY_KEY = "inProfileOnly";
   // Relationships
-  public static final String GROUP_KEY = GROUP.key();
-  public static final String LIST_KEY = LIST.key();
+  public static final String GROUP_KEY = "group";
+  public static final String LIST_KEY = "list";
 
   private static Logger LOG = Logger.getLogger(_KARole.class);
 

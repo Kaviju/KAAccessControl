@@ -21,9 +21,9 @@ public abstract class _KAUser extends  ERXGenericRecord {
   public static final ERXKey<com.kaviju.accesscontrol.model.KAUserProfile> PROFILES = new ERXKey<com.kaviju.accesscontrol.model.KAUserProfile>("profiles");
 
   // Attributes
-  public static final String PASSWORD_HASH_KEY = PASSWORD_HASH.key();
+  public static final String PASSWORD_HASH_KEY = "passwordHash";
   // Relationships
-  public static final String PROFILES_KEY = PROFILES.key();
+  public static final String PROFILES_KEY = "profiles";
 
   private static Logger LOG = Logger.getLogger(_KAUser.class);
 

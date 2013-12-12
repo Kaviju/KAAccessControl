@@ -23,11 +23,11 @@ public abstract class _KAUserProfile extends  ERXGenericRecord {
   public static final ERXKey<com.kaviju.accesscontrol.model.KAUser> USER = new ERXKey<com.kaviju.accesscontrol.model.KAUser>("user");
 
   // Attributes
-  public static final String IS_DEFAULT_PROFILE_KEY = IS_DEFAULT_PROFILE.key();
+  public static final String IS_DEFAULT_PROFILE_KEY = "isDefaultProfile";
   // Relationships
-  public static final String PROFILE_KEY = PROFILE.key();
-  public static final String ROLES_KEY = ROLES.key();
-  public static final String USER_KEY = USER.key();
+  public static final String PROFILE_KEY = "profile";
+  public static final String ROLES_KEY = "roles";
+  public static final String USER_KEY = "user";
 
   private static Logger LOG = Logger.getLogger(_KAUserProfile.class);
 

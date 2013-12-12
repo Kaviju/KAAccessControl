@@ -23,9 +23,9 @@ public abstract class _KAUserProfileRole extends  ERXGenericRecord {
 
   // Attributes
   // Relationships
-  public static final String LIST_ITEMS_KEY = LIST_ITEMS.key();
-  public static final String ROLE_KEY = ROLE.key();
-  public static final String USER_PROFILE_KEY = USER_PROFILE.key();
+  public static final String LIST_ITEMS_KEY = "listItems";
+  public static final String ROLE_KEY = "role";
+  public static final String USER_PROFILE_KEY = "userProfile";
 
   private static Logger LOG = Logger.getLogger(_KAUserProfileRole.class);
 

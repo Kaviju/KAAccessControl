@@ -2,6 +2,7 @@
     attributes = (
         {allowsNull = N; name = id; prototypeName = id; }, 
         {
+            allowsNull = Y; 
             columnName = passwordHash; 
             name = passwordHash; 
             prototypeName = varchar100; 

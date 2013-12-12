@@ -32,11 +32,11 @@ public abstract class ${entity.prefixClassNameWithoutPackage} extends #if ($enti
 
   // Attributes
 #foreach ($attribute in $entity.sortedClassAttributes)
-  public static final String ${attribute.uppercaseUnderscoreName}_KEY = ${attribute.uppercaseUnderscoreName}.key();
+  public static final String ${attribute.uppercaseUnderscoreName}_KEY = "$attribute.name";
 #end
   // Relationships
 #foreach ($relationship in $entity.sortedClassRelationships)
-  public static final String ${relationship.uppercaseUnderscoreName}_KEY = ${relationship.uppercaseUnderscoreName}.key();
+  public static final String ${relationship.uppercaseUnderscoreName}_KEY = "$relationship.name";
 #end
 
   private static Logger LOG = Logger.getLogger(${entity.prefixClassNameWithoutPackage}.class);
