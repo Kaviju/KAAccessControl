@@ -1,10 +1,15 @@
 package com.kaviju.accesscontrol.service;
 
-import com.kaviju.accesscontrol.annotation.*;
-import com.kaviju.accesscontrol.model.*;
+import com.kaviju.accesscontrol.annotation.AllowedForAll;
+import com.kaviju.accesscontrol.annotation.AllowedForRole;
+import com.kaviju.accesscontrol.annotation.DeniedForRole;
+import com.kaviju.accesscontrol.model.KARole;
+import com.kaviju.accesscontrol.model.KAUser;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.*;
+import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSSet;
+import com.webobjects.foundation._NSUtilities;
 
 import er.extensions.eof.ERXEC;
 
@@ -27,6 +32,13 @@ public class ComponentAccessService {
 		
 	}
 	
+	public boolean isComponentAccessibleForUser(String componentName, KAUser user) {
+		@SuppressWarnings("unchecked")
+		Class<WOComponent> componentClass = _NSUtilities.classWithName(componentName);
+		NSSet<String> roleCodesThatAllowAccess = readAllowedRoleCodesInClass(componentClass);
+		
+		return user.hasAtLeastOneOfTheseRoles(roleCodesThatAllowAccess);
+	}
 	public boolean isComponentAccessibleForUser(Class<? extends WOComponent> componentClass, KAUser user) {
 		NSSet<String> roleCodesThatAllowAccess = readAllowedRoleCodesInClass(componentClass);
 		
