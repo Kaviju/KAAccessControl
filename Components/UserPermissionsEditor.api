@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wodefinitions>
+    <wo class="UserPermissionsEditor" wocomponentcontent="false">    <binding name="user"/>
+        <validation message="'user' is a required binding.">
+            <unbound name="user"/>
+        </validation>
+    </wo>
+</wodefinitions>

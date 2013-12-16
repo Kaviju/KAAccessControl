@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="/KATestJars/objenesis-1.0.jar"/>
 	<classpathentry kind="lib" path="/KATestJars/mockito-core-1.9.5.jar"/>
 	<classpathentry kind="lib" path="/KATestJars/wounit-1.2.jar"/>
+	<classpathentry kind="con" path="WOFramework/Ajax"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

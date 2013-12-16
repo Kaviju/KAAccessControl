@@ -23,7 +23,7 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 		return allEffectiveRoles().contains(roleCode);
 	}
 	
-	private Set<String> allEffectiveRoles() {
+	public Set<String> allEffectiveRoles() {
 		if (allEffectiveRoles == null) {
 			allEffectiveRoles = new HashSet<>();
 			if (profile() != null) {
@@ -38,10 +38,34 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	public void setProfile(KAProfile value) {
 		deleteAllRolesRelationships();
 		for (KARole role : value.roles()) {
-			KAUserProfileRole newUserProfileRole = createRolesRelationship();
-			newUserProfileRole.setRole(role);
+			addRole(role);
 		}
 		super.setProfile(value);
+		clearAllEffectivesRoles();
+	}
+
+	public void addRole(KARole role) {
+		KAUserProfileRole newUserProfileRole = createRolesRelationship();
+		newUserProfileRole.setRole(role);
+		clearAllEffectivesRoles();
+	}
+	
+	public void removeRole(KARole role) {
+		for (KAUserProfileRole userProfileRole : roles()) {
+			if (userProfileRole.role().equals(role)) {
+				deleteRolesRelationship(userProfileRole);
+			}
+		}
+		clearAllEffectivesRoles();
+	}
+
+	private void clearAllEffectivesRoles() {
+		allEffectiveRoles = null;		
+	}
+
+	public void setProfileWithCode(String profileCode) {
+		KAProfile profile = KAProfile.profileWithCode(editingContext(), profileCode);
+		setProfile(profile);
 	}
 
 	public NSArray<String> itemCodesForRole(String roleCode) {
@@ -66,5 +90,16 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 			return foundRoles.objectAtIndex(0);
 		}
 		return null;
+	}
+
+	public NSArray<KAAccessListItem> listItemsForRole(KARole role) {
+		return userProfileRoleWithCode(role.code()).listItems();
+	}
+
+	public void addItemForRole(KAAccessListItem item, KARole role) {
+		userProfileRoleWithCode(role.code()).addToListItems(item);		
+	}
+	public void removeItemForRole(KAAccessListItem item, KARole role) {
+		userProfileRoleWithCode(role.code()).removeFromListItems(item);		
 	}
 }

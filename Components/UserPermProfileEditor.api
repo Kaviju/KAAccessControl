@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wodefinitions>
+    <wo class="UserPermProfileEditor" wocomponentcontent="false">    <binding name="userProfile"/>
+        <validation message="'userProfile' is a required binding.">
+            <unbound name="userProfile"/>
+        </validation>
+    </wo>
+</wodefinitions>

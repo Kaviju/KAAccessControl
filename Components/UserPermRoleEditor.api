@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wodefinitions>
+    <wo class="UserPermRoleEditor" wocomponentcontent="false">    <binding name="userProfile"/>
+        <validation message="'userProfile' is a required binding.">
+            <unbound name="userProfile"/>
+        </validation>
+        <binding name="role"/>
+        <validation message="'role' is a required binding.">
+            <unbound name="role"/>
+        </validation>
+    </wo>
+</wodefinitions>

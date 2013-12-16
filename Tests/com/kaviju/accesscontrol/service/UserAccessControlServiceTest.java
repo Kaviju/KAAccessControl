@@ -25,7 +25,7 @@ public class UserAccessControlServiceTest {
 		when(context.session()).thenReturn(session);
 		WOApplication app = new AppForTest();
 		app.setTimeOut(100);
-		serviceUnderTest = spy(new UserAccessControlService<KAUser>());
+		serviceUnderTest = spy(new UserAccessControlService<KAUser>(null));
 	}
 	
 	
