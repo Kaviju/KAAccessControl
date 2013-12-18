@@ -86,6 +86,16 @@ public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser
 		return currentUserProfile().hasRole(roleCode);
 	}
 
+	public boolean hasAtLeastOneOfTheseRoles(String ...roleCodes) {
+		for (String roleCode : roleCodes) {
+			if (hasRole(roleCode)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+	
 	public boolean hasAtLeastOneOfTheseRoles(Collection<String> rolesCodes) {
 		for (String roleCode : rolesCodes) {
 			if (hasRole(roleCode)) {
