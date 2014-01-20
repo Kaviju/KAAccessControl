@@ -4,7 +4,6 @@ import com.kaviju.accesscontrol.model.KAUser;
 import com.kaviju.accesscontrol.model.KAUserProfile;
 import com.webobjects.appserver.WOApplication;
 import com.webobjects.appserver.WOComponent;
-import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOSession;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSNotification;
@@ -16,10 +15,10 @@ import er.extensions.foundation.ERXThreadStorage;
 
 public class UserAccessControlService<U extends KAUser> {
 
-	private static final String UserAccessControlServiceThreadStorageKey = "UserAccessControlServiceThreadStorageKey";
+	protected static final String UserAccessControlServiceThreadStorageKey = "UserAccessControlServiceThreadStorageKey";
 	private U realUser;
 	private U currentUser;
-	private NSMutableArray<U> userStack = new NSMutableArray<U>();
+	private NSMutableArray<UserStackEntry<U>> userStack = new NSMutableArray<UserStackEntry<U>>();
 	private final WOSession session;
 
 	public UserAccessControlService(WOSession session) {
@@ -67,7 +66,7 @@ public class UserAccessControlService<U extends KAUser> {
 		return currentUser != null;
 	}
 
-	public WOComponent logonAsUserInContext(U user, WOContext context) {
+	public WOComponent logonAsUser(U user) {
 		if (user == null) {
 			throw new IllegalArgumentException("logonAsUser does not accept null user.");
 		}
@@ -76,37 +75,52 @@ public class UserAccessControlService<U extends KAUser> {
 		}
 		realUser = user;
 		currentUser = user;
-		return createHomePage(context);
+		return createHomePage();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public WOComponent createHomePage(WOContext context) {
+	public WOComponent createHomePage() {
 		if (session instanceof UserLogonDelegate) {
 			((UserLogonDelegate<U>)session).userDidLogon(currentUser());
 		}
-		return currentUser().createHomePage(context);
+		return currentUser().createHomePage(session.context());
 	}
 
-	public WOComponent personifyUserInContext(U user, WOContext context) {
-		userStack.add(currentUser);
+	public WOComponent personifyUser(U user) {
+		userStack.add(new UserStackEntry<U>(currentUser, session.context().page()));
 		currentUser = user;
-		return createHomePage(context);
+		return createHomePage();
 	}
 
-	public WOComponent logoutInContext(WOContext context) {
+	@SuppressWarnings("unchecked")
+	public WOComponent logout() {
 		if (userStack.count() == 0) {
-			context.session().terminate();
+			session.terminate();
 			currentUser = null;
 			realUser = null;
-			WOComponent newPage = createLoggedOutPage(context);
+			WOComponent newPage = createLoggedOutPage();
 			return newPage;			
 		}
-		currentUser = userStack.removeLastObject();
-		return createHomePage(context);
+		UserStackEntry<U> lastUserEntry = userStack.removeLastObject();
+		currentUser = lastUserEntry.user;
+		if (session instanceof UserLogonDelegate) {
+			((UserLogonDelegate<U>)session).userDidLogon(currentUser());
+		}
+		return lastUserEntry.page;
 	}
 
-	public WOComponent createLoggedOutPage(WOContext context) {
+	public WOComponent createLoggedOutPage() {
 		String logedOutPageName = ERXProperties.stringForKeyWithDefault("ka.accesscontrol.loggedOutPageName", "LoggedOut");
-		return WOApplication.application().pageWithName(logedOutPageName, context);
+		return WOApplication.application().pageWithName(logedOutPageName, session.context());
+	}
+	
+	static private class UserStackEntry<U> {
+		public final U user;
+		public final WOComponent page;
+		
+		public UserStackEntry(U user, WOComponent page) {
+			this.user = user;
+			this.page = page;
+		}
 	}
 }
