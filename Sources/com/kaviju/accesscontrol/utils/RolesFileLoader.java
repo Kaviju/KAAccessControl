@@ -21,6 +21,7 @@ public class RolesFileLoader {
 			bundle = NSBundle.bundleForName(bundleName);
 		}
 		
+		@SuppressWarnings("rawtypes")
 		NSDictionary permissionInfos = ERXDictionaryUtilities.dictionaryFromPropertyList(permissionFile, bundle);
 		if (permissionInfos == null) {
 			//System.out.println("KAAccessControl RolesFileLoader unable to load permission file " + permissionFile +".");

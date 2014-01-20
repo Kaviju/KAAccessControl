@@ -23,14 +23,8 @@ public class ComponentAccessService {
 		}
 		return sharedInstance;
 	}
-	
-	static public void setTestInstance(ComponentAccessService instance) {
-		sharedInstance = instance;
-	}
-	
-	private ComponentAccessService() {
 		
-	}
+	private ComponentAccessService() {}
 	
 	public boolean isComponentAccessibleForUser(String componentName, KAUser user) {
 		@SuppressWarnings("unchecked")

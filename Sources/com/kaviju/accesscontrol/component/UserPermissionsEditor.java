@@ -27,6 +27,7 @@ public class UserPermissionsEditor extends ERXComponent {
 		if (this.user != user) {
 			this.user = user;
 	        profiles = KAProfile.fetchProfiles(user.editingContext());
+	        setUserProfile(user.currentUserProfile());
 		}
 	}
 
@@ -47,7 +48,7 @@ public class UserPermissionsEditor extends ERXComponent {
 	}
 	
 	public KAUserProfile userProfile() {
-		return user.currentUserProfile();
+		return userProfile;
 	}
 
 	public void setUserProfile(KAUserProfile userProfile) {

@@ -9,7 +9,6 @@ import er.extensions.eof.ERXEOControlUtilities;
 
 @SuppressWarnings("serial")
 public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUserProfileRole {
-	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(KAUserProfileRole.class);
 
 	@SuppressWarnings("unchecked")
@@ -21,10 +20,15 @@ public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUs
 		String entityName = entityClass.getSimpleName();
 		NSMutableArray<T> eos = new NSMutableArray<T>();
 		
-		for (String code : itemCodes()) {
+		for (KAAccessListItem item : listItems()) {
 			@SuppressWarnings("unchecked")
-			T eo = (T)ERXEOControlUtilities.objectWithPrimaryKeyValue(editingContext(), entityName, code, null);
-			eos.addObject(eo);
+			T eo = (T)ERXEOControlUtilities.objectWithPrimaryKeyValue(editingContext(), entityName, item.code(), null);
+			if (eo == null) {
+				log.warn("Object from entity "+entityName+" not found for item with code "+item.code()+" in list "+item.list().code()+" for user "+userProfile().user());
+			}
+			else {
+				eos.addObject(eo);
+			}
 		}
 		return eos.immutableClone();
 	}

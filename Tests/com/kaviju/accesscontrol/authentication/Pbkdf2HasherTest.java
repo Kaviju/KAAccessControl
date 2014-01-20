@@ -20,7 +20,7 @@ public class Pbkdf2HasherTest {
 
 	@Test
 	public void getFromPasswordHasher() {
-		assertEquals(testHasher, PasswordHasher.hasherWithCode(testHasher.hasherCode));
+		assertEquals(testHasher, PasswordHasher.hasherWithCode(Pbkdf2Hasher.hasherCode));
 	}
 
 	@Test(expected=IllegalArgumentException.class)

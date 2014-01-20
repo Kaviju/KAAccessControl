@@ -84,14 +84,6 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 		return new NSArray<T>();
 	}
 
-	private KAUserProfileRole userProfileRoleWithCode(String roleCode) {
-		NSArray<KAUserProfileRole> foundRoles = roles(KAUserProfileRole.ROLE.dot(KARole.CODE).eq(roleCode));
-		if (foundRoles.count() > 0) {
-			return foundRoles.objectAtIndex(0);
-		}
-		return null;
-	}
-
 	public NSArray<KAAccessListItem> listItemsForRole(KARole role) {
 		return userProfileRoleWithCode(role.code()).listItems();
 	}
@@ -102,4 +94,14 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	public void removeItemForRole(KAAccessListItem item, KARole role) {
 		userProfileRoleWithCode(role.code()).removeFromListItems(item);		
 	}
+
+	private KAUserProfileRole userProfileRoleWithCode(String roleCode) {
+		for (KAUserProfileRole userProfileRole : roles()) {
+			if (userProfileRole.role().code().equals(roleCode)) {
+				return userProfileRole;
+			}
+		}
+		return null;
+	}
+
 }

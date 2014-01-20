@@ -1,6 +1,6 @@
 package com.kaviju.accesscontrol.model;
 
-import java.util.Collection;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 
@@ -87,13 +87,7 @@ public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser
 	}
 
 	public boolean hasAtLeastOneOfTheseRoles(String ...roleCodes) {
-		for (String roleCode : roleCodes) {
-			if (hasRole(roleCode)) {
-				return true;
-			}
-		}
-		return false;
-
+		return hasAtLeastOneOfTheseRoles(Arrays.asList(roleCodes));
 	}
 	
 	public boolean hasAtLeastOneOfTheseRoles(Collection<String> rolesCodes) {
@@ -122,11 +116,14 @@ public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser
 		return currentUserProfile().itemsAsObjectsForRole(entityClass, roleCode);
 	}
 	
+	static boolean externalNameSet = false;
 	@Override
 	public void willInsert() {
-		EOEntity rootEntity = ERXEOControlUtilities.rootEntity(this);
-		rootEntity.setExternalName(entity().externalName());
+		if (externalNameSet == false) {
+			EOEntity rootEntity = ERXEOControlUtilities.rootEntity(this);
+			rootEntity.setExternalName(entity().externalName());
+			externalNameSet = true;
+		}
 		super.willInsert();
 	}
-
 }

@@ -18,7 +18,7 @@ public class LatinSimpleMD5HasherTest {
 
 	@Test
 	public void getFromPasswordHasher() {
-		assertEquals(testHasher, PasswordHasher.hasherWithCode(testHasher.hasherCode));
+		assertEquals(testHasher, PasswordHasher.hasherWithCode(LatinSimpleMD5Hasher.hasherCode));
 	}
 
 	@Test(expected=IllegalArgumentException.class)
