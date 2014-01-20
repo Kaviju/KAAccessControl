@@ -1,6 +1,7 @@
 package com.kaviju.accesscontrol.model;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.*;
@@ -38,19 +39,51 @@ public class KAUserProfileTest {
 	}
 	
 	@Test
-	public void hasRoleCheckInRolesArray() {
-		KAUserProfileRole userProfileRole = userProfileUnderTest.createRolesRelationship();
-		userProfileRole.setRole(testUserRole);
+	public void profileCodeReturnTheProfileCode() {
+		userProfileUnderTest.setProfile(testAdminProfile);
+
+		String code = userProfileUnderTest.profileCode();
 		
-		assertTrue("Role in userProfile found", userProfileUnderTest.hasRole(userRoleCode));
-		assertFalse("Role not in userProfile not found", userProfileUnderTest.hasRole(adminRoleCode));
+		assertThat(code, is(adminProfileCode));
+	}
+	
+	@Test
+	public void addRoleAddItToEffectiveRolesNow() {
+		userProfileUnderTest.addRole(testAdminRole);
+		
+		assertThat(userProfileUnderTest.allEffectiveRoles().contains(testAdminRole.code()), is(true));
+	}
+
+	@Test
+	public void removeRoleRemoveItItFromEffectiveRolesNow() {
+		userProfileUnderTest.addRole(testAdminRole);
+		userProfileUnderTest.addRole(testUserRole);
+
+		userProfileUnderTest.removeRole(testAdminRole);
+
+		assertThat(userProfileUnderTest.allEffectiveRoles().contains(testAdminRole.code()), is(false));
+	}
+
+	@Test
+	public void hasRoleCheckInRolesArray() {
+		userProfileUnderTest.addRole(testUserRole);
+		
+		assertThat("Role in userProfile found", userProfileUnderTest.hasRole(userRoleCode), is(true));
+		assertThat("Role not in userProfile not found", userProfileUnderTest.hasRole(adminRoleCode), is(false));
 	}
 	
 	@Test
 	public void settingProfileShouldAddRolesFromProfile() {
 		userProfileUnderTest.setProfile(testAdminProfile);
 		
-		assertTrue(userProfileUnderTest.hasRole(adminRoleCode));
+		assertThat(userProfileUnderTest.hasRole(adminRoleCode), is(true));
+	}
+
+	@Test
+	public void settingProfileWithCodeShouldSetProfile() {
+		userProfileUnderTest.setProfileWithCode(adminProfileCode);
+		
+		assertThat(userProfileUnderTest.profile(), is(testAdminProfile));
 	}
 
 	@Test
@@ -58,26 +91,30 @@ public class KAUserProfileTest {
 		userProfileUnderTest.setProfile(testAdminProfile);
 		userProfileUnderTest.setProfile(testUserProfile);
 		
-		assertFalse("Role in previous profile not found.", userProfileUnderTest.hasRole(adminRoleCode));
-		assertTrue("Role in new profile found.", userProfileUnderTest.hasRole(userRoleCode));
+		assertThat("Role in previous profile not found.", userProfileUnderTest.hasRole(adminRoleCode), is(false));
+		assertThat("Role in new profile found.", userProfileUnderTest.hasRole(userRoleCode), is(true));
 	}
 
 	@Test
 	public void itemAsObjectsForRoleAskTheKAUserProfileRole() {
-		KAUserProfileRole userProfileRole = spy(KAUserProfileRole.createKAUserProfileRole(ec));
-		userProfileRole.setRole(testUserRole);
-		userProfileUnderTest.addToRoles(userProfileRole);
+		KAUserProfileRole userProfileRole = createUserProfileRoleMock();
 		
 		userProfileUnderTest.itemsAsObjectsForRole(KARole.class, userRoleCode);
 		
 		verify(userProfileRole).itemsAsObjects(KARole.class);
 	}
+
+	private KAUserProfileRole createUserProfileRoleMock() {
+		KAUserProfileRole userProfileRole = mock(KAUserProfileRole.class);
+		when(userProfileRole.role()).thenReturn(testUserRole);
+
+		userProfileUnderTest.addToRoles(userProfileRole);
+		return userProfileRole;
+	}
 	
 	@Test
 	public void itemCodesForRoleAskTheKAUserProfileRole() {
-		KAUserProfileRole userProfileRole = spy(KAUserProfileRole.createKAUserProfileRole(ec));
-		userProfileRole.setRole(testUserRole);
-		userProfileUnderTest.addToRoles(userProfileRole);
+		KAUserProfileRole userProfileRole = createUserProfileRoleMock();
 		
 		userProfileUnderTest.itemCodesForRole(userRoleCode);
 		
@@ -85,9 +122,44 @@ public class KAUserProfileTest {
 	}
 
 	@Test
+	public void listItemsForRoleAskTheKAUserProfileRole() {
+		KAUserProfileRole userProfileRole = createUserProfileRoleMock();
+		
+		userProfileUnderTest.listItemsForRole(testUserRole);
+		
+		verify(userProfileRole).listItems();
+	}
+
+	@Test
+	public void addItemForRoleAskTheKAUserProfileRole() {
+		KAUserProfileRole userProfileRole = createUserProfileRoleMock();
+		KAAccessListItem listItem = KAAccessListItem.createKAAccessListItem(ec);
+		
+		userProfileUnderTest.addItemForRole(listItem, testUserRole);
+		
+		verify(userProfileRole).addToListItems(listItem);
+	}
+	
+	@Test
+	public void removeItemForRoleAskTheKAUserProfileRole() {
+		KAUserProfileRole userProfileRole = createUserProfileRoleMock();
+		KAAccessListItem listItem = KAAccessListItem.createKAAccessListItem(ec);
+		
+		userProfileUnderTest.removeItemForRole(listItem, testUserRole);
+		
+		verify(userProfileRole).removeFromListItems(listItem);
+	}
+
+	
+	@Test
 	public void itemCodesForAbsentRoleReturnEmptyArray() {		
 		NSArray<String> items = userProfileUnderTest.itemCodesForRole(userRoleCode);
 		
-		assertEquals(new NSArray<String>(), items);
+		assertThat(new NSArray<String>(), is(items));
+	}
+
+	@Test
+	public void toStringReturnString() {
+		assertThat(userProfileUnderTest.toString(), notNullValue());
 	}
 }

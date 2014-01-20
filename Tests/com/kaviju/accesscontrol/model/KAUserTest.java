@@ -1,15 +1,16 @@
 package com.kaviju.accesscontrol.model;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import com.wounit.annotations.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
+import java.util.*;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.kaviju.accesscontrol.authentication.*;
@@ -173,6 +174,19 @@ public class KAUserTest {
 		
 		verify(testUser).hasRole(roleCode2);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Test
+	public void hasAtLeastOneOfTheseRolesVarargReturnTrueIfUserHaveOneOfTheRoles() {
+		when(testUser.hasRole(any(String.class))).thenReturn(false);
+		when(testUser.hasRole(roleCode2)).thenReturn(true);
+		
+		assertTrue(testUser.hasAtLeastOneOfTheseRoles(roleCode1, roleCode2));
+		
+		ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
+		verify(testUser).hasAtLeastOneOfTheseRoles(argument.capture());
+		assertThat(argument.getValue(), is(Arrays.asList(new String[]{roleCode1, roleCode2})));
+	}
 
 	@Test
 	public void hasAllTheseRolesCheckForAllRolesCodeBeforeReturningTrue() {
@@ -224,4 +238,5 @@ public class KAUserTest {
 	public void toStringReturnaString() {
 		assertNotNull(testUser.toString());
 	}
+	
 }

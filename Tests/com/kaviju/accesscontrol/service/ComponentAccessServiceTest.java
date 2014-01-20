@@ -121,6 +121,17 @@ public class ComponentAccessServiceTest {
 		verify(testUser).hasAtLeastOneOfTheseRoles(allRolesCodesSet);
 	}
 
+	@Test
+	public void isComponentNameAccessibleForUserCallKAUSer_hasAtLeastOneOfTheseRolesWithRolesCodes() {
+		KAUser testUser = mock(KAUser.class);
+
+		when(testUser.hasAtLeastOneOfTheseRoles(allRolesCodesSet)).thenReturn(true);
+		
+		assertTrue(serviceUnderTest.isComponentAccessibleForUser(TestComponentWithAllowedForAllAnnotation.class.getName(), testUser));
+		verify(serviceUnderTest).readAllowedRoleCodesInClass(TestComponentWithAllowedForAllAnnotation.class);
+		verify(testUser).hasAtLeastOneOfTheseRoles(allRolesCodesSet);
+	}
+
 	@SuppressWarnings({"serial", "deprecation" })
 	public static @AllowedForAll class TestComponentWithAllowedForAllAnnotation extends WOComponent {}
 	@SuppressWarnings({ "deprecation", "serial" })

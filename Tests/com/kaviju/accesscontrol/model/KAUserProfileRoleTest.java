@@ -1,5 +1,6 @@
 package com.kaviju.accesscontrol.model;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 
 import org.junit.*;
@@ -13,9 +14,7 @@ public class KAUserProfileRoleTest {
 	static private final String territory1Code = "T1";
 	static private final String territory2Code = "T2";
 
-	@Rule
-    public MockEditingContext ec = new MockEditingContext("KAAccessControl");
-
+	@Rule public MockEditingContext ec = new MockEditingContext("KAAccessControl");
 	
 	@Dummy private KAProfile testProfile;
 	@Dummy private KAUserProfile testUserProfile;
@@ -76,5 +75,12 @@ public class KAUserProfileRoleTest {
 		userProfileRoleUnderTest.setRole(testAdminRole);
 		
 		assertFalse(userProfileRoleUnderTest.isFromProfile());
+	}
+
+	@Test
+	public void toStringReturnString() {
+		userProfileRoleUnderTest.setRole(testAdminRole);
+
+		assertThat(userProfileRoleUnderTest.toString(), notNullValue());
 	}
 }
