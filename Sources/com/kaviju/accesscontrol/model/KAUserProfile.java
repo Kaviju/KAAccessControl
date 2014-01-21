@@ -51,7 +51,7 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	}
 	
 	public void removeRole(KARole role) {
-		for (KAUserProfileRole userProfileRole : roles()) {
+		for (KAUserProfileRole userProfileRole : roles().immutableClone()) {
 			if (userProfileRole.role().equals(role)) {
 				deleteRolesRelationship(userProfileRole);
 			}
