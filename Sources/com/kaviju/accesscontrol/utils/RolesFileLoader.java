@@ -46,7 +46,8 @@ public class RolesFileLoader {
 		for (String listCode : lists) {			
 			KAAccessList listObject = listDict.objectForKey(listCode);
 			if (listObject == null) {
-				listObject = KAAccessList.createKAAccessList(ec, listCode);
+				listObject = KAAccessList.createKAAccessList(ec);
+				listObject.setCode(listCode);
 				listDict.put(listCode, listObject);
 			}
 		}
@@ -68,7 +69,9 @@ public class RolesFileLoader {
 			
 			KARoleGroup groupObject = roleGroupsDict.objectForKey(groupCode);
 			if (groupObject == null) {
-				groupObject = KARoleGroup.createKARoleGroup(ec, groupCode, order);
+				groupObject = KARoleGroup.createKARoleGroup(ec);
+				groupObject.setCode(groupCode);
+				groupObject.setDisplayOrder(order);
 				roleGroupsDict.put(groupCode, groupObject);
 			}
 			else {
@@ -86,7 +89,12 @@ public class RolesFileLoader {
 				KAAccessList listObject = listDict.objectForKey(listCode);
 				
 				if (roleObject == null) {
-					roleObject = KARole.createKARole(ec,allowsMultipleItems, roleCode, subOrder, inProfileOnly, groupObject);
+					roleObject = KARole.createKARole(ec);
+					roleObject.setAllowsMultipleItems(allowsMultipleItems);
+					roleObject.setDisplayOrder(subOrder);
+					roleObject.setInProfileOnly(inProfileOnly);
+					roleObject.setGroup(groupObject);
+
 					roleObject.setList(listObject);
 					rolesDict.put(roleCode, roleObject);
 				}
@@ -114,7 +122,8 @@ public class RolesFileLoader {
 			
 			KAProfile profileObject = profilesDict.objectForKey(profileCode);
 			if (profileObject == null) {
-				profileObject = KAProfile.createKAProfile(ec, profileCode);
+				profileObject = KAProfile.createKAProfile(ec);
+				profileObject.setCode(profileCode);
 				profilesDict.put(profileCode, profileObject);
 			}
 			

@@ -141,13 +141,6 @@ public abstract class _KAUser extends  ERXGenericRecord {
   }
 
 
-public static com.kaviju.accesscontrol.model.KAUser createKAUser(EOEditingContext editingContext, String passwordHash
-) {
-  com.kaviju.accesscontrol.model.KAUser eo = (com.kaviju.accesscontrol.model.KAUser) EOUtilities.createAndInsertInstance(editingContext, _KAUser.ENTITY_NAME);  
-		eo.setPasswordHash(passwordHash);
-  return eo;
-}
-
 public static com.kaviju.accesscontrol.model.KAUser createKAUser(EOEditingContext editingContext) {
     com.kaviju.accesscontrol.model.KAUser eo = (com.kaviju.accesscontrol.model.KAUser) EOUtilities.createAndInsertInstance(editingContext, _KAUser.ENTITY_NAME);    return eo;
   }

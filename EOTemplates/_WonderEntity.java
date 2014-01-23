@@ -227,42 +227,6 @@ public abstract class ${entity.prefixClassNameWithoutPackage} extends #if ($enti
 #end
 #end
 
-public #if (!$entity.partialEntitySet)static #end${entity.classNameWithOptionalPackage}#if (!$entity.partialEntitySet) create#else init#end${entity.name}(EOEditingContext editingContext#foreach ($attribute in $entity.sortedClassAttributes)
-#if (!$attribute.allowsNull)
-#set ($restrictingQualifierKey = 'false')
-#foreach ($qualifierKey in $entity.restrictingQualifierKeys)#if ($attribute.name == $qualifierKey)#set ($restrictingQualifierKey = 'true')#end#end
-#if ($restrictingQualifierKey == 'false')
-#if ($attribute.userInfo.ERXConstantClassName), ${attribute.userInfo.ERXConstantClassName}#else, ${attribute.javaClassName}#end ${attribute.name}
-#end
-#end
-#end
-#foreach ($relationship in $entity.sortedClassToOneRelationships)
-#if ($relationship.mandatory && !($relationship.ownsDestination && $relationship.propagatesPrimaryKey)), ${relationship.actualDestination.classNameWithDefault} ${relationship.name}#end
-#end
-) {
-  ${entity.classNameWithOptionalPackage} eo = (${entity.classNameWithOptionalPackage})#if ($entity.partialEntitySet)this;#else EOUtilities.createAndInsertInstance(editingContext, ${entity.prefixClassNameWithoutPackage}.ENTITY_NAME);#end
-  
-#foreach ($attribute in $entity.sortedClassAttributes)
-#if (!$attribute.allowsNull)
-#set ($restrictingQualifierKey = 'false')
-#foreach ($qualifierKey in $entity.restrictingQualifierKeys) 
-#if ($attribute.name == $qualifierKey)
-#set ($restrictingQualifierKey = 'true')
-#end
-#end
-#if ($restrictingQualifierKey == 'false')
-		eo.set${attribute.capitalizedName}(${attribute.name});
-#end
-#end
-#end
-#foreach ($relationship in $entity.sortedClassToOneRelationships)
-#if ($relationship.mandatory && !($relationship.ownsDestination && $relationship.propagatesPrimaryKey))
-  eo.set${relationship.capitalizedName}Relationship(${relationship.name});
-#end
-#end
-  return eo;
-}
-
 public #if (!$entity.partialEntitySet)static #end${entity.classNameWithOptionalPackage}#if (!$entity.partialEntitySet) create#else init#end${entity.name}(EOEditingContext editingContext) {
     ${entity.classNameWithOptionalPackage} eo = (${entity.classNameWithOptionalPackage})#if ($entity.partialEntitySet)this;#else EOUtilities.createAndInsertInstance(editingContext, ${entity.prefixClassNameWithoutPackage}.ENTITY_NAME);#end
     return eo;

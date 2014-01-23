@@ -23,6 +23,8 @@ public abstract class _KARole extends  ERXGenericRecord {
   // Relationship Keys
   public static final ERXKey<com.kaviju.accesscontrol.model.KARoleGroup> GROUP = new ERXKey<com.kaviju.accesscontrol.model.KARoleGroup>("group");
   public static final ERXKey<com.kaviju.accesscontrol.model.KAAccessList> LIST = new ERXKey<com.kaviju.accesscontrol.model.KAAccessList>("list");
+  public static final ERXKey<com.kaviju.accesscontrol.model.KAProfile> PROFILES = new ERXKey<com.kaviju.accesscontrol.model.KAProfile>("profiles");
+  public static final ERXKey<com.kaviju.accesscontrol.model.KAUserProfileRole> USER_PROFILE_ROLES = new ERXKey<com.kaviju.accesscontrol.model.KAUserProfileRole>("userProfileRoles");
 
   // Attributes
   public static final String ALLOWS_MULTIPLE_ITEMS_KEY = "allowsMultipleItems";
@@ -32,6 +34,8 @@ public abstract class _KARole extends  ERXGenericRecord {
   // Relationships
   public static final String GROUP_KEY = "group";
   public static final String LIST_KEY = "list";
+  public static final String PROFILES_KEY = "profiles";
+  public static final String USER_PROFILE_ROLES_KEY = "userProfileRoles";
 
   private static Logger LOG = Logger.getLogger(_KARole.class);
 
@@ -137,20 +141,172 @@ public abstract class _KARole extends  ERXGenericRecord {
     }
   }
   
+  public NSArray<com.kaviju.accesscontrol.model.KAProfile> profiles() {
+    return (NSArray<com.kaviju.accesscontrol.model.KAProfile>)storedValueForKey(_KARole.PROFILES_KEY);
+  }
 
-public static com.kaviju.accesscontrol.model.KARole createKARole(EOEditingContext editingContext, Boolean allowsMultipleItems
-, String code
-, Integer displayOrder
-, Boolean inProfileOnly
-, com.kaviju.accesscontrol.model.KARoleGroup group) {
-  com.kaviju.accesscontrol.model.KARole eo = (com.kaviju.accesscontrol.model.KARole) EOUtilities.createAndInsertInstance(editingContext, _KARole.ENTITY_NAME);  
-		eo.setAllowsMultipleItems(allowsMultipleItems);
-		eo.setCode(code);
-		eo.setDisplayOrder(displayOrder);
-		eo.setInProfileOnly(inProfileOnly);
-  eo.setGroupRelationship(group);
-  return eo;
-}
+  public NSArray<com.kaviju.accesscontrol.model.KAProfile> profiles(EOQualifier qualifier) {
+    return profiles(qualifier, null);
+  }
+
+  public NSArray<com.kaviju.accesscontrol.model.KAProfile> profiles(EOQualifier qualifier, NSArray<EOSortOrdering> sortOrderings) {
+    NSArray<com.kaviju.accesscontrol.model.KAProfile> results;
+      results = profiles();
+      if (qualifier != null) {
+        results = (NSArray<com.kaviju.accesscontrol.model.KAProfile>)EOQualifier.filteredArrayWithQualifier(results, qualifier);
+      }
+      if (sortOrderings != null) {
+        results = (NSArray<com.kaviju.accesscontrol.model.KAProfile>)EOSortOrdering.sortedArrayUsingKeyOrderArray(results, sortOrderings);
+      }
+    return results;
+  }
+  
+  public void addToProfiles(com.kaviju.accesscontrol.model.KAProfile object) {
+    includeObjectIntoPropertyWithKey(object, _KARole.PROFILES_KEY);
+  }
+
+  public void removeFromProfiles(com.kaviju.accesscontrol.model.KAProfile object) {
+    excludeObjectFromPropertyWithKey(object, _KARole.PROFILES_KEY);
+  }
+
+  public void addToProfilesRelationship(com.kaviju.accesscontrol.model.KAProfile object) {
+    if (_KARole.LOG.isDebugEnabled()) {
+      _KARole.LOG.debug("adding " + object + " to profiles relationship");
+    }
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+    	addToProfiles(object);
+    }
+    else {
+    	addObjectToBothSidesOfRelationshipWithKey(object, _KARole.PROFILES_KEY);
+    }
+  }
+
+  public void removeFromProfilesRelationship(com.kaviju.accesscontrol.model.KAProfile object) {
+    if (_KARole.LOG.isDebugEnabled()) {
+      _KARole.LOG.debug("removing " + object + " from profiles relationship");
+    }
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+    	removeFromProfiles(object);
+    }
+    else {
+    	removeObjectFromBothSidesOfRelationshipWithKey(object, _KARole.PROFILES_KEY);
+    }
+  }
+
+  public com.kaviju.accesscontrol.model.KAProfile createProfilesRelationship() {
+    EOClassDescription eoClassDesc = EOClassDescription.classDescriptionForEntityName( com.kaviju.accesscontrol.model.KAProfile.ENTITY_NAME );
+    EOEnterpriseObject eo = eoClassDesc.createInstanceWithEditingContext(editingContext(), null);
+    editingContext().insertObject(eo);
+    addObjectToBothSidesOfRelationshipWithKey(eo, _KARole.PROFILES_KEY);
+    return (com.kaviju.accesscontrol.model.KAProfile) eo;
+  }
+
+  public void deleteProfilesRelationship(com.kaviju.accesscontrol.model.KAProfile object) {
+    removeObjectFromBothSidesOfRelationshipWithKey(object, _KARole.PROFILES_KEY);
+    editingContext().deleteObject(object);
+  }
+
+  public void deleteAllProfilesRelationships() {
+    Enumeration<com.kaviju.accesscontrol.model.KAProfile> objects = profiles().immutableClone().objectEnumerator();
+    while (objects.hasMoreElements()) {
+      deleteProfilesRelationship(objects.nextElement());
+    }
+  }
+
+  public NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> userProfileRoles() {
+    return (NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole>)storedValueForKey(_KARole.USER_PROFILE_ROLES_KEY);
+  }
+
+  public NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> userProfileRoles(EOQualifier qualifier) {
+    return userProfileRoles(qualifier, null, false);
+  }
+
+  public NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> userProfileRoles(EOQualifier qualifier, boolean fetch) {
+    return userProfileRoles(qualifier, null, fetch);
+  }
+
+  public NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> userProfileRoles(EOQualifier qualifier, NSArray<EOSortOrdering> sortOrderings, boolean fetch) {
+    NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> results;
+    if (fetch) {
+      EOQualifier fullQualifier;
+      EOQualifier inverseQualifier = new EOKeyValueQualifier(com.kaviju.accesscontrol.model.KAUserProfileRole.ROLE_KEY, EOQualifier.QualifierOperatorEqual, this);
+    	
+      if (qualifier == null) {
+        fullQualifier = inverseQualifier;
+      }
+      else {
+        NSMutableArray<EOQualifier> qualifiers = new NSMutableArray<EOQualifier>();
+        qualifiers.addObject(qualifier);
+        qualifiers.addObject(inverseQualifier);
+        fullQualifier = new EOAndQualifier(qualifiers);
+      }
+
+      results = com.kaviju.accesscontrol.model.KAUserProfileRole.fetchKAUserProfileRoles(editingContext(), fullQualifier, sortOrderings);
+    }
+    else {
+      results = userProfileRoles();
+      if (qualifier != null) {
+        results = (NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole>)EOQualifier.filteredArrayWithQualifier(results, qualifier);
+      }
+      if (sortOrderings != null) {
+        results = (NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole>)EOSortOrdering.sortedArrayUsingKeyOrderArray(results, sortOrderings);
+      }
+    }
+    return results;
+  }
+  
+  public void addToUserProfileRoles(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    includeObjectIntoPropertyWithKey(object, _KARole.USER_PROFILE_ROLES_KEY);
+  }
+
+  public void removeFromUserProfileRoles(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    excludeObjectFromPropertyWithKey(object, _KARole.USER_PROFILE_ROLES_KEY);
+  }
+
+  public void addToUserProfileRolesRelationship(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    if (_KARole.LOG.isDebugEnabled()) {
+      _KARole.LOG.debug("adding " + object + " to userProfileRoles relationship");
+    }
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+    	addToUserProfileRoles(object);
+    }
+    else {
+    	addObjectToBothSidesOfRelationshipWithKey(object, _KARole.USER_PROFILE_ROLES_KEY);
+    }
+  }
+
+  public void removeFromUserProfileRolesRelationship(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    if (_KARole.LOG.isDebugEnabled()) {
+      _KARole.LOG.debug("removing " + object + " from userProfileRoles relationship");
+    }
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+    	removeFromUserProfileRoles(object);
+    }
+    else {
+    	removeObjectFromBothSidesOfRelationshipWithKey(object, _KARole.USER_PROFILE_ROLES_KEY);
+    }
+  }
+
+  public com.kaviju.accesscontrol.model.KAUserProfileRole createUserProfileRolesRelationship() {
+    EOClassDescription eoClassDesc = EOClassDescription.classDescriptionForEntityName( com.kaviju.accesscontrol.model.KAUserProfileRole.ENTITY_NAME );
+    EOEnterpriseObject eo = eoClassDesc.createInstanceWithEditingContext(editingContext(), null);
+    editingContext().insertObject(eo);
+    addObjectToBothSidesOfRelationshipWithKey(eo, _KARole.USER_PROFILE_ROLES_KEY);
+    return (com.kaviju.accesscontrol.model.KAUserProfileRole) eo;
+  }
+
+  public void deleteUserProfileRolesRelationship(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    removeObjectFromBothSidesOfRelationshipWithKey(object, _KARole.USER_PROFILE_ROLES_KEY);
+    editingContext().deleteObject(object);
+  }
+
+  public void deleteAllUserProfileRolesRelationships() {
+    Enumeration<com.kaviju.accesscontrol.model.KAUserProfileRole> objects = userProfileRoles().immutableClone().objectEnumerator();
+    while (objects.hasMoreElements()) {
+      deleteUserProfileRolesRelationship(objects.nextElement());
+    }
+  }
+
 
 public static com.kaviju.accesscontrol.model.KARole createKARole(EOEditingContext editingContext) {
     com.kaviju.accesscontrol.model.KARole eo = (com.kaviju.accesscontrol.model.KARole) EOUtilities.createAndInsertInstance(editingContext, _KARole.ENTITY_NAME);    return eo;

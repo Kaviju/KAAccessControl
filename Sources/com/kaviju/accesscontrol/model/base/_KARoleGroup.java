@@ -154,15 +154,6 @@ public abstract class _KARoleGroup extends  ERXGenericRecord {
   }
 
 
-public static com.kaviju.accesscontrol.model.KARoleGroup createKARoleGroup(EOEditingContext editingContext, String code
-, Integer displayOrder
-) {
-  com.kaviju.accesscontrol.model.KARoleGroup eo = (com.kaviju.accesscontrol.model.KARoleGroup) EOUtilities.createAndInsertInstance(editingContext, _KARoleGroup.ENTITY_NAME);  
-		eo.setCode(code);
-		eo.setDisplayOrder(displayOrder);
-  return eo;
-}
-
 public static com.kaviju.accesscontrol.model.KARoleGroup createKARoleGroup(EOEditingContext editingContext) {
     com.kaviju.accesscontrol.model.KARoleGroup eo = (com.kaviju.accesscontrol.model.KARoleGroup) EOUtilities.createAndInsertInstance(editingContext, _KARoleGroup.ENTITY_NAME);    return eo;
   }

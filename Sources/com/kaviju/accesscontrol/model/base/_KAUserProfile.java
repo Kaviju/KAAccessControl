@@ -195,15 +195,6 @@ public abstract class _KAUserProfile extends  ERXGenericRecord {
   }
 
 
-public static com.kaviju.accesscontrol.model.KAUserProfile createKAUserProfile(EOEditingContext editingContext, Boolean isDefaultProfile
-, com.kaviju.accesscontrol.model.KAProfile profile, com.kaviju.accesscontrol.model.KAUser user) {
-  com.kaviju.accesscontrol.model.KAUserProfile eo = (com.kaviju.accesscontrol.model.KAUserProfile) EOUtilities.createAndInsertInstance(editingContext, _KAUserProfile.ENTITY_NAME);  
-		eo.setIsDefaultProfile(isDefaultProfile);
-  eo.setProfileRelationship(profile);
-  eo.setUserRelationship(user);
-  return eo;
-}
-
 public static com.kaviju.accesscontrol.model.KAUserProfile createKAUserProfile(EOEditingContext editingContext) {
     com.kaviju.accesscontrol.model.KAUserProfile eo = (com.kaviju.accesscontrol.model.KAUserProfile) EOUtilities.createAndInsertInstance(editingContext, _KAUserProfile.ENTITY_NAME);    return eo;
   }

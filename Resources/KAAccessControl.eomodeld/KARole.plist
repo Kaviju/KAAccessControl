@@ -36,7 +36,16 @@
         roleGroupID
     ); 
     className = "com.kaviju.accesscontrol.model.KARole"; 
-    classProperties = (allowsMultipleItems, code, displayOrder, group, inProfileOnly, list); 
+    classProperties = (
+        allowsMultipleItems, 
+        code, 
+        displayOrder, 
+        group, 
+        inProfileOnly, 
+        list, 
+        profiles, 
+        userProfileRoles
+    ); 
     entityIndexes = (
         {
             attributes = (code); 
@@ -73,6 +82,15 @@
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = roleID; sourceAttribute = id; }); 
             name = profileRoles; 
+        }, 
+        {definition = "profileRoles.profile"; name = profiles; }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = KAUserProfileRole; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = roleID; sourceAttribute = id; }); 
+            name = userProfileRoles; 
         }
     ); 
 }

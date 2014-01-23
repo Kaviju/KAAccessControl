@@ -193,13 +193,6 @@ public abstract class _KAProfile extends  ERXGenericRecord {
   }
 
 
-public static com.kaviju.accesscontrol.model.KAProfile createKAProfile(EOEditingContext editingContext, String code
-) {
-  com.kaviju.accesscontrol.model.KAProfile eo = (com.kaviju.accesscontrol.model.KAProfile) EOUtilities.createAndInsertInstance(editingContext, _KAProfile.ENTITY_NAME);  
-		eo.setCode(code);
-  return eo;
-}
-
 public static com.kaviju.accesscontrol.model.KAProfile createKAProfile(EOEditingContext editingContext) {
     com.kaviju.accesscontrol.model.KAProfile eo = (com.kaviju.accesscontrol.model.KAProfile) EOUtilities.createAndInsertInstance(editingContext, _KAProfile.ENTITY_NAME);    return eo;
   }
