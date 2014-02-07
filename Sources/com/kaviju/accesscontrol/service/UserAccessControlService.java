@@ -42,6 +42,11 @@ public class UserAccessControlService<U extends KAUser> {
     	return (UserAccessControlService<T>) ERXThreadStorage.valueForKey(UserAccessControlServiceThreadStorageKey);
     }
 
+	@SuppressWarnings("unchecked")
+	static public UserAccessControlService<? extends KAUser> currentService() {
+    	return (UserAccessControlService<? extends KAUser>) ERXThreadStorage.valueForKey(UserAccessControlServiceThreadStorageKey);
+    }
+
 	static public <T extends KAUser> T currentUser(Class<T> userClass) {
 		UserAccessControlService<T> service = currentService(userClass);
 		if (service == null) {
@@ -60,6 +65,13 @@ public class UserAccessControlService<U extends KAUser> {
 
 	public KAUserProfile currentUserProfile() {
 		return currentUser.currentUserProfile();
+	}
+
+	public boolean currentUserHasRole(String roleCode) {
+		if (currentUser == null || currentUserProfile() == null) {
+			return false;
+		}
+		return currentUserProfile().hasRole(roleCode);
 	}
 
 	public boolean isUserLoggedIn() {
