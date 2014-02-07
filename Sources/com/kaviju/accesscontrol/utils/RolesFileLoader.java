@@ -90,6 +90,7 @@ public class RolesFileLoader {
 				
 				if (roleObject == null) {
 					roleObject = KARole.createKARole(ec);
+					roleObject.setCode(roleCode);
 					roleObject.setAllowsMultipleItems(allowsMultipleItems);
 					roleObject.setDisplayOrder(subOrder);
 					roleObject.setInProfileOnly(inProfileOnly);
