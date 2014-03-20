@@ -29,6 +29,9 @@ public class ComponentAccessService {
 	public boolean isComponentAccessibleForUser(String componentName, KAUser user) {
 		@SuppressWarnings("unchecked")
 		Class<WOComponent> componentClass = _NSUtilities.classWithName(componentName);
+		if (componentClass == null) {
+			throw new IllegalArgumentException("There is no component with name: "+componentName+"");
+		}
 		NSSet<String> roleCodesThatAllowAccess = readAllowedRoleCodesInClass(componentClass);
 		
 		return user.hasAtLeastOneOfTheseRoles(roleCodesThatAllowAccess);
