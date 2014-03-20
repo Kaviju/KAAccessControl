@@ -1,0 +1,30 @@
+{
+    EOModelVersion = "2.1"; 
+    adaptorName = JDBC; 
+    connectionDictionary = {URL = "jdbc:FrontBase://127.0.0.1/DatabaseName"; }; 
+    entities = (
+        {
+            className = "com.kaviju.accesscontrol.utils.ListItemAutoUpdaterTest$KARoleWithAnnotation"; 
+            name = KARoleWithAnnotation; 
+            parent = KARole; 
+        }, 
+        {
+            className = "com.kaviju.accesscontrol.model.KAUserTest$KAUserForTest"; 
+            name = KAUserForTest; 
+            parent = KAUser; 
+        }
+    ); 
+    internalInfo = {"_deletedEntityNamesInObjectStore" = (KAUserForTest2); }; 
+    userInfo = {
+        "_EntityModeler" = {
+            activeDatabaseConfigName = Default; 
+            databaseConfigs = {
+                Default = {
+                    adaptorName = JDBC; 
+                    connectionDictionary = {URL = "jdbc:FrontBase://127.0.0.1/DatabaseName"; }; 
+                    prototypeEntityName = EOJDBCFrontBasePrototypes; 
+                }; 
+            }; 
+        }; 
+    }; 
+}

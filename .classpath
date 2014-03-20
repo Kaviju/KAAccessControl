@@ -17,7 +17,8 @@
 	<classpathentry kind="lib" path="/KATestJars/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="lib" path="/KATestJars/objenesis-1.0.jar"/>
 	<classpathentry kind="lib" path="/KATestJars/mockito-core-1.9.5.jar"/>
-	<classpathentry kind="lib" path="/KATestJars/wounit-1.2.jar"/>
+	<classpathentry kind="lib" path="/KATestJars/wounit.jar"/>
 	<classpathentry kind="con" path="WOFramework/Ajax"/>
+	<classpathentry kind="con" path="WOFramework/FrontBasePlugIn"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

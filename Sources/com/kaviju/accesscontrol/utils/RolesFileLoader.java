@@ -94,13 +94,13 @@ public class RolesFileLoader {
 					roleObject.setAllowsMultipleItems(allowsMultipleItems);
 					roleObject.setDisplayOrder(subOrder);
 					roleObject.setInProfileOnly(inProfileOnly);
-					roleObject.setGroup(groupObject);
+					roleObject.setGroupRelationship(groupObject);
 
 					roleObject.setList(listObject);
 					rolesDict.put(roleCode, roleObject);
 				}
 				else {
-					roleObject.setGroup(groupObject);
+					roleObject.setGroupRelationship(groupObject);
 					roleObject.setList(listObject);
 					roleObject.setDisplayOrder(subOrder);
 					roleObject.setInProfileOnly(inProfileOnly);

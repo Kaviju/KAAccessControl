@@ -1,0 +1,30 @@
+{
+    attributes = (
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {
+            allowsNull = Y; 
+            columnName = passwordHash; 
+            name = passwordHash; 
+            prototypeName = varchar100; 
+            width = 200; 
+        }
+    ); 
+    attributesUsedForLocking = (id, passwordHash); 
+    className = "com.kaviju.accesscontrol.model.KAUserTest$KAUserForTest"; 
+    classProperties = (passwordHash, profiles); 
+    externalName = KAUserForTest; 
+    fetchSpecificationDictionary = {}; 
+    name = KAUserForTest; 
+    parent = KAUser; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = KAUserProfile; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = userID; sourceAttribute = id; }); 
+            name = profiles; 
+        }
+    ); 
+}

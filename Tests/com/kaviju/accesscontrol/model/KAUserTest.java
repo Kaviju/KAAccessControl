@@ -2,7 +2,6 @@ package com.kaviju.accesscontrol.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import com.wounit.annotations.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -15,7 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.kaviju.accesscontrol.authentication.*;
 import com.webobjects.appserver.*;
-import com.wounit.annotations.UnderTest;
+import com.wounit.annotations.*;
 import com.wounit.rules.MockEditingContext;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -31,7 +30,7 @@ public class KAUserTest {
 	static private Pbkdf2Hasher testHasher;
 
 	@Rule
-    public MockEditingContext ec = new MockEditingContext("KAAccessControl");
+    public MockEditingContext ec = new MockEditingContext("KAAccessControl", "ModelForTest");
 
 	@BeforeClass
 	static public void initPasswordHasher() {
@@ -48,7 +47,7 @@ public class KAUserTest {
 	@Spy @UnderTest private KAUserForTest testUser;
 
 	@SuppressWarnings("serial")
-	static class KAUserForTest extends KAUser {
+	static public class KAUserForTest extends KAUser {
 		@Override
 		public WOComponent createHomePage(WOContext context) {
 			return mock(WOComponent.class);
