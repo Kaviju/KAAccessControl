@@ -21,6 +21,11 @@ public class UserAccessControlService<U extends KAUser> {
 	private NSMutableArray<UserStackEntry<U>> userStack = new NSMutableArray<UserStackEntry<U>>();
 	private final WOSession session;
 
+	private UserAccessControlService() {
+		this.session = null;
+    	ERXThreadStorage.takeValueForKey(this, UserAccessControlServiceThreadStorageKey);
+	}
+
 	public UserAccessControlService(WOSession session) {
 		this.session = session;
 		registerForNotification();
@@ -43,8 +48,13 @@ public class UserAccessControlService<U extends KAUser> {
     }
 
 	@SuppressWarnings("unchecked")
-	static public UserAccessControlService<? extends KAUser> currentService() {
-    	return (UserAccessControlService<? extends KAUser>) ERXThreadStorage.valueForKey(UserAccessControlServiceThreadStorageKey);
+	static public <U extends KAUser> UserAccessControlService<U> currentService() {
+    	UserAccessControlService<U> service;
+    	service = (UserAccessControlService<U>) ERXThreadStorage.valueForKey(UserAccessControlServiceThreadStorageKey);
+    	if (service == null) {
+    		service = new UserAccessControlService<U>();
+    	}
+    	return service;
     }
 
 	static public <T extends KAUser> T currentUser(Class<T> userClass) {
