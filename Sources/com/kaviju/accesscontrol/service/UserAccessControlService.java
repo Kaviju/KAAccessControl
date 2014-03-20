@@ -5,10 +5,12 @@ import com.kaviju.accesscontrol.model.KAUserProfile;
 import com.webobjects.appserver.WOApplication;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.appserver.WOSession;
+import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSMutableArray;
 import com.webobjects.foundation.NSNotification;
 import com.webobjects.foundation.NSNotificationCenter;
 
+import er.extensions.eof.*;
 import er.extensions.foundation.ERXProperties;
 import er.extensions.foundation.ERXSelectorUtilities;
 import er.extensions.foundation.ERXThreadStorage;
@@ -110,7 +112,8 @@ public class UserAccessControlService<U extends KAUser> {
 
 	public WOComponent personifyUser(U user) {
 		userStack.add(new UserStackEntry<U>(currentUser, session.context().page()));
-		currentUser = user;
+		EOEditingContext ec = ERXEC.newEditingContext();
+		currentUser = ERXEOControlUtilities.localInstanceOfObject(ec, user); // Make sure we have a fresh and clean user.
 		return createHomePage();
 	}
 
