@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.kaviju.accesscontrol.annotation.*;
-import com.kaviju.accesscontrol.model.KAUser;
+import com.kaviju.accesscontrol.model.*;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.foundation.NSSet;
 import com.wounit.rules.MockEditingContext;
@@ -111,25 +111,25 @@ public class ComponentAccessServiceTest {
 	}
 
 	@Test
-	public void isComponentAccessibleForUserCallKAUSer_hasAtLeastOneOfTheseRolesWithRolesCodes() {
-		KAUser testUser = mock(KAUser.class);
+	public void isComponentAccessibleForUserProfileCallKAUSer_hasAtLeastOneOfTheseRolesWithRolesCodes() {
+		KAUserProfile testUserProfile = mock(KAUserProfile.class);
 
-		when(testUser.hasAtLeastOneOfTheseRoles(allRolesCodesSet)).thenReturn(true);
+		when(testUserProfile.hasAtLeastOneOfTheseRoles(allRolesCodesSet)).thenReturn(true);
 		
-		assertTrue(serviceUnderTest.isComponentAccessibleForUser(TestComponentWithAllowedForAllAnnotation.class, testUser));
+		assertTrue(serviceUnderTest.isComponentAccessibleForUserProfile(TestComponentWithAllowedForAllAnnotation.class, testUserProfile));
 		verify(serviceUnderTest).readAllowedRoleCodesInClass(TestComponentWithAllowedForAllAnnotation.class);
-		verify(testUser).hasAtLeastOneOfTheseRoles(allRolesCodesSet);
+		verify(testUserProfile).hasAtLeastOneOfTheseRoles(allRolesCodesSet);
 	}
 
 	@Test
-	public void isComponentNameAccessibleForUserCallKAUSer_hasAtLeastOneOfTheseRolesWithRolesCodes() {
-		KAUser testUser = mock(KAUser.class);
+	public void isComponentNameAccessibleForUserProfileCallKAUSer_hasAtLeastOneOfTheseRolesWithRolesCodes() {
+		KAUserProfile testUserProfile = mock(KAUserProfile.class);
 
-		when(testUser.hasAtLeastOneOfTheseRoles(allRolesCodesSet)).thenReturn(true);
+		when(testUserProfile.hasAtLeastOneOfTheseRoles(allRolesCodesSet)).thenReturn(true);
 		
-		assertTrue(serviceUnderTest.isComponentAccessibleForUser(TestComponentWithAllowedForAllAnnotation.class.getName(), testUser));
+		assertTrue(serviceUnderTest.isComponentAccessibleForUserProfile(TestComponentWithAllowedForAllAnnotation.class.getName(), testUserProfile));
 		verify(serviceUnderTest).readAllowedRoleCodesInClass(TestComponentWithAllowedForAllAnnotation.class);
-		verify(testUser).hasAtLeastOneOfTheseRoles(allRolesCodesSet);
+		verify(testUserProfile).hasAtLeastOneOfTheseRoles(allRolesCodesSet);
 	}
 
 	@SuppressWarnings({"serial", "deprecation" })

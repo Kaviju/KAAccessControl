@@ -1,15 +1,21 @@
 package com.kaviju.accesscontrol.model;
 
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.*;
+
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.webobjects.foundation.NSArray;
 import com.wounit.annotations.*;
 import com.wounit.rules.MockEditingContext;
 
+@RunWith(MockitoJUnitRunner.class)
 public class KAUserProfileTest {
 	static private final String adminRoleCode = "admin";
 	static private final String userRoleCode = "user";
@@ -25,7 +31,7 @@ public class KAUserProfileTest {
 	@Dummy	private KARole testUserRole;
 	@Dummy	private KAProfile testUserProfile;
 
-	@UnderTest private KAUserProfile userProfileUnderTest;
+	@Spy @UnderTest private KAUserProfile userProfileUnderTest;
 	
 	@Before
 	public void createDummies() {
@@ -70,6 +76,59 @@ public class KAUserProfileTest {
 		
 		assertThat("Role in userProfile found", userProfileUnderTest.hasRole(userRoleCode), is(true));
 		assertThat("Role not in userProfile not found", userProfileUnderTest.hasRole(adminRoleCode), is(false));
+	}
+
+	@Test
+	public void hasAtLeastOneOfTheseRolesCheckForAllRolesCodeBeforeReturningFalse() {
+		String[] roles = {userRoleCode, adminRoleCode};
+		
+		assertThat(userProfileUnderTest.hasAtLeastOneOfTheseRoles(Arrays.asList(roles)), is(false));
+		
+		verify(userProfileUnderTest).hasRole(userRoleCode);
+		verify(userProfileUnderTest).hasRole(adminRoleCode);
+	}
+	
+	@Test
+	public void hasAtLeastOneOfTheseRolesReturnTrueIfUserHaveOneOfTheRoles() {
+		userProfileUnderTest.addRole(testAdminRole);
+
+		String[] roles = {userRoleCode, adminRoleCode};
+		
+		assertThat(userProfileUnderTest.hasAtLeastOneOfTheseRoles(Arrays.asList(roles)), is(true));
+		
+		verify(userProfileUnderTest).hasRole(adminRoleCode);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Test
+	public void hasAtLeastOneOfTheseRolesVarargReturnTrueIfUserHaveOneOfTheRoles() {
+		userProfileUnderTest.addRole(testAdminRole);
+		
+		assertThat(userProfileUnderTest.hasAtLeastOneOfTheseRoles(userRoleCode, adminRoleCode), is(true));
+		
+		ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
+		verify(userProfileUnderTest).hasAtLeastOneOfTheseRoles(argument.capture());
+		assertThat(argument.getValue(), is(Arrays.asList(new String[]{userRoleCode, adminRoleCode})));
+	}
+
+	@Test
+	public void hasAllTheseRolesCheckForAllRolesCodeBeforeReturningTrue() {
+		userProfileUnderTest.addRole(testUserRole);
+		userProfileUnderTest.addRole(testAdminRole);
+		String[] roles = {userRoleCode, adminRoleCode};
+		
+		assertThat(userProfileUnderTest.hasAllTheseRoles(Arrays.asList(roles)), is(true));
+		
+		verify(userProfileUnderTest).hasRole(userRoleCode);
+		verify(userProfileUnderTest).hasRole(adminRoleCode);
+	}
+
+	@Test
+	public void hasAllTheseRolesReturnFalseIfUserDoesNotHaveOneOfTheRoles() {
+		userProfileUnderTest.addRole(testAdminRole);
+		String[] roles = {userRoleCode, adminRoleCode};
+		
+		assertThat(userProfileUnderTest.hasAllTheseRoles(Arrays.asList(roles)), is(false));
 	}
 	
 	@Test

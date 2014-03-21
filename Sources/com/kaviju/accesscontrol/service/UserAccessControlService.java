@@ -1,25 +1,16 @@
 package com.kaviju.accesscontrol.service;
 
-import com.kaviju.accesscontrol.model.KAUser;
-import com.kaviju.accesscontrol.model.KAUserProfile;
-import com.webobjects.appserver.WOApplication;
-import com.webobjects.appserver.WOComponent;
-import com.webobjects.appserver.WOSession;
-import com.webobjects.eocontrol.EOEditingContext;
-import com.webobjects.foundation.NSMutableArray;
-import com.webobjects.foundation.NSNotification;
-import com.webobjects.foundation.NSNotificationCenter;
+import com.kaviju.accesscontrol.model.*;
+import com.webobjects.appserver.*;
+import com.webobjects.foundation.*;
 
-import er.extensions.eof.*;
-import er.extensions.foundation.ERXProperties;
-import er.extensions.foundation.ERXSelectorUtilities;
-import er.extensions.foundation.ERXThreadStorage;
+import er.extensions.foundation.*;
 
 public class UserAccessControlService<U extends KAUser> {
 
 	protected static final String UserAccessControlServiceThreadStorageKey = "UserAccessControlServiceThreadStorageKey";
 	private U realUser;
-	private U currentUser;
+	private KAUserProfile currentUserProfile;
 	private NSMutableArray<UserStackEntry<U>> userStack = new NSMutableArray<UserStackEntry<U>>();
 	private final WOSession session;
 
@@ -67,27 +58,48 @@ public class UserAccessControlService<U extends KAUser> {
     	return service.currentUser();
     }
 
+	static public <T extends KAUser> KAUserProfile currentUserProfile(Class<T> userClass) {
+		UserAccessControlService<T> service = currentService();
+		if (service == null) {
+			return null;
+		}
+    	return service.currentUserProfile();
+    }
+
 	public U realUser() {
 		return realUser;
 	}
 
+	@SuppressWarnings("unchecked")
 	public U currentUser() {
-		return currentUser;
+		if (currentUserProfile == null) {
+			return null;
+		}
+		return (U) currentUserProfile.user();
 	}
 
 	public KAUserProfile currentUserProfile() {
-		return currentUser.currentUserProfile();
+		return currentUserProfile;
+	}
+	
+	public void setCurrentUserProfile(KAUserProfile profile) {
+		if (currentUserProfile.user().profiles().containsObject(profile)) {
+			currentUserProfile = profile;
+		}
+		else {
+			throw new IllegalArgumentException("Cannot set a profile from another user or editing context as current profile.");
+		}
 	}
 
 	public boolean currentUserHasRole(String roleCode) {
-		if (currentUser == null || currentUserProfile() == null) {
+		if (currentUserProfile() == null) {
 			return false;
 		}
 		return currentUserProfile().hasRole(roleCode);
 	}
 
 	public boolean isUserLoggedIn() {
-		return currentUser != null;
+		return currentUserProfile != null;
 	}
 
 	public WOComponent logonAsUser(U user) {
@@ -98,38 +110,35 @@ public class UserAccessControlService<U extends KAUser> {
 			throw new IllegalStateException("Trying to logonAsUser when already logged.");
 		}
 		realUser = user;
-		currentUser = user;
+		currentUserProfile = user.defaultUserProfile();
 		return createHomePage();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public WOComponent createHomePage() {
 		if (session instanceof UserLogonDelegate) {
-			((UserLogonDelegate<U>)session).userDidLogon(currentUser());
+			((UserLogonDelegate)session).userProfileDidLogon(currentUserProfile());
 		}
-		return currentUser().createHomePage(session.context());
+		return currentUserProfile().createHomePage(session.context());
 	}
 
 	public WOComponent personifyUser(U user) {
-		userStack.add(new UserStackEntry<U>(currentUser, session.context().page()));
-		EOEditingContext ec = ERXEC.newEditingContext();
-		currentUser = ERXEOControlUtilities.localInstanceOfObject(ec, user); // Make sure we have a fresh and clean user.
+		userStack.add(new UserStackEntry<U>(currentUserProfile, session.context().page()));
+		currentUserProfile = user.defaultUserProfile();
 		return createHomePage();
 	}
 
-	@SuppressWarnings("unchecked")
 	public WOComponent logout() {
 		if (userStack.count() == 0) {
 			session.terminate();
-			currentUser = null;
+			currentUserProfile = null;
 			realUser = null;
 			WOComponent newPage = createLoggedOutPage();
 			return newPage;			
 		}
 		UserStackEntry<U> lastUserEntry = userStack.removeLastObject();
-		currentUser = lastUserEntry.user;
+		currentUserProfile = lastUserEntry.userProfile;
 		if (session instanceof UserLogonDelegate) {
-			((UserLogonDelegate<U>)session).userDidLogon(currentUser());
+			((UserLogonDelegate)session).userProfileDidLogon(currentUserProfile());
 		}
 		return lastUserEntry.page;
 	}
@@ -139,12 +148,12 @@ public class UserAccessControlService<U extends KAUser> {
 		return WOApplication.application().pageWithName(logedOutPageName, session.context());
 	}
 	
-	static private class UserStackEntry<U> {
-		public final U user;
+	static private class UserStackEntry<U extends KAUser> {
+		public final KAUserProfile userProfile;
 		public final WOComponent page;
 		
-		public UserStackEntry(U user, WOComponent page) {
-			this.user = user;
+		public UserStackEntry(KAUserProfile userProfile, WOComponent page) {
+			this.userProfile = userProfile;
 			this.page = page;
 		}
 	}

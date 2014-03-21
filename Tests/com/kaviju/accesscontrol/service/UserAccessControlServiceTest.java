@@ -1,24 +1,32 @@
 package com.kaviju.accesscontrol.service;
 
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.kaviju.accesscontrol.model.*;
-import com.kaviju.accesscontrol.service.UserAccessControlService;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSNotificationCenter;
+import com.wounit.annotations.Dummy;
+import com.wounit.rules.MockEditingContext;
 
-import er.extensions.foundation.*;
+import er.extensions.foundation.ERXThreadStorage;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UserAccessControlServiceTest {
+	@Rule
+    public MockEditingContext ec = new MockEditingContext("KAAccessControl", "ModelForTest");
 
-	private UserAccessControlService<KAUser> serviceUnderTest;
-	
-	private KAUser testUser = mock(KAUser.class, withSettings().name("testUser"));
-	private KAUser testPersonifiedUser = mock(KAUser.class, withSettings().name("testPersonifiedUser"));
+	private UserAccessControlService<KAUserTest.KAUserForTest> serviceUnderTest;
+		
+	@Spy @Dummy private KAUserProfile testUserProfile;
+	@Spy @Dummy private KAUserTest.KAUserForTest testUser;
+	@Spy @Dummy private KAUserTest.KAUserForTest testPersonifiedUser;
 
 	static private WOComponent loggedOutPage = mock(WOComponent.class);
 	private WOApplication app = new AppForTest();
@@ -29,10 +37,15 @@ public class UserAccessControlServiceTest {
 
 	@Before
 	public void createService() {
+		testUserProfile.setIsDefaultProfile(true);
+		testUserProfile.setUser(testUser);
+		testUser.addToProfiles(testUserProfile);
+		
 		when(session.context()).thenReturn(context);
 		when(sessionWithDelegate.context()).thenReturn(context);
+		
 		app.setTimeOut(100);
-		serviceUnderTest = new UserAccessControlService<KAUser>(session);
+		serviceUnderTest = new UserAccessControlService<KAUserTest.KAUserForTest>(session);
 	}
 	
 	@Test
@@ -41,7 +54,7 @@ public class UserAccessControlServiceTest {
 		
         NSNotificationCenter.defaultCenter().postNotification(WOSession.SessionDidRestoreNotification, session);
 
-        assertThat(UserAccessControlService.currentService(KAUser.class), is(serviceUnderTest));
+        assertThat(UserAccessControlService.currentService(KAUserTest.KAUserForTest.class), is(serviceUnderTest));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -68,7 +81,7 @@ public class UserAccessControlServiceTest {
 	public void logonAsUserReturnUserHomePage() {
 		serviceUnderTest.logonAsUser(testUser);
 		
-		verify(testUser).createHomePage(context);
+		verify(testUser).createHomePageForUserProfile(context, testUser.defaultUserProfile());
 	}
 
 	@Test
@@ -77,7 +90,7 @@ public class UserAccessControlServiceTest {
 
 		serviceUnderTestWithSessionDelegate.logonAsUser(testUser);
 		
-		verify(sessionWithDelegate).userDidLogon(testUser);
+		verify(sessionWithDelegate).userProfileDidLogon(testUserProfile);
 	}
 
 	@Test
@@ -96,14 +109,14 @@ public class UserAccessControlServiceTest {
 	public void staticCurrentUserReturnLoggedUner() {
 		serviceUnderTest.logonAsUser(testUser);
 		
-		assertThat(UserAccessControlService.currentUser(KAUser.class), is(testUser));
+		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), is(testUser));
 	}	
 
 	@Test
 	public void staticCurrentUserWithoutCurrentServiceReturnNull() {
 		ERXThreadStorage.removeValueForKey(UserAccessControlService.UserAccessControlServiceThreadStorageKey);
 		
-		assertThat(UserAccessControlService.currentUser(KAUser.class), nullValue());
+		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), nullValue());
 	}	
 
 	@Test
@@ -112,15 +125,33 @@ public class UserAccessControlServiceTest {
 
 		KAUserProfile profile = serviceUnderTest.currentUserProfile();
 		
-		assertThat(profile, is(testUser.currentUserProfile()));
+		assertThat(profile, is(testUser.defaultUserProfile()));
 	}
-	
+
+	@Test(expected=IllegalArgumentException.class)
+	public void setCurrentUserProfileWithExternalProfileFail() {
+		serviceUnderTest.logonAsUser(testUser);
+		
+		KAUserProfile profile = mock(KAUserProfile.class);
+		serviceUnderTest.setCurrentUserProfile(profile);
+	}
+
 	@Test
-	public void personifyUserReturnUserHomePageAndSetCurrentUser() {
+	public void setCurrentUserProfile() {
+		testUser.defaultUserProfile();
+		KAUserProfile profile = testUser.createProfilesRelationship();
+		profile.setUserRelationship(testUser);
+		serviceUnderTest.logonAsUser(testUser);
+
+		serviceUnderTest.setCurrentUserProfile(profile);
+	}
+
+	@Test
+	public void personifyUserReturnUserHomePageAndSetCurrentUserProfile() {
 		serviceUnderTest.logonAsUser(testUser);
 		serviceUnderTest.personifyUser(testPersonifiedUser);
 		
-		verify(testPersonifiedUser).createHomePage(context);
+		verify(testPersonifiedUser).createHomePageForUserProfile(context, testPersonifiedUser.defaultUserProfile());
 		assertEquals("current user", testPersonifiedUser, serviceUnderTest.currentUser());
 	}
 
@@ -130,7 +161,7 @@ public class UserAccessControlServiceTest {
 
 		serviceUnderTest.createHomePage();
 		
-		verify(testUser, times(2)).createHomePage(context);
+		verify(testUserProfile, times(2)).createHomePage(context);
 	}
 
 	@Test
@@ -170,9 +201,9 @@ public class UserAccessControlServiceTest {
 	}
 	
 	@SuppressWarnings("serial")
-	static public class SessionWithUserDidLogonDelegate extends WOSession implements UserLogonDelegate<KAUser> {
+	static public class SessionWithUserDidLogonDelegate extends WOSession implements UserLogonDelegate {
 		@Override
-		public void userDidLogon(KAUser user) {
+		public void userProfileDidLogon(KAUserProfile userProfile) {
 		}
 	}
 }

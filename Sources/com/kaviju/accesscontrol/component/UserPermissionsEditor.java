@@ -27,7 +27,7 @@ public class UserPermissionsEditor extends ERXComponent {
 		if (this.user != user) {
 			this.user = user;
 	        profiles = KAProfile.fetchProfiles(user.editingContext());
-	        setUserProfile(user.currentUserProfile());
+	        setUserProfile(user.defaultUserProfile());
 		}
 	}
 

@@ -1,11 +1,10 @@
 package com.kaviju.accesscontrol.model;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 
+import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.foundation.NSArray;
 
@@ -15,6 +14,11 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	private static Logger log = Logger.getLogger(KAUserProfile.class);
 	private Set<String> allEffectiveRoles;
 
+	@SuppressWarnings("unchecked")
+	public <U extends KAUser> U user(Class<U> userClass) {
+		return (U) user();
+	}
+	
 	public String profileCode() {
 		return profile().code();
 	}
@@ -22,7 +26,29 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	public boolean hasRole(String roleCode) {
 		return allEffectiveRoles().contains(roleCode);
 	}
+
+	public boolean hasAtLeastOneOfTheseRoles(String ...roleCodes) {
+		return hasAtLeastOneOfTheseRoles(Arrays.asList(roleCodes));
+	}
 	
+	public boolean hasAtLeastOneOfTheseRoles(Collection<String> rolesCodes) {
+		for (String roleCode : rolesCodes) {
+			if (hasRole(roleCode)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasAllTheseRoles(Collection<String> requiredRoleCodes) {
+		for (String roleCode : requiredRoleCodes) {
+			if ( !hasRole(roleCode)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public Set<String> allEffectiveRoles() {
 		if (allEffectiveRoles == null) {
 			allEffectiveRoles = new HashSet<>();
@@ -83,7 +109,7 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 		}
 		return new NSArray<T>();
 	}
-
+		
 	public NSArray<KAAccessListItem> listItemsForRole(KARole role) {
 		return userProfileRoleWithCode(role.code()).listItems();
 	}
@@ -104,4 +130,7 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 		return null;
 	}
 
+	public WOComponent createHomePage(WOContext context) {
+		return user().createHomePageForUserProfile(context, this);
+	}
 }
