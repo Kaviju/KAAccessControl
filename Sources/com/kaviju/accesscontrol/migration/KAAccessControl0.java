@@ -50,6 +50,7 @@ public class KAAccessControl0 extends ERXMigrationDatabase.Migration {
 		ERXMigrationTable kaProfileRoleTable = database.newTableNamed("KAProfileRole");
 		kaProfileRoleTable.newIntegerColumn("profile_id", false);
 		kaProfileRoleTable.newIntegerColumn("role_id", false);
+		kaProfileRoleTable.newIntBooleanColumn("isOptional", false);
 
 
 		kaProfileRoleTable.create();
@@ -61,7 +62,6 @@ public class KAAccessControl0 extends ERXMigrationDatabase.Migration {
 		kaRoleTable.newStringColumn("code", 50, false);
 		kaRoleTable.newIntegerColumn("displayOrder", false);
 		kaRoleTable.newIntegerColumn("id", false);
-		kaRoleTable.newIntBooleanColumn("inProfileOnly", false);
 		kaRoleTable.newIntegerColumn("roleGroup_id", false);
 
 		kaRoleTable.addUniqueIndex("KARole_UniqueCodeIndex", kaRoleTable.existingColumnNamed("code"));

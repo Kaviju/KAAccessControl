@@ -14,7 +14,6 @@
             parent = KAUser; 
         }
     ); 
-    internalInfo = {"_deletedEntityNamesInObjectStore" = (KAUserForTest2); }; 
     userInfo = {
         "_EntityModeler" = {
             activeDatabaseConfigName = Default; 

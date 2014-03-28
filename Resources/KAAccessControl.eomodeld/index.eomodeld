@@ -12,7 +12,10 @@
             name = KAAccessListItem; 
         }, 
         {className = "com.kaviju.accesscontrol.model.KAProfile"; name = KAProfile; }, 
-        {className = EOGenericRecord; name = KAProfileRole; }, 
+        {
+            className = "com.kaviju.accesscontrol.model.KAProfileRole"; 
+            name = KAProfileRole; 
+        }, 
         {className = "com.kaviju.accesscontrol.model.KARole"; name = KARole; }, 
         {
             className = "com.kaviju.accesscontrol.model.KARoleGroup"; 

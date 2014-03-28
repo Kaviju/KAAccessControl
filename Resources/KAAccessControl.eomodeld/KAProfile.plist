@@ -5,7 +5,7 @@
     ); 
     attributesUsedForLocking = (code, id); 
     className = "com.kaviju.accesscontrol.model.KAProfile"; 
-    classProperties = (code, roles, users); 
+    classProperties = (code, profileRoles, users); 
     entityIndexes = (
         {
             attributes = (code); 
@@ -26,8 +26,8 @@
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = profileID; sourceAttribute = id; }); 
             name = profileRoles; 
+            propagatesPrimaryKey = Y; 
         }, 
-        {definition = "profileRoles.role"; name = roles; }, 
         {
             deleteRule = EODeleteRuleCascade; 
             destination = KAUserProfile; 

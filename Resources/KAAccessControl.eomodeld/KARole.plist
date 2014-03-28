@@ -15,35 +15,21 @@
         {columnName = displayOrder; name = displayOrder; prototypeName = intNumber; }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
         {
-            columnName = inProfileOnly; 
-            name = inProfileOnly; 
-            prototypeName = intBoolean; 
-        }, 
-        {
             allowsNull = N; 
             columnName = "roleGroup_id"; 
             name = roleGroupID; 
             prototypeName = id; 
         }
     ); 
-    attributesUsedForLocking = (
-        accessListID, 
-        allowsMultipleItems, 
-        code, 
-        displayOrder, 
-        id, 
-        inProfileOnly, 
-        roleGroupID
-    ); 
+    attributesUsedForLocking = (accessListID, allowsMultipleItems, code, displayOrder, id, roleGroupID); 
     className = "com.kaviju.accesscontrol.model.KARole"; 
     classProperties = (
         allowsMultipleItems, 
         code, 
         displayOrder, 
         group, 
-        inProfileOnly, 
         list, 
-        profiles, 
+        profileRoles, 
         userProfileRoles
     ); 
     entityIndexes = (
@@ -82,8 +68,8 @@
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = roleID; sourceAttribute = id; }); 
             name = profileRoles; 
+            propagatesPrimaryKey = Y; 
         }, 
-        {definition = "profileRoles.profile"; name = profiles; }, 
         {
             deleteRule = EODeleteRuleCascade; 
             destination = KAUserProfileRole; 

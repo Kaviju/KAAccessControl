@@ -19,22 +19,20 @@ public abstract class _KARole extends  ERXGenericRecord {
   public static final ERXKey<Boolean> ALLOWS_MULTIPLE_ITEMS = new ERXKey<Boolean>("allowsMultipleItems");
   public static final ERXKey<String> CODE = new ERXKey<String>("code");
   public static final ERXKey<Integer> DISPLAY_ORDER = new ERXKey<Integer>("displayOrder");
-  public static final ERXKey<Boolean> IN_PROFILE_ONLY = new ERXKey<Boolean>("inProfileOnly");
   // Relationship Keys
   public static final ERXKey<com.kaviju.accesscontrol.model.KARoleGroup> GROUP = new ERXKey<com.kaviju.accesscontrol.model.KARoleGroup>("group");
   public static final ERXKey<com.kaviju.accesscontrol.model.KAAccessList> LIST = new ERXKey<com.kaviju.accesscontrol.model.KAAccessList>("list");
-  public static final ERXKey<com.kaviju.accesscontrol.model.KAProfile> PROFILES = new ERXKey<com.kaviju.accesscontrol.model.KAProfile>("profiles");
+  public static final ERXKey<com.kaviju.accesscontrol.model.KAProfileRole> PROFILE_ROLES = new ERXKey<com.kaviju.accesscontrol.model.KAProfileRole>("profileRoles");
   public static final ERXKey<com.kaviju.accesscontrol.model.KAUserProfileRole> USER_PROFILE_ROLES = new ERXKey<com.kaviju.accesscontrol.model.KAUserProfileRole>("userProfileRoles");
 
   // Attributes
   public static final String ALLOWS_MULTIPLE_ITEMS_KEY = "allowsMultipleItems";
   public static final String CODE_KEY = "code";
   public static final String DISPLAY_ORDER_KEY = "displayOrder";
-  public static final String IN_PROFILE_ONLY_KEY = "inProfileOnly";
   // Relationships
   public static final String GROUP_KEY = "group";
   public static final String LIST_KEY = "list";
-  public static final String PROFILES_KEY = "profiles";
+  public static final String PROFILE_ROLES_KEY = "profileRoles";
   public static final String USER_PROFILE_ROLES_KEY = "userProfileRoles";
 
   private static Logger LOG = Logger.getLogger(_KARole.class);
@@ -78,17 +76,6 @@ public abstract class _KARole extends  ERXGenericRecord {
     	_KARole.LOG.debug( "updating displayOrder from " + displayOrder() + " to " + value);
     }
     takeStoredValueForKey(value, _KARole.DISPLAY_ORDER_KEY);
-  }
-
-  public Boolean inProfileOnly() {
-    return (Boolean) storedValueForKey(_KARole.IN_PROFILE_ONLY_KEY);
-  }
-
-  public void setInProfileOnly(Boolean value) {
-    if (_KARole.LOG.isDebugEnabled()) {
-    	_KARole.LOG.debug( "updating inProfileOnly from " + inProfileOnly() + " to " + value);
-    }
-    takeStoredValueForKey(value, _KARole.IN_PROFILE_ONLY_KEY);
   }
 
   public com.kaviju.accesscontrol.model.KARoleGroup group() {
@@ -141,75 +128,97 @@ public abstract class _KARole extends  ERXGenericRecord {
     }
   }
   
-  public NSArray<com.kaviju.accesscontrol.model.KAProfile> profiles() {
-    return (NSArray<com.kaviju.accesscontrol.model.KAProfile>)storedValueForKey(_KARole.PROFILES_KEY);
+  public NSArray<com.kaviju.accesscontrol.model.KAProfileRole> profileRoles() {
+    return (NSArray<com.kaviju.accesscontrol.model.KAProfileRole>)storedValueForKey(_KARole.PROFILE_ROLES_KEY);
   }
 
-  public NSArray<com.kaviju.accesscontrol.model.KAProfile> profiles(EOQualifier qualifier) {
-    return profiles(qualifier, null);
+  public NSArray<com.kaviju.accesscontrol.model.KAProfileRole> profileRoles(EOQualifier qualifier) {
+    return profileRoles(qualifier, null, false);
   }
 
-  public NSArray<com.kaviju.accesscontrol.model.KAProfile> profiles(EOQualifier qualifier, NSArray<EOSortOrdering> sortOrderings) {
-    NSArray<com.kaviju.accesscontrol.model.KAProfile> results;
-      results = profiles();
+  public NSArray<com.kaviju.accesscontrol.model.KAProfileRole> profileRoles(EOQualifier qualifier, boolean fetch) {
+    return profileRoles(qualifier, null, fetch);
+  }
+
+  public NSArray<com.kaviju.accesscontrol.model.KAProfileRole> profileRoles(EOQualifier qualifier, NSArray<EOSortOrdering> sortOrderings, boolean fetch) {
+    NSArray<com.kaviju.accesscontrol.model.KAProfileRole> results;
+    if (fetch) {
+      EOQualifier fullQualifier;
+      EOQualifier inverseQualifier = new EOKeyValueQualifier(com.kaviju.accesscontrol.model.KAProfileRole.ROLE_KEY, EOQualifier.QualifierOperatorEqual, this);
+    	
+      if (qualifier == null) {
+        fullQualifier = inverseQualifier;
+      }
+      else {
+        NSMutableArray<EOQualifier> qualifiers = new NSMutableArray<EOQualifier>();
+        qualifiers.addObject(qualifier);
+        qualifiers.addObject(inverseQualifier);
+        fullQualifier = new EOAndQualifier(qualifiers);
+      }
+
+      results = com.kaviju.accesscontrol.model.KAProfileRole.fetchKAProfileRoles(editingContext(), fullQualifier, sortOrderings);
+    }
+    else {
+      results = profileRoles();
       if (qualifier != null) {
-        results = (NSArray<com.kaviju.accesscontrol.model.KAProfile>)EOQualifier.filteredArrayWithQualifier(results, qualifier);
+        results = (NSArray<com.kaviju.accesscontrol.model.KAProfileRole>)EOQualifier.filteredArrayWithQualifier(results, qualifier);
       }
       if (sortOrderings != null) {
-        results = (NSArray<com.kaviju.accesscontrol.model.KAProfile>)EOSortOrdering.sortedArrayUsingKeyOrderArray(results, sortOrderings);
+        results = (NSArray<com.kaviju.accesscontrol.model.KAProfileRole>)EOSortOrdering.sortedArrayUsingKeyOrderArray(results, sortOrderings);
       }
+    }
     return results;
   }
   
-  public void addToProfiles(com.kaviju.accesscontrol.model.KAProfile object) {
-    includeObjectIntoPropertyWithKey(object, _KARole.PROFILES_KEY);
+  public void addToProfileRoles(com.kaviju.accesscontrol.model.KAProfileRole object) {
+    includeObjectIntoPropertyWithKey(object, _KARole.PROFILE_ROLES_KEY);
   }
 
-  public void removeFromProfiles(com.kaviju.accesscontrol.model.KAProfile object) {
-    excludeObjectFromPropertyWithKey(object, _KARole.PROFILES_KEY);
+  public void removeFromProfileRoles(com.kaviju.accesscontrol.model.KAProfileRole object) {
+    excludeObjectFromPropertyWithKey(object, _KARole.PROFILE_ROLES_KEY);
   }
 
-  public void addToProfilesRelationship(com.kaviju.accesscontrol.model.KAProfile object) {
+  public void addToProfileRolesRelationship(com.kaviju.accesscontrol.model.KAProfileRole object) {
     if (_KARole.LOG.isDebugEnabled()) {
-      _KARole.LOG.debug("adding " + object + " to profiles relationship");
+      _KARole.LOG.debug("adding " + object + " to profileRoles relationship");
     }
     if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
-    	addToProfiles(object);
+    	addToProfileRoles(object);
     }
     else {
-    	addObjectToBothSidesOfRelationshipWithKey(object, _KARole.PROFILES_KEY);
+    	addObjectToBothSidesOfRelationshipWithKey(object, _KARole.PROFILE_ROLES_KEY);
     }
   }
 
-  public void removeFromProfilesRelationship(com.kaviju.accesscontrol.model.KAProfile object) {
+  public void removeFromProfileRolesRelationship(com.kaviju.accesscontrol.model.KAProfileRole object) {
     if (_KARole.LOG.isDebugEnabled()) {
-      _KARole.LOG.debug("removing " + object + " from profiles relationship");
+      _KARole.LOG.debug("removing " + object + " from profileRoles relationship");
     }
     if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
-    	removeFromProfiles(object);
+    	removeFromProfileRoles(object);
     }
     else {
-    	removeObjectFromBothSidesOfRelationshipWithKey(object, _KARole.PROFILES_KEY);
+    	removeObjectFromBothSidesOfRelationshipWithKey(object, _KARole.PROFILE_ROLES_KEY);
     }
   }
 
-  public com.kaviju.accesscontrol.model.KAProfile createProfilesRelationship() {
-    EOClassDescription eoClassDesc = EOClassDescription.classDescriptionForEntityName( com.kaviju.accesscontrol.model.KAProfile.ENTITY_NAME );
+  public com.kaviju.accesscontrol.model.KAProfileRole createProfileRolesRelationship() {
+    EOClassDescription eoClassDesc = EOClassDescription.classDescriptionForEntityName( com.kaviju.accesscontrol.model.KAProfileRole.ENTITY_NAME );
     EOEnterpriseObject eo = eoClassDesc.createInstanceWithEditingContext(editingContext(), null);
     editingContext().insertObject(eo);
-    addObjectToBothSidesOfRelationshipWithKey(eo, _KARole.PROFILES_KEY);
-    return (com.kaviju.accesscontrol.model.KAProfile) eo;
+    addObjectToBothSidesOfRelationshipWithKey(eo, _KARole.PROFILE_ROLES_KEY);
+    return (com.kaviju.accesscontrol.model.KAProfileRole) eo;
   }
 
-  public void deleteProfilesRelationship(com.kaviju.accesscontrol.model.KAProfile object) {
-    removeObjectFromBothSidesOfRelationshipWithKey(object, _KARole.PROFILES_KEY);
+  public void deleteProfileRolesRelationship(com.kaviju.accesscontrol.model.KAProfileRole object) {
+    removeObjectFromBothSidesOfRelationshipWithKey(object, _KARole.PROFILE_ROLES_KEY);
     editingContext().deleteObject(object);
   }
 
-  public void deleteAllProfilesRelationships() {
-    Enumeration<com.kaviju.accesscontrol.model.KAProfile> objects = profiles().immutableClone().objectEnumerator();
+  public void deleteAllProfileRolesRelationships() {
+    Enumeration<com.kaviju.accesscontrol.model.KAProfileRole> objects = profileRoles().immutableClone().objectEnumerator();
     while (objects.hasMoreElements()) {
-      deleteProfilesRelationship(objects.nextElement());
+      deleteProfileRolesRelationship(objects.nextElement());
     }
   }
 

@@ -1,5 +1,6 @@
 {
     attributes = (
+        {columnName = isOptional; name = isOptional; prototypeName = intBoolean; }, 
         {
             allowsNull = N; 
             columnName = "profile_id"; 
@@ -8,9 +9,9 @@
         }, 
         {allowsNull = N; columnName = "role_id"; name = roleID; prototypeName = id; }
     ); 
-    attributesUsedForLocking = (profileID, roleID); 
-    className = EOGenericRecord; 
-    classProperties = (profile, role); 
+    attributesUsedForLocking = (isOptional, profileID, roleID); 
+    className = "com.kaviju.accesscontrol.model.KAProfileRole"; 
+    classProperties = (isOptional, profile, role); 
     externalName = KAProfileRole; 
     fetchSpecificationDictionary = {}; 
     name = KAProfileRole; 
