@@ -1,0 +1,5 @@
+{
+	"UserPermissionEditor.ProfileLabel" = "Profile :";
+	"UserPermissionEditor.removeItem" = "Remove this item";
+	"UserPermissionEditor.addItem" = "Add an item...";
+}

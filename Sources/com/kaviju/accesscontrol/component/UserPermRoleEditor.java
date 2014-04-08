@@ -52,7 +52,7 @@ public class UserPermRoleEditor extends ERXComponent {
 	}
 
 	public boolean roleDisabled() {
-		return userProfile().profile().roles().contains(role());
+		return userProfile().profile().mandatoryRoles().contains(role());
 	}
 
 	public boolean roleChecked() {
@@ -110,10 +110,15 @@ public class UserPermRoleEditor extends ERXComponent {
 		else {
 			AjaxUpdateContainer.updateContainerWithID(AjaxUpdateContainer.currentUpdateContainerID(), context());
 		}
+		setSelectedItem(null);
 		return null;
 	}
 
 	public String addItemLabel() {
 		return localizer().localizedStringForKeyWithDefault("UserPermissionEditor.addItem");
+	}
+
+	public String removeItemLabel() {
+		return localizer().localizedStringForKeyWithDefault("UserPermissionEditor.removeItem");
 	}
 }

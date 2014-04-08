@@ -6,9 +6,9 @@
 	<wo:if condition = "$role.list">
 		<div style = "display:inline-block;">
 			<wo:repeat list = "$currentItems" item = "$item">
-				<span class = "permissionItem"><wo:string value = "$item.name"/> <wo:AjaxHyperlink action = "$deleteItem"><wo:localized value = "UserPermissionEditor.deleteItem"/></wo:AjaxHyperlink><br/></span>
+				<span class = "permissionItem"><wo:string value = "$item.name"/> <wo:AjaxSubmitButton action = "$deleteItem" value="$removeItemLabel"/><br/></span>
 			</wo:repeat>
-			<wo:AjaxObserveField action = "$addItem" style = "display:inline-block;">
+			<wo:AjaxObserveField fullSubmit = "YES" action = "$addItem" style = "display:inline-block;">
 				<wo:popUpButton list = "$items" item = "$item" displayString = "$item.name" selection = "$selectedItem" noSelectionString = "$addItemLabel"/>
 			</wo:AjaxObserveField>
 		</div>

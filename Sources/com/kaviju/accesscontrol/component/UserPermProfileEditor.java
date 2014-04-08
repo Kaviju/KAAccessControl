@@ -30,7 +30,7 @@ public class UserPermProfileEditor extends ERXComponent {
 	
 	@Override
 	public void appendToResponse(WOResponse response, WOContext context) {
-		groups = KARoleGroup.fetchGroupsForUserProfile(userProfile);
+		groups = userProfile.profile().displayedGroups();
 		super.appendToResponse(response, context);
 	}
 
@@ -47,7 +47,7 @@ public class UserPermProfileEditor extends ERXComponent {
 	}
 
 	public NSArray<KARole> rolesInGroup() {
-		return group().displayedRolesForProfile(userProfile().profile());
+		return userProfile().profile().displayedRolesForGroup(group());
 	}
 
 	public KARole role() {
