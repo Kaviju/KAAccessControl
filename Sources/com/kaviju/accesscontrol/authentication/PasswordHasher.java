@@ -30,6 +30,7 @@ public abstract class PasswordHasher {
 	
 	abstract public PasswordHash hashPassword(String password);
 	abstract public boolean verifyPasswordWithHash(String password, PasswordHash hash);
+	abstract public boolean hasCreatedHash(PasswordHash hash);
 		
 	
 	protected byte[] createRandomSalt(int saltLength) {

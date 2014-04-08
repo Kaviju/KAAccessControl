@@ -42,7 +42,19 @@ public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser
 		PasswordHash hash = PasswordHash.parseHashWithDefaultHasher(hashString, defaultPasswordHasher);
 		return hash.verifyPassword(password);
 	}	
-	
+
+	public boolean authenticateWithPasswordAndUpgradeHashIfRequired(String password) {
+		boolean result = authenticateWithPassword(password);
+		if (result) {
+			PasswordHash hash = PasswordHash.parseHashWithDefaultHasher(passwordHash(), defaultPasswordHasher);
+			if (currentPasswordHasher.hasCreatedHash(hash) == false) {
+				changePassword(password);
+				editingContext().saveChanges();
+			}
+		}
+		return result;
+	}	
+
 	public KAUserProfile defaultUserProfile() {
 		KAUserProfile defaultUserProfile = null;
 		if (defaultUserProfile == null) {
@@ -70,6 +82,7 @@ public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser
 		return "KAUser with id:"+primaryKey();
 	}
 	
+	// We do not know the user table name in the model so we set it with the real entity table name at runtime so the insert is done correctly.
 	static boolean externalNameSet = false;
 	@Override
 	public void willInsert() {

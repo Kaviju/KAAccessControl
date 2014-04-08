@@ -34,4 +34,9 @@ public class LatinSimpleMD5Hasher extends PasswordHasher {
 		PasswordHash passwordHash = hashPassword(password);
 		return hash.hashEquals(passwordHash);
 	}
+
+	@Override
+	public boolean hasCreatedHash(PasswordHash hash) {
+		return hash.hasher.hasherCode().equals(hasherCode);
+	}
 }

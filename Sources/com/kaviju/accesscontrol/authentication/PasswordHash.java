@@ -97,6 +97,18 @@ public class PasswordHash {
 			return true;
 		}
 
+		public boolean fromSameHashingSpecs(PasswordHash other) {
+			if (this == other)
+				return true;
+			if (other == null)
+				return false;
+			if (!hasher.equals(other.hasher))
+				return false;
+			if (iterations != other.iterations)
+				return false;
+			return true;
+		}
+
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder(hasher.hasherCode());

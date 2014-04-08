@@ -52,4 +52,18 @@ public class Pbkdf2Hasher extends PasswordHasher {
 			throw new RuntimeException("Unable to hash password with Pbkdf2Hasher", e);
 		}
 	}
+
+	@Override
+	public boolean hasCreatedHash(PasswordHash hash) {
+		if ( hash.hasher.hasherCode().equals(hasherCode) == false ) {
+			return false;
+		}
+		if (hash.iterations != newKeyIterations) {
+			return false;
+		}
+		if (hash.hash.length != newKeyLength) {
+			return false;
+		}
+		return true;
+	}
 }
