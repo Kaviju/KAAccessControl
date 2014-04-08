@@ -22,7 +22,7 @@ public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUs
 		
 		for (KAAccessListItem item : listItems()) {
 			@SuppressWarnings("unchecked")
-			T eo = (T)ERXEOControlUtilities.objectWithPrimaryKeyValue(editingContext(), entityName, item.code(), null);
+			T eo = (T)ERXEOControlUtilities.objectWithPrimaryKeyValue(editingContext(), entityName, Integer.parseInt(item.code()), null);
 			if (eo == null) {
 				log.warn("Object from entity "+entityName+" not found for item with code "+item.code()+" in list "+item.list().code()+" for user "+userProfile().user());
 			}
@@ -33,9 +33,9 @@ public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUs
 		return eos.immutableClone();
 	}
 	
-	public boolean isFromProfile() {
+	public boolean isMandatory() {
 		KARole myRole = role();
-		return userProfile().profile().roles().contains(myRole);
+		return userProfile().profile().mandatoryRoles().contains(myRole);
 	}
 	
 	@Override

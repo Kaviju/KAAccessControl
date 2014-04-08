@@ -84,7 +84,6 @@ public class RolesFileLoader {
 				String roleCode = (String)groupRole.objectForKey("code");
 				KARole roleObject = rolesDict.objectForKey(roleCode);
 				String listCode = (String)groupRole.objectForKey("listCode");
-				boolean inProfileOnly = ERXValueUtilities.booleanValue(groupRole.objectForKey("inProfileOnly"));
 				boolean allowsMultipleItems = ERXValueUtilities.booleanValue(groupRole.objectForKey("allowsMultipleItems"));
 				KAAccessList listObject = listDict.objectForKey(listCode);
 				
@@ -93,7 +92,6 @@ public class RolesFileLoader {
 					roleObject.setCode(roleCode);
 					roleObject.setAllowsMultipleItems(allowsMultipleItems);
 					roleObject.setDisplayOrder(subOrder);
-					roleObject.setInProfileOnly(inProfileOnly);
 					roleObject.setGroupRelationship(groupObject);
 
 					roleObject.setList(listObject);
@@ -103,7 +101,6 @@ public class RolesFileLoader {
 					roleObject.setGroupRelationship(groupObject);
 					roleObject.setList(listObject);
 					roleObject.setDisplayOrder(subOrder);
-					roleObject.setInProfileOnly(inProfileOnly);
 					roleObject.setAllowsMultipleItems(allowsMultipleItems);
 				}
 				subOrder++;
@@ -118,8 +115,6 @@ public class RolesFileLoader {
 		
 		for (NSDictionary<String, Object> profile : profiles) {
 			String profileCode = (String) profile.objectForKey("code");
-			@SuppressWarnings("unchecked")
-			NSArray<String> profileRoles = (NSArray<String>) profile.objectForKey("roles");
 			
 			KAProfile profileObject = profilesDict.objectForKey(profileCode);
 			if (profileObject == null) {
@@ -127,14 +122,30 @@ public class RolesFileLoader {
 				profileObject.setCode(profileCode);
 				profilesDict.put(profileCode, profileObject);
 			}
-			
-			// Remove all permissions and add the one specified
-			for (KARole roleObject : profileObject.roles().immutableClone()) {
-				profileObject.removeFromRoles(roleObject);
+			NSMutableArray<String> obsoleteRoleCodes = KAProfileRole.ROLE.dot(KARole.CODE).arrayValueInObject(profileObject.profileRoles()).mutableClone();
+
+			@SuppressWarnings("unchecked")
+			NSArray<String> optionalRoleCodes = (NSArray<String>) profile.objectForKey("optionalRoles");
+			if (optionalRoleCodes != null) {
+				for (String roleCode : optionalRoleCodes) {
+					KARole roleObject = roleDict.objectForKey(roleCode);
+					profileObject.addOptionalRole(roleObject);
+					obsoleteRoleCodes.remove(roleCode);
+				}
 			}
-			for (String permissionCode : profileRoles) {
-				KARole permissionObject = roleDict.objectForKey(permissionCode);
-				profileObject.addToRolesRelationship(permissionObject);
+
+			@SuppressWarnings("unchecked")
+			NSArray<String> roleCodes = (NSArray<String>) profile.objectForKey("roles");
+			for (String roleCode : roleCodes) {
+				KARole roleObject = roleDict.objectForKey(roleCode);
+				profileObject.addMandatoryRole(roleObject);
+				obsoleteRoleCodes.remove(roleCode);
+			}
+
+			// Remove roles no longer in file
+			for (String roleCode : obsoleteRoleCodes) {
+				KAProfileRole profileRole = ERXArrayUtilities.firstObject(profileObject.profileRoles(KAProfileRole.ROLE.dot(KARole.CODE).eq(roleCode)));
+				profileObject.deleteProfileRolesRelationship(profileRole);
 			}
 		}
 	}

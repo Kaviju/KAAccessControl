@@ -1,6 +1,9 @@
 #Path to the plist file read at startup to updates the frameworks data tables AccessList, RoleGroiup, Role and Profile.
 ka.accesscontrol.rolesFile=Roles
+#Name of the framework that contain the plist file, not needed if the file is inside the app bundle.
+#ka.accesscontrol.rolesFileBundle=FrameworkName
 
+#Name of the WOComponent to return when a user log out of the system.
 ka.accesscontrol.loggedOutPageName=LoggedOut
 
 KAAccessControl.MigrationClassPrefix=com.kaviju.accesscontrol.migration.KAAccessControl

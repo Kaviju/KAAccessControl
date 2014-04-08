@@ -9,11 +9,9 @@ roleGroups = (
 		roles = (
 			{
 				code = "AdminUsers";
-				inProfileOnly = YES;
 			},
 			{
 				"code" = "AdminParameters";
-				"inProfileOnly" = YES;
 			}
 		);
 	},
@@ -54,11 +52,17 @@ profiles = (
 		roles = (
 			"CustomerSalesReport"
 		);
+		optionalRoles = (
+			"SeeGrossProfits"
+		);
 	},
 	{
 		code = "WharehouseManager";
 		roles = (
 			"WharehouseSalesReport"
+		);
+		optionalRoles = (
+			"SeeGrossProfits"
 		);
 	}
 );

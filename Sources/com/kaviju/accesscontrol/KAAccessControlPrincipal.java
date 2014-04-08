@@ -9,10 +9,13 @@ import er.extensions.eof.ERXEC;
 public class KAAccessControlPrincipal extends ERXFrameworkPrincipal {
 	@SuppressWarnings("rawtypes")
     public final static Class[] REQUIRES = new Class[] { ERXExtensions.class };
+	@SuppressWarnings("unused")
+	private static ListItemAutoUpdater listAutoUpdater;
 
 	static {
 		setUpFrameworkPrincipalClass(KAAccessControlPrincipal.class);
 	}
+
 
 
 	@Override
@@ -29,7 +32,7 @@ public class KAAccessControlPrincipal extends ERXFrameworkPrincipal {
         	RolesFileLoader.loadRolesFile(ec);
 			ec.saveChanges();
 			
-			new ListItemAutoUpdater(ec);
+			listAutoUpdater = new ListItemAutoUpdater(ec);
 			ec.saveChanges();
 		}
 		finally {

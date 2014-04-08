@@ -2,6 +2,7 @@ package com.kaviju.accesscontrol.utils;
 
 import com.kaviju.accesscontrol.annotation.AutoSyncWithAccessList;
 import com.kaviju.accesscontrol.model.KAAccessList;
+import com.kaviju.accesscontrol.model.KAAccessListItem;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
@@ -36,7 +37,7 @@ public class ListItemAutoUpdater {
 	private void syncEntities(EOEditingContext ec) {
 		for (String entityName : entitiesToSync.keySet()) {
 			AutoSyncWithAccessList annotation = entitiesToSync.objectForKey(entityName);
-			KAAccessList list = KAAccessList.fetchRequiredKAAccessList(ec, KAAccessList.CODE.eq(annotation.listCode()));
+			KAAccessList list = KAAccessList.fetchListWithCode(ec, annotation.listCode());
 
 			ERXFetchSpecification<ERXEnterpriseObject> fs = new ERXFetchSpecification<ERXEnterpriseObject>(entityName, null, null);
 			NSArray<ERXEnterpriseObject> listValues = fs.fetchObjects(ec);
@@ -63,8 +64,20 @@ public class ListItemAutoUpdater {
         		AutoSyncWithAccessList annotation = entitiesToSync.objectForKey(entityName);
         		
         		if (annotation != null) {
-        			KAAccessList list = KAAccessList.fetchRequiredKAAccessList(ec, KAAccessList.CODE.eq(annotation.listCode()));
+        			KAAccessList list = KAAccessList.fetchListWithCode(ec, annotation.listCode());
         			list.deleteItemWithCode(ERXEOControlUtilities.primaryKeyStringForObject(deletedEo));
+        		}
+			}
+
+        	for (EOEnterpriseObject updatedEO : ec.updatedObjects()) {
+        		String entityName = updatedEO.entityName();
+        		AutoSyncWithAccessList annotation = entitiesToSync.objectForKey(entityName);
+        		
+        		if (annotation != null) {
+        			KAAccessList list = KAAccessList.fetchListWithCode(ec, annotation.listCode());
+        			KAAccessListItem item = list.itemWithCode(ERXEOControlUtilities.primaryKeyStringForObject(updatedEO));
+        			String itemName = updatedEO.valueForKey(annotation.nameProperty()).toString();
+        			item.setName(itemName);
         		}
 			}
 
@@ -74,8 +87,7 @@ public class ListItemAutoUpdater {
         		
         		if (annotation != null) {
         			ERXEnterpriseObject insertedErxEO = (ERXEnterpriseObject) insertedEO;
-
-        			KAAccessList list = KAAccessList.fetchRequiredKAAccessList(ec, KAAccessList.CODE.eq(annotation.listCode()));
+        			KAAccessList list = KAAccessList.fetchListWithCode(ec, annotation.listCode());
         			String itemName = insertedEO.valueForKey(annotation.nameProperty()).toString();
 					list.insertItemWithCodeAndName(insertedErxEO.primaryKeyInTransaction(), itemName);
         		}

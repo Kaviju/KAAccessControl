@@ -27,7 +27,7 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	public void clearProperties() {
 		super.clearProperties();
 		clearAllEffectivesRoles();
-	}	
+	}
 
 	public boolean hasRole(String roleCode) {
 		return allEffectiveRoles().contains(roleCode);
@@ -59,7 +59,7 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 		if (allEffectiveRoles == null) {
 			HashSet<String> allRoles = new HashSet<>();
 			if (profile() != null) {
-				allRoles.addAll(KARole.CODE.arrayValueInObject(profile().roles()));
+				allRoles.addAll(KARole.CODE.arrayValueInObject(profile().mandatoryRoles()));
 			}
 			allRoles.addAll(KAUserProfileRole.ROLE.dot(KARole.CODE).arrayValueInObject(roles()));
 			allEffectiveRoles = Collections.unmodifiableSet(allRoles);
@@ -70,7 +70,7 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	@Override
 	public void setProfile(KAProfile value) {
 		deleteAllRolesRelationships();
-		for (KARole role : value.roles()) {
+		for (KARole role : value.mandatoryRoles()) {
 			addRole(role);
 		}
 		super.setProfile(value);
