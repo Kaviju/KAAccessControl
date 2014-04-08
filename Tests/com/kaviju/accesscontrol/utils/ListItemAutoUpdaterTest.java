@@ -1,6 +1,7 @@
 package com.kaviju.accesscontrol.utils;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.*;
 
@@ -19,7 +20,7 @@ public class ListItemAutoUpdaterTest {
 	static private final String existingRoleCode = "user";
 
 	@Rule
-    public MockEditingContext ec = new MockEditingContext("KAAccessControl");
+    public MockEditingContext ec = new MockEditingContext("KAAccessControl", "ModelForTest");
 
 	@UnderTest private KAAccessList listUnderTest;
 	
@@ -52,7 +53,6 @@ public class ListItemAutoUpdaterTest {
 		newRole.setCode(newRoleCode);
 		newRole.setAllowsMultipleItems(false);
 		newRole.setDisplayOrder(0);
-		newRole.setInProfileOnly(false);
 		// primaryKeyInTransaction() does not works with the MemoryAdaptor, we hint a value.
 		newRole._setValueForPrimaryKey(1, "id"); 
 
@@ -60,7 +60,7 @@ public class ListItemAutoUpdaterTest {
 		updater.unregisterFromNoticiationCenter();
 		
 		// The memory adaptor set a primaryKey even with our setted value, we cannot it it to verify, we use the name.
-		assertEquals(newRoleCode, listUnderTest.items().objectAtIndex(0).name());
+		assertThat(listUnderTest.items().objectAtIndex(0).name(), is(newRoleCode));
 	}
 
 	@Test
@@ -74,7 +74,21 @@ public class ListItemAutoUpdaterTest {
 		ec.saveChanges();
 		updater.unregisterFromNoticiationCenter();
 
-		assertNull(listUnderTest.itemWithCode(newRole.primaryKey()));
+		assertThat(listUnderTest.itemWithCode(newRole.primaryKey()), nullValue());
+	}
+
+	@Test
+	public void updateExistingRoleUpdateList() {
+		KARole newRole = createExistingRole();
+		ec.saveChanges();
+		ListItemAutoUpdater updater = new ListItemAutoUpdater(ec);
+		ec.saveChanges();
+
+		newRole.setCode(newRoleCode);
+		ec.saveChanges();
+		updater.unregisterFromNoticiationCenter();
+
+		assertThat(listUnderTest.itemWithCode(newRole.primaryKey()).name(), is(newRoleCode));
 	}
 
 	private KARole createExistingRole() {
@@ -82,7 +96,6 @@ public class ListItemAutoUpdaterTest {
 		newRole.setCode(existingRoleCode);
 		newRole.setAllowsMultipleItems(false);
 		newRole.setDisplayOrder(0);
-		newRole.setInProfileOnly(false);
 		return newRole;
 	}
 

@@ -1,10 +1,14 @@
 package com.kaviju.accesscontrol.model;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.*;
+import static com.wounit.matchers.EOAssert.*;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -76,7 +80,7 @@ public class KAUserTest {
 		
 		testUser.authenticateWithPassword(testPassword);
 		
-		verify(defaultHasher).verifyPasswordWithHash(eq(testPassword), any(PasswordHash.class));
+		verify(defaultHasher).verifyPasswordWithHash(eq(testPassword), isA(PasswordHash.class));
 	}
 
 	@Test
@@ -91,6 +95,33 @@ public class KAUserTest {
 		testUser.changePassword(testPassword);
 		
 		assertTrue(testUser.authenticateWithPassword(testPassword));
+	}
+	
+	@Test
+	public void authenticateWithPasswordAndUpgradeHashIfRequiredCallAuthenticateWithPassword() {
+		testUser.authenticateWithPasswordAndUpgradeHashIfRequired(testPassword);
+		
+		verify(testUser).authenticateWithPassword(testPassword);
+	}
+
+	@Test
+	public void authenticateWithPasswordAndUpgradeHashIfRequiredDoesNothingAndReturnFalseIfIncorrectPassword() {
+		assertThat(testUser.authenticateWithPasswordAndUpgradeHashIfRequired(testWrongPassword), is(false));
+		
+		verify(testUser, never()).changePassword(testPassword);
+		confirm(testUser, hasNotBeenSaved());
+	}
+
+	@Test
+	public void authenticateWithPasswordAndUpgradeHashIfRequiredUpgradeHashIfPasswordIsValidAndHashNotCurrent() {
+		LatinSimpleMD5Hasher otherHasher = new LatinSimpleMD5Hasher();
+		KAUser.setDefaultPasswordHasher(otherHasher);
+
+		testUser.setPasswordHash(otherHasher.hashPassword(testPassword).hashAsHexString());
+		testUser.authenticateWithPasswordAndUpgradeHashIfRequired(testPassword);
+		
+		verify(testUser).changePassword(testPassword);
+		confirm(testUser, hasBeenSaved());
 	}
 
 	@Test

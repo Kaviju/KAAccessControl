@@ -77,7 +77,7 @@ public class RolesFileLoaderTest {
 	@Test
 	public void roleCustomerSalesReportIsLinkedToListTerritoryAndAllowsMultipleItems() {
 		KARole role = KARole.fetchRequiredKARole(ec, KARole.CODE.eq(CustomerSalesReportRoleCode));
-		KAAccessList territoryList = KAAccessList.fetchRequiredKAAccessList(ec, KAAccessList.CODE.eq(territoryListCode));
+		KAAccessList territoryList = KAAccessList.fetchListWithCode(ec, territoryListCode);
 		
 		assertThat(role.list(), is(territoryList));
 		assertThat("CustomerSalesReport Role allows multiple items", role.allowsMultipleItems(), is(true));
@@ -86,7 +86,7 @@ public class RolesFileLoaderTest {
 	@Test
 	public void roleWharehouseSalesReportIsLinkedToListWharehouseDoesNotAllowsMultipleItems() {
 		KARole role = KARole.fetchRequiredKARole(ec, KARole.CODE.eq(WharehouseSalesReportRoleCode));
-		KAAccessList territoryList = KAAccessList.fetchRequiredKAAccessList(ec, KAAccessList.CODE.eq(WharehouseListCode));
+		KAAccessList territoryList = KAAccessList.fetchListWithCode(ec, WharehouseListCode);
 		
 		assertThat(role.list(), is(territoryList));
 		assertThat("WharehouseSalesReport Role does allows multiple items", role.allowsMultipleItems(), is(false));
@@ -102,8 +102,17 @@ public class RolesFileLoaderTest {
 		KAProfile profile = KAProfile.fetchRequiredKAProfile(ec, KAProfile.CODE.eq(SalesmanProfileCode));
 		KARole role = KARole.fetchRequiredKARole(ec, KARole.CODE.eq(CustomerSalesReportRoleCode));
 
-		assertThat(profile.roles().count(), is(1));
-		assertThat(profile.roles().objectAtIndex(0), is(role));
+		assertThat(profile.mandatoryRoles().count(), is(1));
+		assertThat(profile.mandatoryRoles().objectAtIndex(0), is(role));
+	}
+
+	@Test
+	public void profileSalesmanContainsOptionalSeeGrossProfitsRole() {
+		KAProfile profile = KAProfile.fetchRequiredKAProfile(ec, KAProfile.CODE.eq(SalesmanProfileCode));
+		KARole role = KARole.fetchRequiredKARole(ec, KARole.CODE.eq(SeeGrossProfitsRoleCode));
+
+		assertThat(profile.optionalRoles().count(), is(1));
+		assertThat(profile.optionalRoles().objectAtIndex(0), is(role));
 	}
 
 }

@@ -38,7 +38,7 @@ public class KAUserProfileRoleTest {
 		testTerritoryList.addToItems(testTerritory2);
 		testTerritoryList.addToItems(testTerritoryAssociatedWithUserRole);
 		
-		testProfile.addToRoles(testUserRole);
+		testProfile.addMandatoryRole(testUserRole);
 		testUserProfile.setProfile(testProfile);
 	}
 	
@@ -58,7 +58,7 @@ public class KAUserProfileRoleTest {
 		userProfileRoleUnderTest.setUserProfile(testUserProfile);
 		userProfileRoleUnderTest.setRole(testUserRole);
 		
-		assertTrue(userProfileRoleUnderTest.isFromProfile());
+		assertTrue(userProfileRoleUnderTest.isMandatory());
 	}
 	
 	@Test
@@ -74,7 +74,7 @@ public class KAUserProfileRoleTest {
 		userProfileRoleUnderTest.setUserProfile(testUserProfile);
 		userProfileRoleUnderTest.setRole(testAdminRole);
 		
-		assertFalse(userProfileRoleUnderTest.isFromProfile());
+		assertFalse(userProfileRoleUnderTest.isMandatory());
 	}
 
 	@Test

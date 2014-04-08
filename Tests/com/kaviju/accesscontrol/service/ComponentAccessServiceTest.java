@@ -110,6 +110,11 @@ public class ComponentAccessServiceTest {
 		assertEquals(expectedRolesCodes, rolesCodes);
 	}
 
+	@Test(expected=IllegalArgumentException.class)
+	public void isComponentAccessibleForUserProfileThrowIfComponentNotFound() {
+		serviceUnderTest.isComponentAccessibleForUserProfile("InvalidClassName", null);
+	}
+
 	@Test
 	public void isComponentAccessibleForUserProfileCallKAUSer_hasAtLeastOneOfTheseRolesWithRolesCodes() {
 		KAUserProfile testUserProfile = mock(KAUserProfile.class);

@@ -49,6 +49,11 @@ public class UserAccessControlServiceTest {
 	}
 	
 	@Test
+	public void staticCurrentServiceCreateNewService() {
+		assertThat(UserAccessControlService.currentService(), notNullValue(UserAccessControlService.class));
+	}	
+	
+	@Test
 	public void restoreSessionRegisterServiceInThreadStorage() {
 		ERXThreadStorage.removeValueForKey(UserAccessControlService.UserAccessControlServiceThreadStorageKey);
 		
@@ -113,10 +118,31 @@ public class UserAccessControlServiceTest {
 	}	
 
 	@Test
+	public void staticCurrentUserProfileWithoutCurrentServiceReturnNull() {
+		ERXThreadStorage.removeValueForKey(UserAccessControlService.UserAccessControlServiceThreadStorageKey);
+		
+		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), nullValue());
+	}	
+
+	@Test
+	public void staticCurrentUserProfileReturnsLoggedUserProfile() {
+		serviceUnderTest.logonAsUser(testUser);
+
+		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), is(testUser));
+	}
+	
+	@Test
 	public void staticCurrentUserWithoutCurrentServiceReturnNull() {
 		ERXThreadStorage.removeValueForKey(UserAccessControlService.UserAccessControlServiceThreadStorageKey);
 		
 		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), nullValue());
+	}	
+
+	@Test
+	public void staticCurrentUserReturnsLoggedUser() {
+		serviceUnderTest.logonAsUser(testUser);
+		
+		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), is(testUser));
 	}	
 
 	@Test

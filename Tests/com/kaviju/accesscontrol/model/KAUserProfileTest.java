@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.kaviju.accesscontrol.model.KAUserTest.KAUserForTest;
 import com.webobjects.foundation.NSArray;
 import com.wounit.annotations.*;
 import com.wounit.rules.MockEditingContext;
@@ -23,8 +24,9 @@ public class KAUserProfileTest {
 	static private final String userProfileCode = "userP";
 
 	@Rule
-    public MockEditingContext ec = new MockEditingContext("KAAccessControl");
+    public MockEditingContext ec = new MockEditingContext("KAAccessControl", "ModelForTest");
 
+	@Dummy	private KAUserForTest testUser;
 	
 	@Dummy	private KARole testAdminRole;
 	@Dummy	private KAProfile testAdminProfile;
@@ -37,11 +39,11 @@ public class KAUserProfileTest {
 	public void createDummies() {
 		testAdminRole.setCode(adminRoleCode);
 		testAdminProfile.setCode(adminProfileCode);
-		testAdminProfile.addToRoles(testAdminRole);
+		testAdminProfile.addMandatoryRole(testAdminRole);
 
 		testUserRole.setCode(userRoleCode);
 		testUserProfile.setCode(userProfileCode);
-		testUserProfile.addToRoles(testUserRole);
+		testUserProfile.addMandatoryRole(testUserRole);
 	}
 	
 	@Test
@@ -69,7 +71,7 @@ public class KAUserProfileTest {
 
 		assertThat(userProfileUnderTest.allEffectiveRoles().contains(testAdminRole.code()), is(false));
 	}
-
+	
 	@Test
 	public void hasRoleCheckInRolesArray() {
 		userProfileUnderTest.addRole(testUserRole);
