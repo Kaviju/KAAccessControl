@@ -70,8 +70,10 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	@Override
 	public void setProfile(KAProfile value) {
 		deleteAllRolesRelationships();
-		for (KARole role : value.mandatoryRoles()) {
-			addRole(role);
+		if (value != null) {
+			for (KARole role : value.mandatoryRoles()) {
+				addRole(role);
+			}
 		}
 		super.setProfile(value);
 		clearAllEffectivesRoles();

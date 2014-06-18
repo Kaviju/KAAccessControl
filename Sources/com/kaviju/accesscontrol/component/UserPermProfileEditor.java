@@ -30,7 +30,12 @@ public class UserPermProfileEditor extends ERXComponent {
 	
 	@Override
 	public void appendToResponse(WOResponse response, WOContext context) {
-		groups = userProfile.profile().displayedGroups();
+		if (userProfile.profile() == null) {
+			groups = new NSArray<KARoleGroup>();
+		}
+		else {
+			groups = userProfile.profile().displayedGroups();
+		}
 		super.appendToResponse(response, context);
 	}
 
