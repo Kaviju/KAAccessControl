@@ -1,9 +1,11 @@
-<div>
-	<label class = "roleLabel" style = "display:inline-block;vertical-align: top;">
-		<wo:checkbox checked = "$roleChecked" disabled = "$roleDisabled"/>
-		<wo:string value = "$role.localizedName"/>
-	</label>
-	<wo:if condition = "$role.list">
+<wo:AjaxUpdateContainer id="$updateContainerId">
+	<wo:AjaxObserveField updateContainerID = "$updateContainerId">
+		<label class = "roleLabel" style = "display:inline-block;vertical-align: top;">
+			<wo:checkbox checked = "$roleChecked" disabled = "$roleDisabled"/>
+			<wo:string value = "$role.localizedName"/>
+		</label>
+	</wo:AjaxObserveField>
+	<wo:if condition = "$displayItemList">
 		<div style = "display:inline-block;">
 			<wo:repeat list = "$currentItems" item = "$item">
 				<span class = "permissionItem"><wo:string value = "$item.name"/> <wo:AjaxSubmitButton action = "$deleteItem" value="$removeItemLabel"/><br/></span>
@@ -13,4 +15,4 @@
 			</wo:AjaxObserveField>
 		</div>
 	</wo:if>
-</div>
+</wo:AjaxUpdateContainer>

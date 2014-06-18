@@ -20,6 +20,7 @@ public class UserPermRoleEditor extends ERXComponent {
 	private NSArray<KAAccessListItem> items;
 	private KAAccessListItem item;
 	private KAAccessListItem selectedItem;
+	private String updateContainerId;
 
 	public UserPermRoleEditor(WOContext context) {
         super(context);
@@ -27,11 +28,7 @@ public class UserPermRoleEditor extends ERXComponent {
 	
 	@Override
 	public void appendToResponse(WOResponse aResponse, WOContext aContext) {
-		if (role().list() != null) {
-			items = role().list().items();
-			items = ERXArrayUtilities.arrayMinusArray(items, userProfile().listItemsForRole(role()));
-			items = KAAccessListItem.NAME.asc().sorted(items);
-		}
+		updateContainerId = "UserPermRoleEdit_"+role().primaryKey();
 		super.appendToResponse(aResponse, aContext);
 	}
 
@@ -73,6 +70,9 @@ public class UserPermRoleEditor extends ERXComponent {
 	}
 
 	public NSArray<KAAccessListItem> items() {
+		items = role().list().items();
+		items = ERXArrayUtilities.arrayMinusArray(items, userProfile().listItemsForRole(role()));
+		items = KAAccessListItem.NAME.asc().sorted(items);
 		return items;
 	}
 
@@ -120,5 +120,16 @@ public class UserPermRoleEditor extends ERXComponent {
 
 	public String removeItemLabel() {
 		return localizer().localizedStringForKeyWithDefault("UserPermissionEditor.removeItem");
+	}
+
+	public boolean displayItemList() {
+		return roleChecked() && role().list() != null;
+	}
+
+	/**
+	 * @return the updateContainerId
+	 */
+	public String updateContainerId() {
+		return updateContainerId;
 	}
 }
