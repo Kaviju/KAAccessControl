@@ -27,6 +27,7 @@ public class UserPermissionsEditor extends ERXComponent {
 		if (this.user != user) {
 			this.user = user;
 	        profiles = KAProfile.fetchProfiles(user.editingContext());
+	        profiles = KAProfile.LOCALIZED_NAME.ascs().sorted(profiles);
 	        setUserProfile(user.defaultUserProfile());
 		}
 	}
@@ -56,6 +57,9 @@ public class UserPermissionsEditor extends ERXComponent {
 	}
 
 	public String selectProfileString() {
+		if (userProfile().profile() != null) {
+			return null;  // If already selected, does not allow NULL.
+		}
 		return localizer().localizedStringForKeyWithDefault("UserPermissionEditor.selectProfile");
 	}
 

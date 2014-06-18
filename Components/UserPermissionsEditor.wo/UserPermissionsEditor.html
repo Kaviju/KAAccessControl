@@ -2,11 +2,11 @@
 	<wo:if condition = "$context.isInForm" negate = "$true">
 		<p style = "color:red;">This component needs to be inside a WOForm.</p>
 	</wo:if>
-	<wo:AjaxObserveField updateContainerID = "$userProfileEditorID" fullSubmit = "YES">
-		<span class = "profileLabel"><wo:localized value = "UserPermissionEditor.ProfileLabel"/></span>
-		<wo:popUpButton class = "profileListPopUp" list = "$profiles" item = "$profile" displayString = "$profile.localizedName" selection = "$userProfile.profile" noSelectionString = "$selectProfileString"/>
-	</wo:AjaxObserveField>
 	<wo:AjaxUpdateContainer id = "$userProfileEditorID">
+		<wo:AjaxObserveField updateContainerID = "$userProfileEditorID" fullSubmit = "YES">
+			<span class = "profileLabel"><wo:localized value = "UserPermissionEditor.ProfileLabel"/></span>
+			<wo:popUpButton class = "profileListPopUp" list = "$profiles" item = "$profile" displayString = "$profile.localizedName" selection = "$userProfile.profile" noSelectionString = "$selectProfileString"/>
+		</wo:AjaxObserveField>
 		<wo:UserPermProfileEditor userProfile = "$userProfile"/>
 	</wo:AjaxUpdateContainer>
 </div>
