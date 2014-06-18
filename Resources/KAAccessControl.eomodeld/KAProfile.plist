@@ -21,6 +21,7 @@
     primaryKeyAttributes = (id); 
     relationships = (
         {
+            deleteRule = EODeleteRuleCascade; 
             destination = KAProfileRole; 
             isToMany = Y; 
             joinSemantic = EOInnerJoin; 
