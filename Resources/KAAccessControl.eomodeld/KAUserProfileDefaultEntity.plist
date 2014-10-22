@@ -16,12 +16,12 @@
         {allowsNull = N; columnName = "user_id"; name = userID; prototypeName = id; }
     ); 
     attributesUsedForLocking = (id, isDefaultProfile, profileID, type, userID); 
-    className = "com.kaviju.accesscontrol.model.KAUserProfile"; 
+    className = "com.kaviju.accesscontrol.model.KAUserProfileDefaultEntity"; 
     classProperties = (isDefaultProfile, profile, roles, type, user); 
     externalName = KAUserProfile; 
     fetchSpecificationDictionary = {}; 
-    isAbstractEntity = Y; 
-    name = KAUserProfile; 
+    name = KAUserProfileDefaultEntity; 
+    parent = KAUserProfile; 
     primaryKeyAttributes = (id); 
     relationships = (
         {
@@ -48,4 +48,5 @@
             name = user; 
         }
     ); 
+    restrictingQualifier = "type=1"; 
 }

@@ -70,10 +70,15 @@ public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser
 			}
 		}
 		if (defaultUserProfile == null) {
-			defaultUserProfile = createProfilesRelationship();
-			defaultUserProfile.setUserRelationship(this);
+			defaultUserProfile = createProfileWithDefaultEntity();
 			defaultUserProfile.setIsDefaultProfile(true);
 		}
+		return defaultUserProfile;
+	}
+
+	public KAUserProfile createProfileWithDefaultEntity() {
+		KAUserProfile defaultUserProfile = KAUserProfileDefaultEntity.createKAUserProfileDefaultEntity(editingContext());
+		defaultUserProfile.setUserRelationship(this);
 		return defaultUserProfile;
 	}	
 		

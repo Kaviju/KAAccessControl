@@ -125,6 +125,13 @@ public class KAUserTest {
 	}
 
 	@Test
+	public void createProfileWithDefaultEntityCreateAKAUserProfileForCurrentUser() {
+		KAUserProfile userProfile = testUser.createProfileWithDefaultEntity();
+		
+		assertEquals(userProfile.user(), testUser);
+	}
+	
+	@Test
 	public void defaultUserProfileWithNoProfileCreateANewProfile() {
 		KAUserProfile profile = testUser.defaultUserProfile();
 		
@@ -134,10 +141,10 @@ public class KAUserTest {
 
 	@Test
 	public void defaultUserProfileWithADefaultProfileReturnDefaultProfile() {
-		testUser.createProfilesRelationship(); // empty not default profile
-		KAUserProfile defaultProfile = testUser.createProfilesRelationship();
+		testUser.createProfileWithDefaultEntity(); // empty not default profile
+		KAUserProfile defaultProfile = testUser.createProfileWithDefaultEntity();
 		defaultProfile.setIsDefaultProfile(true);
-		testUser.createProfilesRelationship(); // empty not default profile
+		testUser.createProfileWithDefaultEntity(); // empty not default profile
 		
 		KAUserProfile profile = testUser.defaultUserProfile();
 		assertEquals(defaultProfile, profile);
@@ -145,8 +152,8 @@ public class KAUserTest {
 
 	@Test
 	public void defaultUserProfileWithSomeProfilesButNoDefaultReturnFirstFound() {
-		KAUserProfile firstProfile = testUser.createProfilesRelationship(); // empty not default profile
-		testUser.createProfilesRelationship(); // empty not default profile
+		KAUserProfile firstProfile = testUser.createProfileWithDefaultEntity(); // empty not default profile
+		testUser.createProfileWithDefaultEntity(); // empty not default profile
 		
 		KAUserProfile profile = testUser.defaultUserProfile();
 		assertEquals(firstProfile, profile);

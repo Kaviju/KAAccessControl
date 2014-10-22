@@ -27,6 +27,11 @@
             name = KAUserProfile; 
         }, 
         {
+            className = "com.kaviju.accesscontrol.model.KAUserProfileDefaultEntity"; 
+            name = KAUserProfileDefaultEntity; 
+            parent = KAUserProfile; 
+        }, 
+        {
             className = "com.kaviju.accesscontrol.model.KAUserProfileRole"; 
             name = KAUserProfileRole; 
         }, 

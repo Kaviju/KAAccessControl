@@ -83,6 +83,7 @@ public class KAAccessControl0 extends ERXMigrationDatabase.Migration {
 		kaUserProfileTable.newIntegerColumn("id", false);
 		kaUserProfileTable.newIntBooleanColumn("isDefaultProfile", false);
 		kaUserProfileTable.newIntegerColumn("profile_id", false);
+		kaUserProfileTable.newIntegerColumn("type", false, 1);
 		kaUserProfileTable.newIntegerColumn("user_id", false);
 
 

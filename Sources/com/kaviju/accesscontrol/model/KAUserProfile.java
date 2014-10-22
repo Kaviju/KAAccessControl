@@ -5,11 +5,11 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 import com.webobjects.appserver.*;
-import com.webobjects.eocontrol.EOEnterpriseObject;
+import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.NSArray;
 
 @SuppressWarnings("serial")
-public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserProfile {
+public abstract class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserProfile {
 	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(KAUserProfile.class);
 	private Set<String> allEffectiveRoles;
@@ -17,6 +17,12 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 	@SuppressWarnings("unchecked")
 	public <U extends KAUser> U user(Class<U> userClass) {
 		return (U) user();
+	}
+	
+	@Override
+	public void awakeFromInsertion(EOEditingContext editingContext) {
+		super.awakeFromInsertion(editingContext);
+		setIsDefaultProfile(false);
 	}
 	
 	public String profileCode() {
@@ -143,3 +149,4 @@ public class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserPr
 		return user().createHomePageForUserProfile(context, this);
 	}
 }
+

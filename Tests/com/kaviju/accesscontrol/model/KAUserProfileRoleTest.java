@@ -17,7 +17,7 @@ public class KAUserProfileRoleTest {
 	@Rule public MockEditingContext ec = new MockEditingContext("KAAccessControl");
 	
 	@Dummy private KAProfile testProfile;
-	@Dummy private KAUserProfile testUserProfile;
+	@Dummy private KAUserProfileDefaultEntity testUserProfile;
 	@Dummy private KARole testUserRole;
 	@Dummy private KARole testAdminRole;
 

@@ -33,7 +33,7 @@ public class KAUserProfileTest {
 	@Dummy	private KARole testUserRole;
 	@Dummy	private KAProfile testUserProfile;
 
-	@Spy @UnderTest private KAUserProfile userProfileUnderTest;
+	@Spy @UnderTest private KAUserProfileDefaultEntity userProfileUnderTest;
 	
 	@Before
 	public void createDummies() {

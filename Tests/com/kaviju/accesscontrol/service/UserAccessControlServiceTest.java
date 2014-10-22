@@ -24,7 +24,7 @@ public class UserAccessControlServiceTest {
 
 	private UserAccessControlService<KAUserTest.KAUserForTest> serviceUnderTest;
 		
-	@Spy @Dummy private KAUserProfile testUserProfile;
+	@Spy @Dummy private KAUserProfileDefaultEntity testUserProfile;
 	@Spy @Dummy private KAUserTest.KAUserForTest testUser;
 	@Spy @Dummy private KAUserTest.KAUserForTest testPersonifiedUser;
 
@@ -165,7 +165,7 @@ public class UserAccessControlServiceTest {
 	@Test
 	public void setCurrentUserProfile() {
 		testUser.defaultUserProfile();
-		KAUserProfile profile = testUser.createProfilesRelationship();
+		KAUserProfile profile = testUser.createProfileWithDefaultEntity();
 		profile.setUserRelationship(testUser);
 		serviceUnderTest.logonAsUser(testUser);
 
