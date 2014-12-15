@@ -111,41 +111,6 @@ public class UserAccessControlServiceTest {
 	}
 
 	@Test
-	public void staticCurrentUserReturnLoggedUner() {
-		serviceUnderTest.logonAsUser(testUser);
-		
-		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), is(testUser));
-	}	
-
-	@Test
-	public void staticCurrentUserProfileWithoutCurrentServiceReturnNull() {
-		ERXThreadStorage.removeValueForKey(UserAccessControlService.UserAccessControlServiceThreadStorageKey);
-		
-		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), nullValue());
-	}	
-
-	@Test
-	public void staticCurrentUserProfileReturnsLoggedUserProfile() {
-		serviceUnderTest.logonAsUser(testUser);
-
-		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), is(testUser));
-	}
-	
-	@Test
-	public void staticCurrentUserWithoutCurrentServiceReturnNull() {
-		ERXThreadStorage.removeValueForKey(UserAccessControlService.UserAccessControlServiceThreadStorageKey);
-		
-		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), nullValue());
-	}	
-
-	@Test
-	public void staticCurrentUserReturnsLoggedUser() {
-		serviceUnderTest.logonAsUser(testUser);
-		
-		assertThat(UserAccessControlService.currentUser(KAUserTest.KAUserForTest.class), is(testUser));
-	}	
-
-	@Test
 	public void currentUserProfileReturnTheCurrentUserProfile() {
 		serviceUnderTest.logonAsUser(testUser);
 

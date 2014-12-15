@@ -50,22 +50,6 @@ public class UserAccessControlService<U extends KAUser> {
     	return service;
     }
 
-	static public <T extends KAUser> T currentUser(Class<T> userClass) {
-		UserAccessControlService<T> service = currentService(userClass);
-		if (service == null) {
-			return null;
-		}
-    	return service.currentUser();
-    }
-
-	static public <T extends KAUser> KAUserProfile currentUserProfile(Class<T> userClass) {
-		UserAccessControlService<T> service = currentService();
-		if (service == null) {
-			return null;
-		}
-    	return service.currentUserProfile();
-    }
-
 	public U realUser() {
 		return realUser;
 	}
@@ -78,10 +62,21 @@ public class UserAccessControlService<U extends KAUser> {
 		return (U) currentUserProfile.user();
 	}
 
-	public KAUserProfile currentUserProfile() {
-		return currentUserProfile;
+	@SuppressWarnings("unchecked")
+	public <T extends KAUser> T currentUser(Class<T> userClass) {
+		return (T) currentUser();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T extends KAUserProfile> T currentUserProfile() {
+		return (T) currentUserProfile;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends KAUserProfile> T currentUserProfile(Class<T> userProfileClass) {
+		return (T) currentUserProfile;
+	}
+
 	public void setCurrentUserProfile(KAUserProfile profile) {
 		if (currentUserProfile.user().profiles().containsObject(profile)) {
 			currentUserProfile = profile;
