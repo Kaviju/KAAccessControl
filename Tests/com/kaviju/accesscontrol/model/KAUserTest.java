@@ -1,16 +1,13 @@
 package com.kaviju.accesscontrol.model;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.mockito.Mockito.*;
 import static com.wounit.matchers.EOAssert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.kaviju.accesscontrol.authentication.*;
@@ -30,20 +27,17 @@ public class KAUserTest {
 
 	@Rule
     public MockEditingContext ec = new MockEditingContext("KAAccessControl", "ModelForTest");
-
-	@BeforeClass
-	static public void initPasswordHasher() {
-		testHasher = new Pbkdf2Hasher(keyLength, nbIterations);
-		PasswordHasher.registerHasher(testHasher);
-	}
 	
 	@Before
 	public void setPasswordHasher() {
+		testHasher = spy(new Pbkdf2Hasher(keyLength, nbIterations));
+		PasswordHasher.registerHasher(testHasher);
+
 		KAUser.setCurrentPasswordHasher(testHasher);
 	}
 
 	@Dummy KAProfile profile;
-	@Spy @UnderTest private KAUserForTest testUser;
+	@UnderTest private KAUserForTest testUser;
 
 	@SuppressWarnings("serial")
 	static public class KAUserForTest extends KAUser {
@@ -98,30 +92,23 @@ public class KAUserTest {
 	}
 	
 	@Test
-	public void authenticateWithPasswordAndUpgradeHashIfRequiredCallAuthenticateWithPassword() {
-		testUser.authenticateWithPasswordAndUpgradeHashIfRequired(testPassword);
-		
-		verify(testUser).authenticateWithPassword(testPassword);
-	}
-
-	@Test
-	public void authenticateWithPasswordAndUpgradeHashIfRequiredDoesNothingAndReturnFalseIfIncorrectPassword() {
+	public void authenticateWithPasswordAndUpgradeHashIfRequiredDoesNothingAndReturnFalseIfIncorrectPassword() {		
 		assertThat(testUser.authenticateWithPasswordAndUpgradeHashIfRequired(testWrongPassword), is(false));
 		
-		verify(testUser, never()).changePassword(testPassword);
+		assertThat(testUser.hasKeyChangedFromCommittedSnapshot(KAUser.PASSWORD_HASH_KEY), is(false));
 		confirm(testUser, hasNotBeenSaved());
 	}
 
 	@Test
 	public void authenticateWithPasswordAndUpgradeHashIfRequiredUpgradeHashIfPasswordIsValidAndHashNotCurrent() {
-		LatinSimpleMD5Hasher otherHasher = new LatinSimpleMD5Hasher();
+		LatinSimpleMD5Hasher otherHasher = spy(LatinSimpleMD5Hasher.class);
 		KAUser.setDefaultPasswordHasher(otherHasher);
 
 		testUser.setPasswordHash(otherHasher.hashPassword(testPassword).hashAsHexString());
 		testUser.authenticateWithPasswordAndUpgradeHashIfRequired(testPassword);
 		
-		verify(testUser).changePassword(testPassword);
 		confirm(testUser, hasBeenSaved());
+		verify(testHasher).hashPassword(testPassword);
 	}
 
 	@Test

@@ -6,13 +6,12 @@ import static org.mockito.Mockito.*;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.Spy;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.kaviju.accesscontrol.model.*;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSNotificationCenter;
-import com.wounit.annotations.Dummy;
 import com.wounit.rules.MockEditingContext;
 
 import er.extensions.foundation.ERXThreadStorage;
@@ -24,9 +23,11 @@ public class UserAccessControlServiceTest {
 
 	private UserAccessControlService<KAUserTest.KAUserForTest> serviceUnderTest;
 		
-	@Spy @Dummy private KAUserProfileDefaultEntity testUserProfile;
-	@Spy @Dummy private KAUserTest.KAUserForTest testUser;
-	@Spy @Dummy private KAUserTest.KAUserForTest testPersonifiedUser;
+	@Mock private KAUserTest.KAUserForTest testUser;
+	@Mock private KAUserProfileDefaultEntity testUserProfile;
+	
+	@Mock private KAUserTest.KAUserForTest testPersonifiedUser;
+	@Mock private KAUserProfileDefaultEntity testPersonnifiedUserProfile;
 
 	static private WOComponent loggedOutPage = mock(WOComponent.class);
 	private WOApplication app = new AppForTest();
@@ -37,10 +38,12 @@ public class UserAccessControlServiceTest {
 
 	@Before
 	public void createService() {
-		testUserProfile.setIsDefaultProfile(true);
-		testUserProfile.setUser(testUser);
-		testUser.addToProfiles(testUserProfile);
-		
+		when(testUser.defaultUserProfile()).thenReturn(testUserProfile);
+		when(testUserProfile.user()).thenReturn(testUser);
+
+		when(testPersonifiedUser.defaultUserProfile()).thenReturn(testPersonnifiedUserProfile);
+		when(testPersonnifiedUserProfile.user()).thenReturn(testPersonifiedUser);
+
 		when(session.context()).thenReturn(context);
 		when(sessionWithDelegate.context()).thenReturn(context);
 		
@@ -129,12 +132,9 @@ public class UserAccessControlServiceTest {
 
 	@Test
 	public void setCurrentUserProfile() {
-		testUser.defaultUserProfile();
-		KAUserProfile profile = testUser.createProfileWithDefaultEntity();
-		profile.setUserRelationship(testUser);
 		serviceUnderTest.logonAsUser(testUser);
 
-		serviceUnderTest.setCurrentUserProfile(profile);
+		serviceUnderTest.setCurrentUserProfile(testUserProfile);
 	}
 
 	@Test

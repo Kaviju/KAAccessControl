@@ -14,11 +14,11 @@
 	<classpathentry kind="con" path="WOFramework/JavaWebObjects"/>
 	<classpathentry kind="con" path="WOFramework/JavaXML"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/KATestJars/hamcrest-core-1.3.jar"/>
-	<classpathentry kind="lib" path="/KATestJars/objenesis-1.0.jar"/>
-	<classpathentry kind="lib" path="/KATestJars/mockito-core-1.9.5.jar"/>
-	<classpathentry kind="lib" path="/KATestJars/wounit.jar"/>
+	<classpathentry kind="lib" path="Libraries/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="Libraries/wounit-1.2.3.jar"/>
 	<classpathentry kind="con" path="WOFramework/Ajax"/>
 	<classpathentry kind="con" path="WOFramework/FrontBasePlugIn"/>
+	<classpathentry kind="lib" path="Libraries/mockito-core-1.10.19.jar"/>
+	<classpathentry kind="lib" path="Libraries/objenesis-2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
