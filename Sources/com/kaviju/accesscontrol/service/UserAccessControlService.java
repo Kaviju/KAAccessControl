@@ -11,6 +11,7 @@ public class UserAccessControlService<U extends KAUser> {
 	protected static final String UserAccessControlServiceThreadStorageKey = "UserAccessControlServiceThreadStorageKey";
 	private U realUser;
 	private KAUserProfile currentUserProfile;
+	private boolean profileSelectedByUser;
 	private NSMutableArray<UserStackEntry<U>> userStack = new NSMutableArray<UserStackEntry<U>>();
 	private final WOSession session;
 
@@ -84,6 +85,10 @@ public class UserAccessControlService<U extends KAUser> {
 			throw new IllegalArgumentException("Cannot set a profile from another user or editing context as current profile.");
 		}
 	}
+	
+	public boolean profileSelectedByUser() {
+		return profileSelectedByUser;
+	}
 
 	public boolean currentUserHasRole(String roleCode) {
 		if (currentUserProfile() == null) {
@@ -105,6 +110,12 @@ public class UserAccessControlService<U extends KAUser> {
 		}
 		realUser = user;
 		currentUserProfile = user.defaultUserProfile();
+		if (user.profiles().count() > 1) {
+			profileSelectedByUser = false;
+		}
+		else {
+			profileSelectedByUser = true;
+		}
 		return createHomePage();
 	}
 	
@@ -116,9 +127,26 @@ public class UserAccessControlService<U extends KAUser> {
 	}
 
 	public WOComponent personifyUser(U user) {
-		userStack.add(new UserStackEntry<U>(currentUserProfile, session.context().page()));
+		userStack.add(new UserStackEntry<U>(currentUserProfile, profileSelectedByUser, session.context().page()));
 		currentUserProfile = user.defaultUserProfile();
+		if (user.profiles().count() > 1) {
+			profileSelectedByUser = false;
+		}
+		else {
+			profileSelectedByUser = true;
+		}
 		return createHomePage();
+	}
+
+	public WOComponent personifyUserProfile(KAUserProfile userProfile) {
+		userStack.add(new UserStackEntry<U>(currentUserProfile, profileSelectedByUser, session.context().page()));
+		currentUserProfile = userProfile;
+		profileSelectedByUser = true;
+		return createHomePage();
+	}
+
+	public boolean isPersonifying() {
+		return userStack.count() > 0;
 	}
 
 	public WOComponent logout() {
@@ -131,6 +159,8 @@ public class UserAccessControlService<U extends KAUser> {
 		}
 		UserStackEntry<U> lastUserEntry = userStack.removeLastObject();
 		currentUserProfile = lastUserEntry.userProfile;
+		profileSelectedByUser = lastUserEntry.profileSelectedByUser;
+		
 		if (session instanceof UserLogonDelegate) {
 			((UserLogonDelegate)session).userProfileDidLogon(currentUserProfile());
 		}
@@ -144,10 +174,12 @@ public class UserAccessControlService<U extends KAUser> {
 	
 	static private class UserStackEntry<U extends KAUser> {
 		public final KAUserProfile userProfile;
+		public final boolean profileSelectedByUser;
 		public final WOComponent page;
 		
-		public UserStackEntry(KAUserProfile userProfile, WOComponent page) {
+		public UserStackEntry(KAUserProfile userProfile, boolean profileSelectedByUser, WOComponent page) {
 			this.userProfile = userProfile;
+			this.profileSelectedByUser = profileSelectedByUser;
 			this.page = page;
 		}
 	}
