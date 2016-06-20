@@ -26,7 +26,10 @@ public abstract class KAUserProfile extends com.kaviju.accesscontrol.model.base.
 	}
 	
 	public String profileCode() {
-		return profile().code();
+		if (profile() != null) {
+			return profile().code();
+		}
+		return null;
 	}
 
 	@Override
