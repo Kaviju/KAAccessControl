@@ -79,11 +79,10 @@ public class UserAccessControlService<U extends KAUser> {
 	}
 
 	public void setCurrentUserProfile(KAUserProfile profile) {
-		if ( currentUserProfile.user().equals(profile.user()) ) {
-		}
-		else {
+		if ( currentUserProfile.user().equals(profile.user()) == false ) {
 			throw new IllegalArgumentException("Cannot set a profile from another user or editing context as current profile.");
 		}
+		currentUserProfile = profile;
 	}
 	
 	public boolean profileSelectedByUser() {
