@@ -6,11 +6,12 @@ import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSArray;
 
-import er.extensions.components.ERXComponent;
+import er.extensions.components.*;
+
 import com.kaviju.accesscontrol.model.KARole;
 
 @SuppressWarnings("serial")
-public class UserPermProfileEditor extends ERXComponent {
+public class UserPermProfileEditor extends ERXNonSynchronizingComponent {
 	private KAUserProfile userProfile;
 	private NSArray<KARoleGroup> groups;
 	private KARoleGroup group;
@@ -19,24 +20,21 @@ public class UserPermProfileEditor extends ERXComponent {
 	public UserPermProfileEditor(WOContext context) {
         super(context);
     }
-
-	public KAUserProfile userProfile() {
-		return userProfile;
-	}
-
-	public void setUserProfile(KAUserProfile userProfile) {
-		this.userProfile = userProfile;
-	}
 	
 	@Override
-	public void appendToResponse(WOResponse response, WOContext context) {
+	protected void preAppendToResponse(WOResponse response, WOContext context) {
+		super.preAppendToResponse(response, context);
+		userProfile = (KAUserProfile) valueForBinding("userProfile");
 		if (userProfile.profile() == null) {
 			groups = new NSArray<KARoleGroup>();
 		}
 		else {
 			groups = userProfile.profile().displayedGroups();
 		}
-		super.appendToResponse(response, context);
+	}
+
+	public KAUserProfile userProfile() {
+		return userProfile;
 	}
 
 	public NSArray<KARoleGroup> groups() {

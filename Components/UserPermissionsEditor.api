@@ -4,5 +4,6 @@
         <validation message="'user' is a required binding.">
             <unbound name="user"/>
         </validation>
+    <binding defaults="Boolean" name="autoSave"/>
     </wo>
 </wodefinitions>

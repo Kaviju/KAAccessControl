@@ -8,5 +8,6 @@
         <validation message="'role' is a required binding.">
             <unbound name="role"/>
         </validation>
+    <binding defaults="Boolean" name="autoSave"/>
     </wo>
 </wodefinitions>

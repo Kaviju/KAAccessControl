@@ -1,6 +1,6 @@
 <wo:repeat list = "$groups" item = "$group">
 	<span class = "roleGroupLabel"><wo:string value = "$group.localizedName"/></span>
 	<wo:repeat list = "$rolesInGroup" item = "$role">
-		<wo:UserPermRoleEditor userProfile = "$userProfile" role = "$role"/>
+		<wo:UserPermRoleEditor userProfile = "$userProfile" role = "$role" autoSave = "$^autoSave"/>
 	</wo:repeat>
 </wo:repeat>

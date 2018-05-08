@@ -7,6 +7,6 @@
 			<span class = "profileLabel"><wo:localized value = "UserPermissionEditor.ProfileLabel"/></span>
 			<wo:popUpButton class = "profileListPopUp" list = "$profiles" item = "$profile" displayString = "$profile.localizedName" selection = "$userProfile.profile" noSelectionString = "$selectProfileString"/>
 		</wo:AjaxObserveField>
-		<wo:UserPermProfileEditor userProfile = "$userProfile"/>
+		<wo:UserPermProfileEditor userProfile = "$userProfile" autoSave = "$^autoSave"/>
 	</wo:AjaxUpdateContainer>
 </div>

@@ -10,11 +10,11 @@ import com.webobjects.foundation.NSArray;
 
 import er.ajax.AjaxModalDialog;
 import er.ajax.AjaxUpdateContainer;
-import er.extensions.components.ERXComponent;
+import er.extensions.components.*;
 import er.extensions.foundation.ERXArrayUtilities;
 
 @SuppressWarnings("serial")
-public class UserPermRoleEditor extends ERXComponent {
+public class UserPermRoleEditor extends ERXNonSynchronizingComponent {
     private KAUserProfile userProfile;
 	private KARole role;
 	private NSArray<KAAccessListItem> items;
@@ -27,25 +27,23 @@ public class UserPermRoleEditor extends ERXComponent {
     }
 	
 	@Override
-	public void appendToResponse(WOResponse aResponse, WOContext aContext) {
+	protected void preAppendToResponse(WOResponse response, WOContext context) {
+		super.preAppendToResponse(response, context);
+		userProfile = (KAUserProfile) valueForBinding("userProfile");
+		role = (KARole) valueForBinding("role");
 		updateContainerId = "UserPermRoleEdit_"+role().primaryKey();
-		super.appendToResponse(aResponse, aContext);
 	}
 
 	public KAUserProfile userProfile() {
 		return userProfile;
 	}
 
-	public void setUserProfile(KAUserProfile userProfile) {
-		this.userProfile = userProfile;
-	}
-
 	public KARole role() {
 		return role;
 	}
-
-	public void setRole(KARole role) {
-		this.role = role;
+	
+	public boolean shouldAutoSave() {
+		return booleanValueForBinding("autoSave", false);
 	}
 
 	public boolean roleDisabled() {
@@ -100,7 +98,7 @@ public class UserPermRoleEditor extends ERXComponent {
 		else {
 			AjaxUpdateContainer.updateContainerWithID(AjaxUpdateContainer.currentUpdateContainerID(), context());
 		}
-		return null;
+		return autosave();
 	}
 	public WOActionResults addItem() {
 		userProfile().addItemForRole(selectedItem(), role());
@@ -111,7 +109,7 @@ public class UserPermRoleEditor extends ERXComponent {
 			AjaxUpdateContainer.updateContainerWithID(AjaxUpdateContainer.currentUpdateContainerID(), context());
 		}
 		setSelectedItem(null);
-		return null;
+		return autosave();
 	}
 
 	public String addItemLabel() {
@@ -126,10 +124,14 @@ public class UserPermRoleEditor extends ERXComponent {
 		return roleChecked() && role().list() != null;
 	}
 
-	/**
-	 * @return the updateContainerId
-	 */
 	public String updateContainerId() {
 		return updateContainerId;
+	}
+
+	public WOActionResults autosave() {
+		if (shouldAutoSave()) {
+			userProfile.editingContext().saveChanges();
+		}
+		return null;
 	}
 }

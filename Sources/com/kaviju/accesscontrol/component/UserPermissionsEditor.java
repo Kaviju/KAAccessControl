@@ -3,13 +3,13 @@ package com.kaviju.accesscontrol.component;
 import com.kaviju.accesscontrol.model.KAProfile;
 import com.kaviju.accesscontrol.model.KAUser;
 import com.kaviju.accesscontrol.model.KAUserProfile;
-import com.webobjects.appserver.WOContext;
+import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSArray;
 
-import er.extensions.components.ERXComponent;
+import er.extensions.components.*;
 
 @SuppressWarnings("serial")
-public class UserPermissionsEditor extends ERXComponent {
+public class UserPermissionsEditor extends ERXNonSynchronizingComponent {
 	private KAUser user;
     private NSArray<KAProfile> profiles;
 	private KAProfile profile;
@@ -18,6 +18,12 @@ public class UserPermissionsEditor extends ERXComponent {
 	public UserPermissionsEditor(WOContext context) {
         super(context);
     }
+	
+	@Override
+	protected void preAppendToResponse(WOResponse response, WOContext context) {
+		super.preAppendToResponse(response, context);
+		setUser((KAUser) valueForBinding("user"));
+	}
 
 	public KAUser user() {
 		return user;
