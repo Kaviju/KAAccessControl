@@ -1,8 +1,9 @@
 package com.kaviju.accesscontrol.utils;
 
+import java.io.UnsupportedEncodingException;
+
 import com.kaviju.accesscontrol.annotation.AutoSyncWithAccessList;
-import com.kaviju.accesscontrol.model.KAAccessList;
-import com.kaviju.accesscontrol.model.KAAccessListItem;
+import com.kaviju.accesscontrol.model.*;
 import com.webobjects.eoaccess.*;
 import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
@@ -42,7 +43,7 @@ public class ListItemAutoUpdater {
 			ERXFetchSpecification<ERXEnterpriseObject> fs = new ERXFetchSpecification<ERXEnterpriseObject>(entityName, null, null);
 			NSArray<ERXEnterpriseObject> listValues = fs.fetchObjects(ec);
 			for (ERXEnterpriseObject value : listValues) {
-    			String itemName = value.valueForKey(annotation.nameProperty()).toString();
+    			String itemName = itemNameForEO(value, annotation);
 				list.insertItemWithCodeAndName(value.primaryKey(), itemName);
 			}
 		}
@@ -76,7 +77,7 @@ public class ListItemAutoUpdater {
         		if (annotation != null) {
         			KAAccessList list = KAAccessList.fetchListWithCode(ec, annotation.listCode());
         			KAAccessListItem item = list.itemWithCode(ERXEOControlUtilities.primaryKeyStringForObject(updatedEO));
-        			String itemName = updatedEO.valueForKey(annotation.nameProperty()).toString();
+        			String itemName = itemNameForEO(updatedEO, annotation);
         			item.setName(itemName);
         		}
 			}
@@ -88,13 +89,28 @@ public class ListItemAutoUpdater {
         		if (annotation != null) {
         			ERXEnterpriseObject insertedErxEO = (ERXEnterpriseObject) insertedEO;
         			KAAccessList list = KAAccessList.fetchListWithCode(ec, annotation.listCode());
-        			String itemName = insertedEO.valueForKey(annotation.nameProperty()).toString();
+        			String itemName = itemNameForEO(insertedEO, annotation);
 					list.insertItemWithCodeAndName(insertedErxEO.primaryKeyInTransaction(), itemName);
         		}
 			}
         }
     }
-    
+
+    private String itemNameForEO(EOEnterpriseObject anEO, AutoSyncWithAccessList annotation) {
+    	try {
+    		String itemName = anEO.valueForKey(annotation.nameProperty()).toString();
+    		if (itemName.length() > 50) {
+    			itemName = itemName.substring(0, 50);
+    			while (itemName.getBytes("UTF-8").length > 50) {
+    				itemName = itemName.substring(0, itemName.length()-1);
+    			}
+    		}
+    		return itemName;
+    	} catch (UnsupportedEncodingException e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+
     public void unregisterFromNoticiationCenter() {
     	NSNotificationCenter.defaultCenter().removeObserver(this);
     }
