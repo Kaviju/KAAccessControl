@@ -1,18 +1,16 @@
 package com.kaviju.accesscontrol.component;
 
-import com.kaviju.accesscontrol.model.KARoleGroup;
-import com.kaviju.accesscontrol.model.KAUserProfile;
+import com.kaviju.accesscontrol.model.*;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.foundation.NSArray;
 
 import er.extensions.components.*;
 
-import com.kaviju.accesscontrol.model.KARole;
-
 @SuppressWarnings("serial")
 public class UserPermProfileEditor extends ERXNonSynchronizingComponent {
 	private KAUserProfile userProfile;
+	private KAProfile profile;
 	private NSArray<KARoleGroup> groups;
 	private KARoleGroup group;
 	private KARole role;
@@ -25,11 +23,12 @@ public class UserPermProfileEditor extends ERXNonSynchronizingComponent {
 	protected void preAppendToResponse(WOResponse response, WOContext context) {
 		super.preAppendToResponse(response, context);
 		userProfile = (KAUserProfile) valueForBinding("userProfile");
-		if (userProfile.profile() == null) {
+		profile = userProfile.profile();
+		if (profile == null) {
 			groups = new NSArray<KARoleGroup>();
 		}
 		else {
-			groups = userProfile.profile().displayedGroups();
+			groups = profile.displayedGroups();
 		}
 	}
 
@@ -50,7 +49,7 @@ public class UserPermProfileEditor extends ERXNonSynchronizingComponent {
 	}
 
 	public NSArray<KARole> rolesInGroup() {
-		return userProfile().profile().displayedRolesForGroup(group());
+		return profile.displayedRolesForGroup(group());
 	}
 
 	public KARole role() {
