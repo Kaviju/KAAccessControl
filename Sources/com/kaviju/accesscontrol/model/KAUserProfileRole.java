@@ -22,7 +22,7 @@ public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUs
 		
 		for (KAAccessListItem item : listItems()) {
 			@SuppressWarnings("unchecked")
-			T eo = (T)ERXEOControlUtilities.objectWithPrimaryKeyValue(editingContext(), entityName, Integer.parseInt(item.code()), null);
+			T eo = (T)ERXEOControlUtilities.objectWithPrimaryKeyValue(editingContext(), entityName, Integer.parseInt(item.code()), null, false);
 			if (eo == null) {
 				log.warn("Object from entity "+entityName+" not found for item with code "+item.code()+" in list "+item.list().code()+" for user "+userProfile().user());
 			}
