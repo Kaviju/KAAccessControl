@@ -42,10 +42,6 @@ public class UserPermRoleEditor extends ERXNonSynchronizingComponent {
 		return role;
 	}
 	
-	public boolean shouldAutoSave() {
-		return booleanValueForBinding("autoSave", false);
-	}
-
 	public boolean roleDisabled() {
 		return userProfile().profile().mandatoryRoles().contains(role());
 	}
@@ -129,7 +125,7 @@ public class UserPermRoleEditor extends ERXNonSynchronizingComponent {
 	}
 
 	public WOActionResults autosave() {
-		if (shouldAutoSave()) {
+		if (booleanValueForBinding("autoSave", false)) {
 			userProfile.editingContext().saveChanges();
 		}
 		return null;

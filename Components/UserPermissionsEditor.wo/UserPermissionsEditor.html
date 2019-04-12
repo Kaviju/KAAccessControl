@@ -3,7 +3,7 @@
 		<p style = "color:red;">This component needs to be inside a WOForm.</p>
 	</wo:if>
 	<wo:AjaxUpdateContainer id = "$userProfileEditorID">
-		<wo:AjaxObserveField updateContainerID = "$userProfileEditorID" fullSubmit = "YES">
+		<wo:AjaxObserveField updateContainerID = "$userProfileEditorID" action = "$autosave">
 			<span class = "profileLabel"><wo:localized value = "UserPermissionEditor.ProfileLabel"/></span>
 			<wo:popUpButton class = "profileListPopUp" list = "$profiles" item = "$profile" displayString = "$profile.localizedName" selection = "$userProfile.profile" noSelectionString = "$selectProfileString"/>
 		</wo:AjaxObserveField>

@@ -7,6 +7,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSArray;
 
 import er.extensions.components.*;
+import com.webobjects.appserver.WOActionResults;
 
 @SuppressWarnings("serial")
 public class UserPermissionsEditor extends ERXNonSynchronizingComponent {
@@ -67,6 +68,13 @@ public class UserPermissionsEditor extends ERXNonSynchronizingComponent {
 			return null;  // If already selected, does not allow NULL.
 		}
 		return localizer().localizedStringForKeyWithDefault("UserPermissionEditor.selectProfile");
+	}
+
+	public WOActionResults autosave() {
+		if (booleanValueForBinding("autoSave", false)) {
+			userProfile.editingContext().saveChanges();
+		}
+		return null;
 	}
 
 }
