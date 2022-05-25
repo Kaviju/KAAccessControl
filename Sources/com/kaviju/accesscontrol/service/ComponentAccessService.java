@@ -27,16 +27,35 @@ public class ComponentAccessService {
 		if (componentClass == null) {
 			throw new IllegalArgumentException("There is no component with name: "+componentName+"");
 		}
-		NSSet<String> roleCodesThatAllowAccess = readAllowedRoleCodesInClass(componentClass);
-		
-		return userProfile.hasAtLeastOneOfTheseRoles(roleCodesThatAllowAccess);
-	}
-	public boolean isComponentAccessibleForUserProfile(Class<? extends WOComponent> componentClass, KAUserProfile userProfile) {
-		NSSet<String> roleCodesThatAllowAccess = readAllowedRoleCodesInClass(componentClass);
-		
-		return userProfile.hasAtLeastOneOfTheseRoles(roleCodesThatAllowAccess);
+		return isComponentAccessibleForUserProfile(componentClass, userProfile);
 	}
 	
+	public boolean isComponentAccessibleForUserProfile(Class<? extends WOComponent> componentClass, KAUserProfile userProfile) {
+		boolean allowed = verifyAccessByItemInClassForProfile(componentClass, userProfile);
+		if (allowed == false) {
+			NSSet<String> roleCodesThatAllowAccess = readAllowedRoleCodesInClass(componentClass);
+			
+			allowed = userProfile.hasAtLeastOneOfTheseRoles(roleCodesThatAllowAccess);
+		}
+		return allowed;
+	}
+
+	private boolean verifyAccessByItemInClassForProfile(Class<? extends WOComponent> componentClass, KAUserProfile userProfile) {
+		String componentClassName = componentClass.getSimpleName();
+		AllowedAsItemForRole annotation = (AllowedAsItemForRole) componentClass.getAnnotation(AllowedAsItemForRole.class);
+		if (annotation != null) {
+			KAUserProfileRole userProfileRole = userProfile.userProfileRoleWithCode(annotation.roleCode());
+			if (userProfileRole != null) {
+				for (KAAccessListItem userProfileListtem : userProfileRole.listItems()) {
+					if (userProfileListtem.code().equals(componentClassName)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	public NSSet<String> readAllowedRoleCodesInClass(Class<? extends WOComponent> componentClass) {
 		boolean isAllowedForAll = verifyAllowedForAllAnnotationInClass(componentClass);
 		NSSet<String> allowedRoleCodesAnnotation = readAllowedForRolesAnnotationInClass(componentClass);

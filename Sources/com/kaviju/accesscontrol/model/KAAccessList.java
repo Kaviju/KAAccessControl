@@ -21,13 +21,14 @@ public class KAAccessList extends com.kaviju.accesscontrol.model.base._KAAccessL
 		}
 	}
 
-	public void insertItemWithCodeAndName(String code, String name) {
+	public KAAccessListItem insertItemWithCodeAndName(String code, String name) {
 		KAAccessListItem foundItem = itemWithCode(code);
 		if (foundItem == null) {
-			KAAccessListItem newItem = createItemsRelationship();
-			newItem.setCode(code);
-			newItem.setName(name);
+			foundItem = createItemsRelationship();
+			foundItem.setCode(code);
 		}
+		foundItem.setName(name);
+		return foundItem;
 	}
 	
 	public KAAccessListItem itemWithCode(String code) {

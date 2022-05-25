@@ -33,7 +33,11 @@ public class KAAccessControlPrincipal extends ERXFrameworkPrincipal {
 			ec.saveChanges();
 			
 			listAutoUpdater = new ListItemAutoUpdater(ec);
+			ListItemFromClassUpdater.updateItemsFromAnnotations(ec);
 			ec.saveChanges();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 		finally {
 			ec.unlock();
