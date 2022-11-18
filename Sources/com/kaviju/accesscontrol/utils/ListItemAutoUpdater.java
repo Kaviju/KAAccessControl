@@ -99,11 +99,8 @@ public class ListItemAutoUpdater {
     private String itemNameForEO(EOEnterpriseObject anEO, AutoSyncWithAccessList annotation) {
     	try {
     		String itemName = anEO.valueForKey(annotation.nameProperty()).toString();
-    		if (itemName.length() > 50) {
-    			itemName = itemName.substring(0, 50);
-    			while (itemName.getBytes("UTF-8").length > 50) {
-    				itemName = itemName.substring(0, itemName.length()-1);
-    			}
+    		while (itemName.getBytes("UTF-8").length > 50) {
+    			itemName = itemName.substring(0, itemName.length()-1);
     		}
     		return itemName;
     	} catch (UnsupportedEncodingException e) {

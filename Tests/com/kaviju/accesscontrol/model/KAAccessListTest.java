@@ -14,6 +14,8 @@ public class KAAccessListTest {
 	static private final String territory2Code = "T2";
 	static private final String territory3Code = "T3";
 	static private final String territory3Name = "T3Name";
+	static private final String tooLongName = "1234567890123456789012345678901234567890é1234567890";
+	static private final String truncatedName = "1234567890123456789012345678901234567890é12345678";
 
 	@Rule
     public MockEditingContext ec = new MockEditingContext("KAAccessControl");
@@ -64,6 +66,12 @@ public class KAAccessListTest {
 		listUnderTest.insertItemWithCodeAndName(territory1Code, territory1Name);
 
 		assertEquals(2, listUnderTest.items().count());
+	}
+
+	@Test
+	public void insertItemWithCodeTruncateNameIfRequired() {
+		listUnderTest.insertItemWithCodeAndName(territory1Code, tooLongName);
+		assertEquals(truncatedName, listUnderTest.itemWithCode(territory1Code).name());
 	}
 
 }
