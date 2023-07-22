@@ -33,6 +33,7 @@
             name = profile; 
         }, 
         {
+            deleteRule = EODeleteRuleCascade; 
             destination = KAUserProfileRole; 
             isToMany = Y; 
             joinSemantic = EOInnerJoin; 

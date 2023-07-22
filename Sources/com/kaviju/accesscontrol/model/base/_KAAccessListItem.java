@@ -20,12 +20,14 @@ public abstract class _KAAccessListItem extends  ERXGenericRecord {
   public static final ERXKey<String> NAME = new ERXKey<String>("name");
   // Relationship Keys
   public static final ERXKey<com.kaviju.accesscontrol.model.KAAccessList> LIST = new ERXKey<com.kaviju.accesscontrol.model.KAAccessList>("list");
+  public static final ERXKey<com.kaviju.accesscontrol.model.KAUserProfileRole> USER_PROFILE_ROLES = new ERXKey<com.kaviju.accesscontrol.model.KAUserProfileRole>("userProfileRoles");
 
   // Attributes
   public static final String CODE_KEY = "code";
   public static final String NAME_KEY = "name";
   // Relationships
   public static final String LIST_KEY = "list";
+  public static final String USER_PROFILE_ROLES_KEY = "userProfileRoles";
 
   private static Logger LOG = Logger.getLogger(_KAAccessListItem.class);
 
@@ -84,6 +86,78 @@ public abstract class _KAAccessListItem extends  ERXGenericRecord {
     }
   }
   
+  public NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> userProfileRoles() {
+    return (NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole>)storedValueForKey(_KAAccessListItem.USER_PROFILE_ROLES_KEY);
+  }
+
+  public NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> userProfileRoles(EOQualifier qualifier) {
+    return userProfileRoles(qualifier, null);
+  }
+
+  public NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> userProfileRoles(EOQualifier qualifier, NSArray<EOSortOrdering> sortOrderings) {
+    NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole> results;
+      results = userProfileRoles();
+      if (qualifier != null) {
+        results = (NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole>)EOQualifier.filteredArrayWithQualifier(results, qualifier);
+      }
+      if (sortOrderings != null) {
+        results = (NSArray<com.kaviju.accesscontrol.model.KAUserProfileRole>)EOSortOrdering.sortedArrayUsingKeyOrderArray(results, sortOrderings);
+      }
+    return results;
+  }
+  
+  public void addToUserProfileRoles(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    includeObjectIntoPropertyWithKey(object, _KAAccessListItem.USER_PROFILE_ROLES_KEY);
+  }
+
+  public void removeFromUserProfileRoles(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    excludeObjectFromPropertyWithKey(object, _KAAccessListItem.USER_PROFILE_ROLES_KEY);
+  }
+
+  public void addToUserProfileRolesRelationship(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    if (_KAAccessListItem.LOG.isDebugEnabled()) {
+      _KAAccessListItem.LOG.debug("adding " + object + " to userProfileRoles relationship");
+    }
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+    	addToUserProfileRoles(object);
+    }
+    else {
+    	addObjectToBothSidesOfRelationshipWithKey(object, _KAAccessListItem.USER_PROFILE_ROLES_KEY);
+    }
+  }
+
+  public void removeFromUserProfileRolesRelationship(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    if (_KAAccessListItem.LOG.isDebugEnabled()) {
+      _KAAccessListItem.LOG.debug("removing " + object + " from userProfileRoles relationship");
+    }
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+    	removeFromUserProfileRoles(object);
+    }
+    else {
+    	removeObjectFromBothSidesOfRelationshipWithKey(object, _KAAccessListItem.USER_PROFILE_ROLES_KEY);
+    }
+  }
+
+  public com.kaviju.accesscontrol.model.KAUserProfileRole createUserProfileRolesRelationship() {
+    EOClassDescription eoClassDesc = EOClassDescription.classDescriptionForEntityName( com.kaviju.accesscontrol.model.KAUserProfileRole.ENTITY_NAME );
+    EOEnterpriseObject eo = eoClassDesc.createInstanceWithEditingContext(editingContext(), null);
+    editingContext().insertObject(eo);
+    addObjectToBothSidesOfRelationshipWithKey(eo, _KAAccessListItem.USER_PROFILE_ROLES_KEY);
+    return (com.kaviju.accesscontrol.model.KAUserProfileRole) eo;
+  }
+
+  public void deleteUserProfileRolesRelationship(com.kaviju.accesscontrol.model.KAUserProfileRole object) {
+    removeObjectFromBothSidesOfRelationshipWithKey(object, _KAAccessListItem.USER_PROFILE_ROLES_KEY);
+    editingContext().deleteObject(object);
+  }
+
+  public void deleteAllUserProfileRolesRelationships() {
+    Enumeration<com.kaviju.accesscontrol.model.KAUserProfileRole> objects = userProfileRoles().immutableClone().objectEnumerator();
+    while (objects.hasMoreElements()) {
+      deleteUserProfileRolesRelationship(objects.nextElement());
+    }
+  }
+
 
 public static com.kaviju.accesscontrol.model.KAAccessListItem createKAAccessListItem(EOEditingContext editingContext) {
     com.kaviju.accesscontrol.model.KAAccessListItem eo = (com.kaviju.accesscontrol.model.KAAccessListItem) EOUtilities.createAndInsertInstance(editingContext, _KAAccessListItem.ENTITY_NAME);    return eo;

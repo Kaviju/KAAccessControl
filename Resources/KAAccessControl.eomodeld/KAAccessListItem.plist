@@ -12,7 +12,7 @@
     ); 
     attributesUsedForLocking = (accessListID, code, id, name); 
     className = "com.kaviju.accesscontrol.model.KAAccessListItem"; 
-    classProperties = (code, list, name); 
+    classProperties = (code, list, name, userProfileRoles); 
     entityIndexes = (
         {
             attributes = (); 
@@ -22,7 +22,7 @@
             order = asc; 
         }, 
         {
-            attributes = (accessListID, code); 
+            attributes = (code, accessListID); 
             constraint = distinct; 
             indexType = clustered; 
             name = codeIndex; 
@@ -41,6 +41,18 @@
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = id; sourceAttribute = accessListID; }); 
             name = list; 
+        }, 
+        {
+            deleteRule = EODeleteRuleCascade; 
+            destination = KAUserProfileRoleItem; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = permissionListItemID; sourceAttribute = id; }); 
+            name = userProfileRoleItems; 
+        }, 
+        {
+            definition = "userProfileRoleItems.userProfileRole"; 
+            name = userProfileRoles; 
         }
     ); 
 }
