@@ -6,6 +6,7 @@ import com.kaviju.accesscontrol.model.KAUserProfile;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.NSArray;
 
+import er.ajax.AjaxModalDialog;
 import er.extensions.components.*;
 import com.webobjects.appserver.WOActionResults;
 
@@ -73,6 +74,13 @@ public class UserPermissionsEditor extends ERXNonSynchronizingComponent {
 	public WOActionResults autosave() {
 		if (booleanValueForBinding("autoSave", false)) {
 			userProfile.editingContext().saveChanges();
+		}
+		return null;
+	}
+
+	public WOActionResults refresh() {
+		if (AjaxModalDialog.isInDialog(context())) {
+			AjaxModalDialog.update(context(), null);
 		}
 		return null;
 	}

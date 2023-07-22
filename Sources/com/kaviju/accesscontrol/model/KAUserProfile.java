@@ -132,6 +132,10 @@ public abstract class KAUserProfile extends com.kaviju.accesscontrol.model.base.
 		return userProfileRoleWithCode(role.code()).listItems();
 	}
 
+	public NSArray<KAAccessListItem> listItemsForRole(String roleCode) {
+		return userProfileRoleWithCode(roleCode).listItems();
+	}
+
 	public void addItemForRole(KAAccessListItem item, KARole role) {
 		userProfileRoleWithCode(role.code()).addToListItems(item);		
 	}
@@ -139,7 +143,7 @@ public abstract class KAUserProfile extends com.kaviju.accesscontrol.model.base.
 		userProfileRoleWithCode(role.code()).removeFromListItems(item);		
 	}
 
-	private KAUserProfileRole userProfileRoleWithCode(String roleCode) {
+	public KAUserProfileRole userProfileRoleWithCode(String roleCode) {
 		for (KAUserProfileRole userProfileRole : roles()) {
 			if (userProfileRole.role().code().equals(roleCode)) {
 				return userProfileRole;
