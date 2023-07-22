@@ -17,6 +17,7 @@ public abstract class _KAUserProfileDefaultEntity extends com.kaviju.accesscontr
 
   // Attribute Keys
   public static final ERXKey<Boolean> IS_DEFAULT_PROFILE = new ERXKey<Boolean>("isDefaultProfile");
+  public static final ERXKey<Integer> TYPE = new ERXKey<Integer>("type");
   // Relationship Keys
   public static final ERXKey<com.kaviju.accesscontrol.model.KAProfile> PROFILE = new ERXKey<com.kaviju.accesscontrol.model.KAProfile>("profile");
   public static final ERXKey<com.kaviju.accesscontrol.model.KAUserProfileRole> ROLES = new ERXKey<com.kaviju.accesscontrol.model.KAUserProfileRole>("roles");
@@ -24,6 +25,7 @@ public abstract class _KAUserProfileDefaultEntity extends com.kaviju.accesscontr
 
   // Attributes
   public static final String IS_DEFAULT_PROFILE_KEY = "isDefaultProfile";
+  public static final String TYPE_KEY = "type";
   // Relationships
   public static final String PROFILE_KEY = "profile";
   public static final String ROLES_KEY = "roles";
