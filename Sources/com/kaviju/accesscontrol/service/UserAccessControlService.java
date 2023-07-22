@@ -79,8 +79,9 @@ public class UserAccessControlService<U extends KAUser> {
 	}
 
 	public void setCurrentUserProfile(KAUserProfile profile) {
+		profile = currentUserProfile.localInstanceOf(profile);
 		if ( currentUserProfile.user().equals(profile.user()) == false ) {
-			throw new IllegalArgumentException("Cannot set a profile from another user or editing context as current profile.");
+			throw new IllegalArgumentException("Cannot set a profile from another user as current profile.");
 		}
 		currentUserProfile = profile;
 	}
