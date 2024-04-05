@@ -83,6 +83,9 @@ public abstract class KAUserProfile extends com.kaviju.accesscontrol.model.base.
 			for (KARole role : value.mandatoryRoles()) {
 				addRole(role);
 			}
+			for (KARole role : value.byDefaultRoles()) {
+				addRole(role);
+			}
 		}
 		super.setProfile(value);
 		clearAllEffectivesRoles();

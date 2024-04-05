@@ -135,6 +135,16 @@ public class RolesFileLoader {
 			}
 
 			@SuppressWarnings("unchecked")
+			NSArray<String> byDefaultRoleCodes = (NSArray<String>) profile.objectForKey("byDefaultRoles");
+			if (byDefaultRoleCodes != null) {
+				for (String roleCode : byDefaultRoleCodes) {
+					KARole roleObject = roleDict.objectForKey(roleCode);
+					profileObject.addByDefaultRole(roleObject);
+					obsoleteRoleCodes.remove(roleCode);
+				}
+			}
+
+			@SuppressWarnings("unchecked")
 			NSArray<String> roleCodes = (NSArray<String>) profile.objectForKey("roles");
 			for (String roleCode : roleCodes) {
 				KARole roleObject = roleDict.objectForKey(roleCode);

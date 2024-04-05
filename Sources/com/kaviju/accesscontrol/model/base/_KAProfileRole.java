@@ -16,13 +16,13 @@ public abstract class _KAProfileRole extends  ERXGenericRecord {
   public static final String ENTITY_NAME = "KAProfileRole";
 
   // Attribute Keys
-  public static final ERXKey<Boolean> IS_OPTIONAL = new ERXKey<Boolean>("isOptional");
+  public static final ERXKey<com.kaviju.accesscontrol.model.KAProfileRoleType> TYPE = new ERXKey<com.kaviju.accesscontrol.model.KAProfileRoleType>("type");
   // Relationship Keys
   public static final ERXKey<com.kaviju.accesscontrol.model.KAProfile> PROFILE = new ERXKey<com.kaviju.accesscontrol.model.KAProfile>("profile");
   public static final ERXKey<com.kaviju.accesscontrol.model.KARole> ROLE = new ERXKey<com.kaviju.accesscontrol.model.KARole>("role");
 
   // Attributes
-  public static final String IS_OPTIONAL_KEY = "isOptional";
+  public static final String TYPE_KEY = "type";
   // Relationships
   public static final String PROFILE_KEY = "profile";
   public static final String ROLE_KEY = "role";
@@ -37,15 +37,15 @@ public abstract class _KAProfileRole extends  ERXGenericRecord {
     return localInstance;
   }
 
-  public Boolean isOptional() {
-    return (Boolean) storedValueForKey(_KAProfileRole.IS_OPTIONAL_KEY);
+  public com.kaviju.accesscontrol.model.KAProfileRoleType type() {
+    return (com.kaviju.accesscontrol.model.KAProfileRoleType) storedValueForKey(_KAProfileRole.TYPE_KEY);
   }
 
-  public void setIsOptional(Boolean value) {
+  public void setType(com.kaviju.accesscontrol.model.KAProfileRoleType value) {
     if (_KAProfileRole.LOG.isDebugEnabled()) {
-    	_KAProfileRole.LOG.debug( "updating isOptional from " + isOptional() + " to " + value);
+    	_KAProfileRole.LOG.debug( "updating type from " + type() + " to " + value);
     }
-    takeStoredValueForKey(value, _KAProfileRole.IS_OPTIONAL_KEY);
+    takeStoredValueForKey(value, _KAProfileRole.TYPE_KEY);
   }
 
   public com.kaviju.accesscontrol.model.KAProfile profile() {

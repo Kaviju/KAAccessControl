@@ -34,21 +34,30 @@ public class KAProfile extends com.kaviju.accesscontrol.model.base._KAProfile {
 	}
 
 	public NSArray<KARole> mandatoryRoles() {
-		return KAProfileRole.ROLE.arrayValueInObject(profileRoles(KAProfileRole.IS_OPTIONAL.eq(false)));
+		return KAProfileRole.ROLE.arrayValueInObject(profileRoles(KAProfileRole.TYPE.eq(KAProfileRoleType.Mandatory)));
 	}
 
 	public NSArray<KARole>optionalRoles() {
-		return KAProfileRole.ROLE.arrayValueInObject(profileRoles(KAProfileRole.IS_OPTIONAL.eq(true)));
+		return KAProfileRole.ROLE.arrayValueInObject(profileRoles(KAProfileRole.TYPE.in(KAProfileRoleType.OptionalTypes)));
+	}
+
+	public NSArray<KARole>byDefaultRoles() {
+		return KAProfileRole.ROLE.arrayValueInObject(profileRoles(KAProfileRole.TYPE.eq(KAProfileRoleType.ByDefault)));
 	}
 
 	public void addMandatoryRole(KARole role) {
 		KAProfileRole profileRole = profileRoleForRole(role);
-		profileRole.setIsOptional(false);
+		profileRole.setType(KAProfileRoleType.Mandatory);
 	}
 	
 	public void addOptionalRole(KARole role) {
 		KAProfileRole profileRole = profileRoleForRole(role);
-		profileRole.setIsOptional(true);
+		profileRole.setType(KAProfileRoleType.Optional);
+	}
+
+	public void addByDefaultRole(KARole role) {
+		KAProfileRole profileRole = profileRoleForRole(role);
+		profileRole.setType(KAProfileRoleType.ByDefault);
 	}
 
 	private KAProfileRole profileRoleForRole(KARole role) {
@@ -75,5 +84,4 @@ public class KAProfile extends com.kaviju.accesscontrol.model.base._KAProfile {
 		roles = ERXArrayUtilities.arrayWithoutDuplicates(roles);
 		return KARole.LOCALIZED_NAME.asc().sorted(roles);
 	}
-
 }

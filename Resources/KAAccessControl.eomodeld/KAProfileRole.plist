@@ -1,17 +1,27 @@
 {
     attributes = (
-        {columnName = isOptional; name = isOptional; prototypeName = intBoolean; }, 
         {
             allowsNull = N; 
             columnName = "profile_id"; 
             name = profileID; 
             prototypeName = id; 
         }, 
-        {allowsNull = N; columnName = "role_id"; name = roleID; prototypeName = id; }
+        {allowsNull = N; columnName = "role_id"; name = roleID; prototypeName = id; }, 
+        {
+            adaptorValueConversionMethodName = databaseValue; 
+            columnName = isOptional; 
+            externalType = INTEGER; 
+            factoryMethodArgumentType = EOFactoryMethodArgumentIsNumber; 
+            name = type; 
+            prototypeName = javaEnum; 
+            valueClassName = "com.kaviju.accesscontrol.model.KAProfileRoleType"; 
+            valueFactoryMethodName = valueFromDatabase; 
+            valueType = i; 
+        }
     ); 
-    attributesUsedForLocking = (isOptional, profileID, roleID); 
+    attributesUsedForLocking = (profileID, roleID, type); 
     className = "com.kaviju.accesscontrol.model.KAProfileRole"; 
-    classProperties = (isOptional, profile, role); 
+    classProperties = (profile, role, type); 
     externalName = KAProfileRole; 
     fetchSpecificationDictionary = {}; 
     name = KAProfileRole; 
