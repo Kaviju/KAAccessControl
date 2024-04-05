@@ -60,7 +60,9 @@ public class UserPermRoleEditor extends ERXNonSynchronizingComponent {
 	}
 
 	public NSArray<KAAccessListItem> currentItems() {
-		return userProfile().listItemsForRole(role());
+		NSArray<KAAccessListItem> items = userProfile().listItemsForRole(role());
+		items = KAAccessListItem.NAME.ascs().sorted(items);
+		return items;
 	}
 
 	public NSArray<KAAccessListItem> items() {

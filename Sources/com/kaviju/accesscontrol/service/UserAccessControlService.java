@@ -15,7 +15,7 @@ public class UserAccessControlService<U extends KAUser> {
 	private NSMutableArray<UserStackEntry<U>> userStack = new NSMutableArray<UserStackEntry<U>>();
 	private final WOSession session;
 
-	private UserAccessControlService() {
+	public UserAccessControlService() {
 		this.session = null;
     	ERXThreadStorage.takeValueForKey(this, UserAccessControlServiceThreadStorageKey);
 	}
@@ -79,9 +79,11 @@ public class UserAccessControlService<U extends KAUser> {
 	}
 
 	public void setCurrentUserProfile(KAUserProfile profile) {
-		profile = currentUserProfile.localInstanceOf(profile);
-		if ( currentUserProfile.user().equals(profile.user()) == false ) {
-			throw new IllegalArgumentException("Cannot set a profile from another user as current profile.");
+		if (currentUserProfile != null) {
+			profile = currentUserProfile.localInstanceOf(profile);
+			if ( currentUserProfile.user().equals(profile.user()) == false ) {
+				throw new IllegalArgumentException("Cannot set a profile from another user as current profile.");
+			}
 		}
 		currentUserProfile = profile;
 	}

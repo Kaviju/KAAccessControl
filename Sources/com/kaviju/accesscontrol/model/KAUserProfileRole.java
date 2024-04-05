@@ -11,11 +11,16 @@ import er.extensions.eof.ERXEOControlUtilities;
 public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUserProfileRole {
 	private static Logger log = Logger.getLogger(KAUserProfileRole.class);
 
-	@SuppressWarnings("unchecked")
 	public NSArray<String> itemCodes() {
-		return (NSArray<String>) valueForKey(LIST_ITEMS.dot(KAAccessListItem.CODE_KEY));	
+		NSArray<KAAccessListItem> listItems = listItems(null, KAAccessListItem.CODE.ascs());
+		return KAAccessListItem.CODE.arrayValueInObject(listItems);
 	}
-	
+
+	public NSArray<String> itemNames() {
+		NSArray<KAAccessListItem> listItems = listItems(null, KAAccessListItem.NAME.ascs());
+		return KAAccessListItem.NAME.arrayValueInObject(listItems);
+	}
+
 	public <T extends EOEnterpriseObject> NSArray<T> itemsAsObjects(Class<T> entityClass) {
 		String entityName = entityClass.getSimpleName();
 		NSMutableArray<T> eos = new NSMutableArray<T>();
