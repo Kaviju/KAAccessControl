@@ -1,6 +1,7 @@
 package com.kaviju.accesscontrol.model;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
@@ -12,7 +13,7 @@ import er.extensions.localization.ERXLocalizer;
 @SuppressWarnings("serial")
 public class KAProfile extends com.kaviju.accesscontrol.model.base._KAProfile {
 	@SuppressWarnings("unused")
-	private static Logger log = Logger.getLogger(KAProfile.class);
+	private static Logger log = LoggerFactory.getLogger(KAProfile.class);
 	public static final ERXKey<String> LOCALIZED_NAME = new ERXKey<String>("localizedName");
 	
 	static public KAProfile profileWithCode(EOEditingContext ec, String code) {

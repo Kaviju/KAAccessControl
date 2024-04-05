@@ -2,10 +2,11 @@
 package $entity.packageName;
 
 #end
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 @SuppressWarnings("serial")
 public#if (${entity.abstractEntity}) abstract#end class ${entity.classNameWithoutPackage} extends ${entity.prefixClassNameWithOptionalPackage} {
 	@SuppressWarnings("unused")
-	private static Logger log = Logger.getLogger(${entity.classNameWithoutPackage}.class);
+	private static Logger log = LoggerFactory.getLogger(${entity.classNameWithoutPackage}.class);
 }

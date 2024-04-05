@@ -1,6 +1,7 @@
 package com.kaviju.accesscontrol.model;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.kaviju.accesscontrol.authentication.*;
 import com.webobjects.appserver.*;
@@ -12,7 +13,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 @SuppressWarnings("serial")
 public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser {
 	@SuppressWarnings("unused")
-	private static Logger log = Logger.getLogger(KAUser.class);
+	private static Logger log = LoggerFactory.getLogger(KAUser.class);
 	private static PasswordHasher defaultPasswordHasher;
 	private static PasswordHasher currentPasswordHasher;
 	

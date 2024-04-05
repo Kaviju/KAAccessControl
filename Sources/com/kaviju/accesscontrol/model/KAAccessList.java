@@ -2,7 +2,8 @@ package com.kaviju.accesscontrol.model;
 
 import java.nio.charset.StandardCharsets;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.foundation.NSArray;
@@ -12,7 +13,7 @@ import er.extensions.foundation.ERXStringUtilities;
 @SuppressWarnings("serial")
 public class KAAccessList extends com.kaviju.accesscontrol.model.base._KAAccessList {
 	@SuppressWarnings("unused")
-	private static Logger log = Logger.getLogger(KAAccessList.class);
+	private static Logger log = LoggerFactory.getLogger(KAAccessList.class);
 	
 	public static KAAccessList fetchListWithCode(EOEditingContext editingContext, String listCode) {
 		return fetchRequiredKAAccessList(editingContext, CODE.eq(listCode));

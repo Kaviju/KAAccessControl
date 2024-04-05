@@ -6,7 +6,8 @@ import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import java.math.*;
 import java.util.*;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import er.extensions.eof.*;
 import er.extensions.foundation.*;
@@ -27,7 +28,7 @@ public abstract class _KAProfile extends  ERXGenericRecord {
   public static final String PROFILE_ROLES_KEY = "profileRoles";
   public static final String USERS_KEY = "users";
 
-  private static Logger LOG = Logger.getLogger(_KAProfile.class);
+  private static Logger LOG = LoggerFactory.getLogger(_KAProfile.class);
 
   public com.kaviju.accesscontrol.model.KAProfile localInstanceIn(EOEditingContext editingContext) {
     com.kaviju.accesscontrol.model.KAProfile localInstance = (com.kaviju.accesscontrol.model.KAProfile)EOUtilities.localInstanceOfObject(editingContext, this);

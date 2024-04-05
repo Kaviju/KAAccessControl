@@ -1,6 +1,7 @@
 package com.kaviju.accesscontrol.model;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.foundation.*;
@@ -9,7 +10,7 @@ import er.extensions.eof.ERXEOControlUtilities;
 
 @SuppressWarnings("serial")
 public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUserProfileRole {
-	private static Logger log = Logger.getLogger(KAUserProfileRole.class);
+	private static Logger log = LoggerFactory.getLogger(KAUserProfileRole.class);
 
 	public NSArray<String> itemCodes() {
 		NSArray<KAAccessListItem> listItems = listItems(null, KAAccessListItem.CODE.ascs());

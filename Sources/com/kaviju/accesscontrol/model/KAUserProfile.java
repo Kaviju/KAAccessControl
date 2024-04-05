@@ -2,7 +2,8 @@ package com.kaviju.accesscontrol.model;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.webobjects.appserver.*;
 import com.webobjects.eocontrol.*;
@@ -11,7 +12,7 @@ import com.webobjects.foundation.NSArray;
 @SuppressWarnings("serial")
 public abstract class KAUserProfile extends com.kaviju.accesscontrol.model.base._KAUserProfile {
 	@SuppressWarnings("unused")
-	private static Logger log = Logger.getLogger(KAUserProfile.class);
+	private static Logger log = LoggerFactory.getLogger(KAUserProfile.class);
 	private Set<String> allEffectiveRoles;
 
 	@SuppressWarnings("unchecked")

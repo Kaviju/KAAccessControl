@@ -6,7 +6,8 @@ import com.webobjects.eocontrol.*;
 import com.webobjects.foundation.*;
 import java.math.*;
 import java.util.*;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import er.extensions.eof.*;
 import er.extensions.foundation.*;
@@ -31,7 +32,7 @@ public abstract class _KAUserProfileDefaultEntity extends com.kaviju.accesscontr
   public static final String ROLES_KEY = "roles";
   public static final String USER_KEY = "user";
 
-  private static Logger LOG = Logger.getLogger(_KAUserProfileDefaultEntity.class);
+  private static Logger LOG = LoggerFactory.getLogger(_KAUserProfileDefaultEntity.class);
 
   public com.kaviju.accesscontrol.model.KAUserProfileDefaultEntity localInstanceIn(EOEditingContext editingContext) {
     com.kaviju.accesscontrol.model.KAUserProfileDefaultEntity localInstance = (com.kaviju.accesscontrol.model.KAUserProfileDefaultEntity)EOUtilities.localInstanceOfObject(editingContext, this);
