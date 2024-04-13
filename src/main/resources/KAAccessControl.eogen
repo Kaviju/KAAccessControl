@@ -1,0 +1,1 @@
+ -destination src/main/java -extension java -java -javaTemplate _WonderEntity.java -model src/main/resources/KAAccessControl.eomodeld -packagedirs -subclassDestination src/main/java -subclassJavaTemplate WonderEntity.java -templatedir EOTemplates -verbose -loadModelGroup -superclassPackage base

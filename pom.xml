@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.kaviju.commons</groupId>
+	<artifactId>KAAccessControl</artifactId>
+	<packaging>woframework</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>KAAccessControl</name>
+	<properties>
+		<webobjects.version>5.4.3</webobjects.version>
+		<wonder.version>7.4</wonder.version>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.wocommunity</groupId>
+				<artifactId>wolifecycle-maven-plugin</artifactId>
+				<version>2.5</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-surefire-plugin</artifactId>
+			    <version>2.9</version>
+			    <configuration>
+			        <argLine>--add-exports=java.base/sun.security.action=ALL-UNNAMED</argLine>
+			    </configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>wonder.core</groupId>
+			<artifactId>ERExtensions</artifactId>
+			<version>${wonder.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>wonder.core</groupId>
+			<artifactId>WOOgnl</artifactId>
+			<version>${wonder.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>wonder.eof</groupId>
+			<artifactId>ERAttributeExtension</artifactId>
+			<version>${wonder.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>wonder.core</groupId>
+			<artifactId>ERPrototypes</artifactId>
+			<version>${wonder.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.webobjects</groupId>
+			<artifactId>JavaWebObjects</artifactId>
+			<version>${webobjects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.webobjects</groupId>
+			<artifactId>JavaEOAccess</artifactId>
+			<version>${webobjects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.webobjects</groupId>
+			<artifactId>JavaFoundation</artifactId>
+			<version>${webobjects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>wonder.ajax</groupId>
+			<artifactId>Ajax</artifactId>
+			<version>${wonder.version}</version>
+		</dependency>
+	
+		<!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
+		<dependency>
+		    <groupId>org.reflections</groupId>
+		    <artifactId>reflections</artifactId>
+		    <version>0.10.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.wounit/wounit -->
+		<dependency>
+		    <groupId>com.wounit</groupId>
+		    <artifactId>wounit</artifactId>
+		    <version>1.5</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-core</artifactId>
+		    <version>5.11.0</version>
+		    <scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
