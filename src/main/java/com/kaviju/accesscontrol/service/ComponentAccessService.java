@@ -57,27 +57,29 @@ public class ComponentAccessService {
 	}
 
 	public NSSet<String> readAllowedRoleCodesInClass(Class<? extends WOComponent> componentClass) {
-		boolean isAllowedForAll = verifyAllowedForAllAnnotationInClass(componentClass);
-		NSSet<String> allowedRoleCodesAnnotation = readAllowedForRolesAnnotationInClass(componentClass);
-		NSSet<String> deniedRoleCodesAnnotation = readDeniedForRolesAnnotationInClass(componentClass);
-		
-		if (isAllowedForAll) {
-			if (allowedRoleCodesAnnotation != null || deniedRoleCodesAnnotation != null) {
-				throw new RuntimeException("The class "+componentClass.getName()+" specify an AllowedForAll, an AllowedForRole and a DeniedForRole annotation and only one is allowed.");
-			}
-			return getAllPossibleRoleCodes();
-		}
-		
-		if (allowedRoleCodesAnnotation != null && deniedRoleCodesAnnotation != null) {
-			throw new RuntimeException("The class "+componentClass.getName()+" specify both an AllowedForRole and a DeniedForRole annotation and only one is allowed.");
-		}
+		if (componentClass != null) {
+			boolean isAllowedForAll = verifyAllowedForAllAnnotationInClass(componentClass);
+			NSSet<String> allowedRoleCodesAnnotation = readAllowedForRolesAnnotationInClass(componentClass);
+			NSSet<String> deniedRoleCodesAnnotation = readDeniedForRolesAnnotationInClass(componentClass);
 
-		if (allowedRoleCodesAnnotation != null) {
-			return allowedRoleCodesAnnotation;
-		}
-		
-		if (deniedRoleCodesAnnotation != null) {
-			return getAllPossibleRoleCodes().setBySubtractingSet(deniedRoleCodesAnnotation);
+			if (isAllowedForAll) {
+				if (allowedRoleCodesAnnotation != null || deniedRoleCodesAnnotation != null) {
+					throw new RuntimeException("The class "+componentClass.getName()+" specify an AllowedForAll, an AllowedForRole and a DeniedForRole annotation and only one is allowed.");
+				}
+				return getAllPossibleRoleCodes();
+			}
+
+			if (allowedRoleCodesAnnotation != null && deniedRoleCodesAnnotation != null) {
+				throw new RuntimeException("The class "+componentClass.getName()+" specify both an AllowedForRole and a DeniedForRole annotation and only one is allowed.");
+			}
+
+			if (allowedRoleCodesAnnotation != null) {
+				return allowedRoleCodesAnnotation;
+			}
+
+			if (deniedRoleCodesAnnotation != null) {
+				return getAllPossibleRoleCodes().setBySubtractingSet(deniedRoleCodesAnnotation);
+			}
 		}
 		return new NSSet<String>(); // Nothing specified, no access allowed.
 	}
