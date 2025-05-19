@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.kaviju.accesscontrol.model.*;
@@ -22,21 +22,23 @@ public class UserAccessControlServiceTest {
 
 	private UserAccessControlService<KAUserTest.KAUserForTest> serviceUnderTest;
 		
-	@Mock private KAUserTest.KAUserForTest testUser;
-	@Mock private KAUserProfileDefaultEntity testUserProfile;
+	@Mock(mockMaker = MockMakers.SUBCLASS) private KAUserTest.KAUserForTest testUser;
+	@Mock(mockMaker = MockMakers.SUBCLASS) private KAUserProfileDefaultEntity testUserProfile;
 	
-	@Mock private KAUserTest.KAUserForTest testPersonifiedUser;
-	@Mock private KAUserProfileDefaultEntity testPersonnifiedUserProfile;
+	@Mock(mockMaker = MockMakers.SUBCLASS) private KAUserTest.KAUserForTest testPersonifiedUser;
+	@Mock(mockMaker = MockMakers.SUBCLASS) private KAUserProfileDefaultEntity testPersonnifiedUserProfile;
 
-	static private WOComponent loggedOutPage = mock(WOComponent.class);
+	@Mock(mockMaker = MockMakers.SUBCLASS) static private WOComponent loggedOutPage;
 	private WOApplication app = new AppForTest();
 
-	private WOContext context = mock(WOContext.class);
-	private WOSession session = mock(WOSession.class);
-	private SessionWithUserDidLogonDelegate sessionWithDelegate = mock(SessionWithUserDidLogonDelegate.class);
+	private WOContext context = mock(WOContext.class, withSettings().mockMaker(MockMakers.SUBCLASS));
+	private WOSession session = mock(WOSession.class, withSettings().mockMaker(MockMakers.SUBCLASS));
+	private SessionWithUserDidLogonDelegate sessionWithDelegate = mock(SessionWithUserDidLogonDelegate.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
 	@Before
 	public void createService() {
+		
+		
 		when(testUser.profiles()).thenReturn(new NSArray<>(testUserProfile));
 		when(testUser.defaultUserProfile()).thenReturn(testUserProfile);
 		when(testUserProfile.user()).thenReturn(testUser);
@@ -96,7 +98,7 @@ public class UserAccessControlServiceTest {
 
 	@Test
 	public void logonAsUserCallUserDidLogonOnSession() {
-		UserAccessControlService<KAUser> serviceUnderTestWithSessionDelegate = spy(new UserAccessControlService<KAUser>(sessionWithDelegate));
+		UserAccessControlService<KAUser> serviceUnderTestWithSessionDelegate = new UserAccessControlService<KAUser>(sessionWithDelegate);
 
 		serviceUnderTestWithSessionDelegate.logonAsUser(testUser);
 		
@@ -128,7 +130,7 @@ public class UserAccessControlServiceTest {
 	public void setCurrentUserProfileWithExternalProfileFail() {
 		serviceUnderTest.logonAsUser(testUser);
 		
-		KAUserProfile profile = mock(KAUserProfile.class);
+		KAUserProfile profile = mock(KAUserProfile.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 		when(testUserProfile.localInstanceOf(profile)).thenReturn(profile);
 		
 		serviceUnderTest.setCurrentUserProfile(profile);
@@ -172,7 +174,7 @@ public class UserAccessControlServiceTest {
 
 	@Test
 	public void logoutWhenPersonifyingSetCurrentUserAndReturnsLastViewedPageForUser() {
-		WOComponent lastViewedPage = mock(WOComponent.class);
+		WOComponent lastViewedPage = mock(WOComponent.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 		when(context.page()).thenReturn(lastViewedPage);
 		
 		serviceUnderTest.logonAsUser(testUser);

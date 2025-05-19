@@ -1,15 +1,15 @@
 package com.kaviju.accesscontrol.service;
 
 import static org.junit.Assert.*;
-
 import static org.mockito.Mockito.*;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.kaviju.accesscontrol.annotation.*;
-import com.kaviju.accesscontrol.model.*;
+import com.kaviju.accesscontrol.model.KAUserProfile;
 import com.webobjects.appserver.WOComponent;
 import com.webobjects.foundation.NSSet;
 import com.wounit.rules.MockEditingContext;
@@ -27,7 +27,7 @@ public class ComponentAccessServiceTest {
 	@Rule
     public MockEditingContext ec = new MockEditingContext("KAAccessControl");
 
-	ComponentAccessService serviceUnderTest;
+	ComponentAccessService serviceUnderTest = ComponentAccessService.getInstance();
 	
 	@Before
 	public void prepareInstanceUnderTest() {
@@ -118,7 +118,7 @@ public class ComponentAccessServiceTest {
 
 	@Test
 	public void isComponentAccessibleForUserProfileCallKAUSer_hasAtLeastOneOfTheseRolesWithRolesCodes() {
-		KAUserProfile testUserProfile = mock(KAUserProfile.class);
+		KAUserProfile testUserProfile = mock(KAUserProfile.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
 		when(testUserProfile.hasAtLeastOneOfTheseRoles(allRolesCodesSet)).thenReturn(true);
 		
@@ -129,7 +129,7 @@ public class ComponentAccessServiceTest {
 
 	@Test
 	public void isComponentNameAccessibleForUserProfileCallKAUSer_hasAtLeastOneOfTheseRolesWithRolesCodes() {
-		KAUserProfile testUserProfile = mock(KAUserProfile.class);
+		KAUserProfile testUserProfile = mock(KAUserProfile.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
 		when(testUserProfile.hasAtLeastOneOfTheseRoles(allRolesCodesSet)).thenReturn(true);
 		

@@ -18,7 +18,7 @@ public class PasswordHash {
 			String[] hashParts = hashString.split(":");
 			if (hashParts.length < 2) {
 				if (defaultHasher == null) {
-					throw new IllegalArgumentException("A default haserCode should be specified for hash string without haserCode.");
+					throw new IllegalArgumentException("A default hasherCode should be specified for hash string without haserCode.");
 				}
 				else {
 					byte[] hash = ERXStringUtilities.hexStringToByteArray(hashParts[0]);

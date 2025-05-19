@@ -8,10 +8,24 @@
 	<name>KAAccessControl</name>
 	<properties>
 		<webobjects.version>5.4.3</webobjects.version>
-		<wonder.version>7.4</wonder.version>
+		<wonder.version>7.5-SNAPSHOT</wonder.version>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+    <distributionManagement>
+        <repository>
+            <id>kaviju.deployment</id>
+            <name>Kaviju Maven2 Releases Repository</name>
+            <url>http://maven.kaviju.com:8081/repository/maven-releases</url>
+        </repository>
+        <snapshotRepository>
+		  <id>kaviju.snapshots</id>
+		  <name>Kaviju Maven2 Snapshots Repository</name>
+		  <url>http://maven.kaviju.com:8081/repository/maven-snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
@@ -47,6 +61,12 @@
 			<groupId>wonder.core</groupId>
 			<artifactId>ERExtensions</artifactId>
 			<version>${wonder.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.webobjects</groupId>
+					<artifactId>JavaXML</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>wonder.core</groupId>
@@ -67,6 +87,12 @@
 			<groupId>com.webobjects</groupId>
 			<artifactId>JavaWebObjects</artifactId>
 			<version>${webobjects.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.webobjects</groupId>
+					<artifactId>JavaXML</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.webobjects</groupId>
@@ -82,6 +108,12 @@
 			<groupId>wonder.ajax</groupId>
 			<artifactId>Ajax</artifactId>
 			<version>${wonder.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.webobjects</groupId>
+					<artifactId>JavaXML</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	
 		<!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
@@ -103,7 +135,7 @@
 		<dependency>
 		    <groupId>org.mockito</groupId>
 		    <artifactId>mockito-core</artifactId>
-		    <version>5.11.0</version>
+		    <version>4.11.0</version>
 		    <scope>test</scope>
 		</dependency>
 	</dependencies>
