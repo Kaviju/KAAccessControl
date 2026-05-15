@@ -4,6 +4,7 @@ import com.kaviju.accesscontrol.model.*;
 import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
 
+import er.extensions.appserver.ERXRedirect;
 import er.extensions.foundation.*;
 
 public class UserAccessControlService<U extends KAUser> {
@@ -171,7 +172,10 @@ public class UserAccessControlService<U extends KAUser> {
 
 	public WOComponent createLoggedOutPage() {
 		String logedOutPageName = ERXProperties.stringForKeyWithDefault("ka.accesscontrol.loggedOutPageName", "LoggedOut");
-		return WOApplication.application().pageWithName(logedOutPageName, session.context());
+		WOComponent logedOutPage = WOApplication.application().pageWithName(logedOutPageName, session.context());
+		ERXRedirect redirect = (ERXRedirect) WOApplication.application().pageWithName(ERXRedirect.class.getSimpleName(), session.context());
+		redirect.setComponent(logedOutPage);
+		return redirect;
 	}
 	
 	static private class UserStackEntry<U extends KAUser> {

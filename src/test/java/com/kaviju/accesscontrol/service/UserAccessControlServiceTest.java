@@ -13,6 +13,7 @@ import com.webobjects.appserver.*;
 import com.webobjects.foundation.*;
 import com.wounit.rules.MockEditingContext;
 
+import er.extensions.appserver.ERXRedirect;
 import er.extensions.foundation.ERXThreadStorage;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -164,11 +165,12 @@ public class UserAccessControlServiceTest {
 	@Test
 	public void logoutWhenNotPersonifyingTerminateSessionAndReturnsLogedOutPage() {		
 		serviceUnderTest.logonAsUser(testUser);
-		WOComponent page = serviceUnderTest.logout();
+		RedirectForTest page = (RedirectForTest) serviceUnderTest.logout();
 		
 		assertFalse(serviceUnderTest.isUserLoggedIn());
 		assertNull(serviceUnderTest.realUser());
-		assertEquals(page, loggedOutPage);
+		
+		assertEquals(page.component(), loggedOutPage);
 		verify(session).terminate();
 	}
 
@@ -192,11 +194,37 @@ public class UserAccessControlServiceTest {
 			;
 		}
 		@Override
-		public WOComponent pageWithName(String arg0, WOContext arg1) {
-			return loggedOutPage;
+		public WOComponent pageWithName(String pageName, WOContext context) {
+			if (pageName.equals("LoggedOut")) {
+				return loggedOutPage;
+			}
+			if (pageName.equals("ERXRedirect")) {
+				return new RedirectForTest(context);
+			}
+			return super.pageWithName(pageName, context);
 		}
 	}
-	
+
+	@SuppressWarnings("serial")
+	static public class RedirectForTest extends ERXRedirect {
+
+		private WOComponent component;
+
+		public RedirectForTest(WOContext context) {
+			super(context);
+		}
+		
+		@Override
+		public void setComponent(WOComponent component) {
+			super.setComponent(component);
+			this.component = component;
+		}
+		
+		public WOComponent component() {
+			return component;
+		}
+	}
+
 	@SuppressWarnings("serial")
 	static public class SessionWithUserDidLogonDelegate extends WOSession implements UserLogonDelegate {
 		@Override
