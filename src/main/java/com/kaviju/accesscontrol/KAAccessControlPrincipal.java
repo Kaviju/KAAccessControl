@@ -26,22 +26,26 @@ public class KAAccessControlPrincipal extends ERXFrameworkPrincipal {
 
 	@Override
 	public void didFinishInitialization() {
-		EOEditingContext ec = ERXEC.newEditingContext();
-		ec.lock();
-		try {
-        	RolesFileLoader.loadRolesFile(ec);
-			ec.saveChanges();
-			
-			listAutoUpdater = new ListItemAutoUpdater(ec);
-			ListItemFromClassUpdater.updateItemsFromAnnotations(ec);
-			ec.saveChanges();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		finally {
-			ec.unlock();
-		}
+		new Thread(() -> {
+			EOEditingContext ec = ERXEC.newEditingContext();
+			ec.lock();
+			try {
+				RolesFileLoader.loadRolesFile(ec);
+				ec.saveChanges();
+				// Wait few seconds before starting the scan, we want the app to respond as soon as possible
+				Thread.sleep(7500);
+				
+				listAutoUpdater = new ListItemAutoUpdater(ec);
+				ListItemFromClassUpdater.updateItemsFromAnnotations(ec);
+				ec.saveChanges();
+			}
+			catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			finally {
+				ec.unlock();
+			}
+		}, "ListItemFromClassUpdater").start();
 	}
 	
 }
