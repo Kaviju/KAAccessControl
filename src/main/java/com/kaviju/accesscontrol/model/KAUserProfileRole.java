@@ -6,15 +6,22 @@ import org.slf4j.Logger;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.foundation.*;
 
-import er.extensions.eof.ERXEOControlUtilities;
+import er.extensions.eof.*;
 
 @SuppressWarnings("serial")
 public class KAUserProfileRole extends com.kaviju.accesscontrol.model.base._KAUserProfileRole {
 	private static Logger log = LoggerFactory.getLogger(KAUserProfileRole.class);
+	static public final ERXKey<String> ITEM_CODES = new ERXKey<String>("itemCodes");
+	static public final ERXKey<String> ITEM_NAMES = new ERXKey<String>("itemNames");
+	static public final ERXKey<String> JOINED_ITEM_NAMES = new ERXKey<String>("joinedItemNames");
 
 	public NSArray<String> itemCodes() {
 		NSArray<KAAccessListItem> listItems = listItems(null, KAAccessListItem.CODE.ascs());
 		return KAAccessListItem.CODE.arrayValueInObject(listItems);
+	}
+
+	public String joinedItemNames() {
+		return itemNames().componentsJoinedByString(", ");
 	}
 
 	public NSArray<String> itemNames() {

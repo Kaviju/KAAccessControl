@@ -8,12 +8,14 @@ import com.webobjects.appserver.*;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.foundation.NSArray;
 
-import er.extensions.eof.ERXEOControlUtilities;
+import er.extensions.eof.*;
 
 @SuppressWarnings("serial")
 public abstract class KAUser extends com.kaviju.accesscontrol.model.base._KAUser {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(KAUser.class);
+	static public final ERXKey<KAUserProfile> DEFAULT_USER_PROFILE = new ERXKey<>("defaultUserProfile");
+
 	private static PasswordHasher defaultPasswordHasher;
 	private static PasswordHasher currentPasswordHasher;
 	
