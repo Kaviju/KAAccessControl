@@ -31,6 +31,11 @@ public class ComponentAccessService {
 	}
 	
 	public boolean isComponentAccessibleForUserProfile(Class<? extends WOComponent> componentClass, KAUserProfile userProfile) {
+		SameAccessAsComponent annotation = componentClass.getAnnotation(SameAccessAsComponent.class);
+		if (annotation != null) {
+			return isComponentAccessibleForUserProfile(annotation.value(), userProfile);
+		}
+		
 		boolean allowed = verifyAccessByItemInClassForProfile(componentClass, userProfile);
 		if (allowed == false) {
 			NSSet<String> roleCodesThatAllowAccess = readAllowedRoleCodesInClass(componentClass);
@@ -57,7 +62,7 @@ public class ComponentAccessService {
 	}
 
 	public NSSet<String> readAllowedRoleCodesInClass(Class<? extends WOComponent> componentClass) {
-		if (componentClass != null) {
+		if (componentClass != null) {					
 			boolean isAllowedForAll = verifyAllowedForAllAnnotationInClass(componentClass);
 			NSSet<String> allowedRoleCodesAnnotation = readAllowedForRolesAnnotationInClass(componentClass);
 			NSSet<String> deniedRoleCodesAnnotation = readDeniedForRolesAnnotationInClass(componentClass);
